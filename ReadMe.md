@@ -1,6 +1,7 @@
 <h1>
 <img src="https://github.com/code-dispenser/DevsRule/blob/main/Assets/icon-64.png" align="center"> Devs' Rule
 </h1>
+
 ## Overview
 Devs' Rule at its core is a lamdba predicate condition engine that allows you to create rules comprised of condition sets, with each condition set containing one or more conditions.
 
