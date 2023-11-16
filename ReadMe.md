@@ -1,5 +1,5 @@
 <h1>
-<img src="https://github.com/code-dispenser/DevsRule/blob/main/Assets/icon-64.png" align="center"> Devs' Rule
+<img src="https://raw.githubusercontent.com/code-dispenser/DevsRule/main/Assets/icon-64.png" align="center" alt="Devs Rule icon" /> Devs' Rule
 </h1>
 
 ## Overview
@@ -111,7 +111,7 @@ In the demo project included in the repo, one of the Custom Condition Evaluators
 [DummyJSON](https://dummyjson.com/) a free service that did not require me to create an account and get an api key which was a welcomed surprise, so many thanks to the contributors on that 
 project, [DummyJSON project](https://github.com/Ovi/DummyJSON)
 
-<img src="https://github.com/code-dispenser/DevsRule/blob/main/Assets/icon-64.png" align="middle" height="32px"> Thanks also to Peerapak Takpho the icon creator, which I found on [freepik.com](https://www.freepik.com/icon/setting_7012934).
+<img src="https://raw.githubusercontent.com/code-dispenser/DevsRule/main/Assets/icon-64.png" align="middle" height="32px" alt="Devs Rule icon" /> Thanks also to Peerapak Takpho the icon creator, which I found on [freepik.com](https://www.freepik.com/icon/setting_7012934).
 
 
 

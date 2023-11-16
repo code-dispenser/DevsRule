@@ -10,10 +10,10 @@
     <Description>A predicate condition based rules engine. Store and evaluate rules in code or from ingested JSON, 
 enabling seamless integration and dynamic rule management.</Description>
 	<PackageTags>rules engine; predicate evaluator; lambda expressions</PackageTags>
-	<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	<PackageLicenseFile>License.txt</PackageLicenseFile>
 	<AssemblyOriginatorKeyFile>..\..\Assets\DevsRule.snk</AssemblyOriginatorKeyFile>
-	<GenerateDocumentationFile>False</GenerateDocumentationFile>
+	<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	<PackageReadmeFile>ReadMe.md</PackageReadmeFile>
 	<PackageIcon>icon-128.png</PackageIcon>
 	<RepositoryType></RepositoryType>
