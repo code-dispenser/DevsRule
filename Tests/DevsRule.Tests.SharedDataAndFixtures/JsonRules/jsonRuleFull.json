@@ -1,0 +1,34 @@
+{
+  "RuleName": "FullRule",
+  "TenantID": "All_Tenants",
+  "CultureID": "en-GB",
+  "FailureValue": "Rejected",
+  "IsEnabled": true,
+    "RuleEventDetails": {
+        "EventTypeName": "DevsRule.Tests.SharedDataAndFixtures.Events.RuleResultEvent",
+        "EventWhenType": "OnSuccessOrFailure",
+        "PublishMethod": "WaitForAll"
+    },
+  "ConditionSets": [
+    {
+      "ConditionSetName": "SetOne",
+      "SetValue": "Approved",
+      "Conditions": [
+        {
+          "ConditionName": "CustYears",
+          "ContextTypeName": "DevsRule.Tests.SharedDataAndFixtures.Models.Customer",
+          "ToEvaluate": "c =\u003E (c.MemberYears \u003E 1)",
+          "FailureMessage": "Must have been a member for at least 2 years",
+          "EvaluatorTypeName": "PredicateConditionEvaluator",
+          "IsLambdaPredicate": true,
+          "AdditionalInfo": {},
+          "ConditionEventDetails": {
+            "EventTypeName": "DevsRule.Tests.SharedDataAndFixtures.Events.ConditionResultEvent",
+            "EventWhenType": "OnSuccessOrFailure",
+            "PublishMethod": "WaitForAll"
+          }
+        }
+      ]
+    }
+  ]
+}

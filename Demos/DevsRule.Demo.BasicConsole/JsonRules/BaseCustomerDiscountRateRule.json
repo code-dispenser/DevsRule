@@ -1,0 +1,58 @@
+{
+  "RuleName": "BaseCustomerDiscountRateRule",
+  "TenantID": "All_Tenants",
+  "CultureID": "en-GB",
+  "FailureValue": "0.00",
+  "IsEnabled": true,
+  "RuleEventDetails": null,
+  "ConditionSets": [
+    {
+      "ConditionSetName": "StudentRate",
+      "SetValue": "0.10",
+      "Conditions": [
+        {
+          "ConditionName": "IsStudent",
+          "ContextTypeName": "DevsRule.Demo.BasicConsole.Common.Models.Customer",
+          "ToEvaluate": "c => (c.CustomerType.ToString() == \"Student\")",
+          "FailureMessage": "Customer @{CustomerName} is not a student",
+          "EvaluatorTypeName": "PredicateConditionEvaluator",
+          "IsLambdaPredicate": true,
+          "AdditionalInfo": {},
+          "ConditionEventDetails": null
+        }
+      ]
+    },
+    {
+      "ConditionSetName": "PensionerRate",
+      "SetValue": "0.15",
+      "Conditions": [
+        {
+          "ConditionName": "IsPensioner",
+          "ContextTypeName": "DevsRule.Demo.BasicConsole.Common.Models.Customer",
+          "ToEvaluate": "c => (c.CustomerType.ToString() == \"Pensioner\")",
+          "FailureMessage": "Customer @{CustomerName} is not a pensioner",
+          "EvaluatorTypeName": "PredicateConditionEvaluator",
+          "IsLambdaPredicate": true,
+          "AdditionalInfo": {},
+          "ConditionEventDetails": null
+        }
+      ]
+    },
+    {
+      "ConditionSetName": "SubscriberRate",
+      "SetValue": "0.20",
+      "Conditions": [
+        {
+          "ConditionName": "IsSubscriber",
+          "ContextTypeName": "DevsRule.Demo.BasicConsole.Common.Models.Customer",
+          "ToEvaluate": "c => (c.CustomerType.ToString() == \"Subscriber\")",
+          "FailureMessage": "Customer @{CustomerName} is not a paid subscriber",
+          "EvaluatorTypeName": "PredicateConditionEvaluator",
+          "IsLambdaPredicate": true,
+          "AdditionalInfo": {},
+          "ConditionEventDetails": null
+        }
+      ]
+    }
+  ]
+}

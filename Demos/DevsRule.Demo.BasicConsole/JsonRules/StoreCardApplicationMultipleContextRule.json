@@ -1,0 +1,46 @@
+{
+    "RuleName": "StoreCardApplicationMultipleContextRule",
+    "TenantID": "All_Tenants",
+    "CultureID": "en-GB",
+    "FailureValue": "",
+    "IsEnabled": true,
+    "RuleEventDetails": null,
+    "ConditionSets": [
+        {
+            "ConditionSetName": "AllRequirements",
+            "SetValue": "",
+            "Conditions": [
+                {
+                    "ConditionName": "AgeRequirement",
+                    "ContextTypeName": "DevsRule.Demo.BasicConsole.Common.Models.Customer",
+                    "ToEvaluate": "c =\u003E (new DateTime(c.DOB.Year, c.DOB.Month, c.DOB.Day).AddYears(18) \u003C DateTime.Now)",
+                    "FailureMessage": "You must be over 18 to apply",
+                    "EvaluatorTypeName": "PredicateConditionEvaluator",
+                    "IsLambdaPredicate": true,
+                    "AdditionalInfo": {},
+                    "ConditionEventDetails": null
+                },
+                {
+                    "ConditionName": "CountryRequirement",
+                    "ContextTypeName": "DevsRule.Demo.BasicConsole.Common.Models.Address",
+                    "ToEvaluate": "a =\u003E (a.Country == \u0022United Kingdom\u0022)",
+                    "FailureMessage": "You must be a resident of the United Kingdom",
+                    "EvaluatorTypeName": "PredicateConditionEvaluator",
+                    "IsLambdaPredicate": true,
+                    "AdditionalInfo": {},
+                    "ConditionEventDetails": null
+                },
+                {
+                    "ConditionName": "OrderRequirement",
+                    "ContextTypeName": "DevsRule.Demo.BasicConsole.Common.Models.OrderHistoryView",
+                    "ToEvaluate": "o =\u003E (o.TotalOrders \u003E 5)",
+                    "FailureMessage": "You must have made at least five purchases",
+                    "EvaluatorTypeName": "PredicateConditionEvaluator",
+                    "IsLambdaPredicate": true,
+                    "AdditionalInfo": {},
+                    "ConditionEventDetails": null
+                }
+            ]
+        }
+    ]
+}

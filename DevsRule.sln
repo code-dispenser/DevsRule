@@ -1,0 +1,77 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{E3CF439C-222E-4ADF-8105-EA1EDCB369F3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevsRule.Core", "Source\DevsRule.Core\DevsRule.Core.csproj", "{16BCB7B1-584B-4D26-AEF1-30346A6BCCA0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CAF0B69C-2629-40F0-AFFF-936EAF4296D0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevsRule.Core.Tests.Unit", "Tests\DevsRule.Core.Tests.Unit\DevsRule.Core.Tests.Unit.csproj", "{40F43EE7-6032-4F9D-BE27-D8852972CCDC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 - Test Data", "01 - Test Data", "{5BEBB165-2ACB-49D6-98D5-1356D879D92C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevsRule.Tests.SharedDataAndFixtures", "Tests\DevsRule.Tests.SharedDataAndFixtures\DevsRule.Tests.SharedDataAndFixtures.csproj", "{4A1495AB-71DB-4302-9EEF-729FE3946446}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevsRule.Core.Tests.Integration", "Tests\DevsRule.Core.Tests.Integration\DevsRule.Core.Tests.Integration.csproj", "{32413986-18EB-4878-8AE3-559A03985BCF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 - Unit", "02 - Unit", "{76B1A434-B91C-4F7D-8EC5-6E8921599360}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 - Integration", "03 - Integration", "{D8D17916-9A20-4656-ACDE-9798911088A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 - DevsRule Core", "01 - DevsRule Core", "{84ABA221-9103-4109-9D08-FE750F29334D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{8932CDAB-D699-46C5-B915-845CC5F61D80}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevsRule.Demo.BasicConsole", "Demos\DevsRule.Demo.BasicConsole\DevsRule.Demo.BasicConsole.csproj", "{21406E92-A1E4-4FC1-B892-3BAD9196FC24}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 - Console", "01 - Console", "{54BBEC6F-2305-4F26-A1FC-7BFBA4510436}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{16BCB7B1-584B-4D26-AEF1-30346A6BCCA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16BCB7B1-584B-4D26-AEF1-30346A6BCCA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16BCB7B1-584B-4D26-AEF1-30346A6BCCA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16BCB7B1-584B-4D26-AEF1-30346A6BCCA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40F43EE7-6032-4F9D-BE27-D8852972CCDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40F43EE7-6032-4F9D-BE27-D8852972CCDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40F43EE7-6032-4F9D-BE27-D8852972CCDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40F43EE7-6032-4F9D-BE27-D8852972CCDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A1495AB-71DB-4302-9EEF-729FE3946446}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A1495AB-71DB-4302-9EEF-729FE3946446}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A1495AB-71DB-4302-9EEF-729FE3946446}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A1495AB-71DB-4302-9EEF-729FE3946446}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32413986-18EB-4878-8AE3-559A03985BCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32413986-18EB-4878-8AE3-559A03985BCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32413986-18EB-4878-8AE3-559A03985BCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32413986-18EB-4878-8AE3-559A03985BCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21406E92-A1E4-4FC1-B892-3BAD9196FC24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21406E92-A1E4-4FC1-B892-3BAD9196FC24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21406E92-A1E4-4FC1-B892-3BAD9196FC24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21406E92-A1E4-4FC1-B892-3BAD9196FC24}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{16BCB7B1-584B-4D26-AEF1-30346A6BCCA0} = {84ABA221-9103-4109-9D08-FE750F29334D}
+		{40F43EE7-6032-4F9D-BE27-D8852972CCDC} = {76B1A434-B91C-4F7D-8EC5-6E8921599360}
+		{5BEBB165-2ACB-49D6-98D5-1356D879D92C} = {CAF0B69C-2629-40F0-AFFF-936EAF4296D0}
+		{4A1495AB-71DB-4302-9EEF-729FE3946446} = {5BEBB165-2ACB-49D6-98D5-1356D879D92C}
+		{32413986-18EB-4878-8AE3-559A03985BCF} = {D8D17916-9A20-4656-ACDE-9798911088A4}
+		{76B1A434-B91C-4F7D-8EC5-6E8921599360} = {CAF0B69C-2629-40F0-AFFF-936EAF4296D0}
+		{D8D17916-9A20-4656-ACDE-9798911088A4} = {CAF0B69C-2629-40F0-AFFF-936EAF4296D0}
+		{84ABA221-9103-4109-9D08-FE750F29334D} = {E3CF439C-222E-4ADF-8105-EA1EDCB369F3}
+		{21406E92-A1E4-4FC1-B892-3BAD9196FC24} = {54BBEC6F-2305-4F26-A1FC-7BFBA4510436}
+		{54BBEC6F-2305-4F26-A1FC-7BFBA4510436} = {8932CDAB-D699-46C5-B915-845CC5F61D80}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C4B0A592-2561-4A5F-B065-5475D80D92FC}
+	EndGlobalSection
+EndGlobal

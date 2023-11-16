@@ -1,0 +1,56 @@
+{
+    "CultureID": "en-GB",
+    "TenantID": "All_Tenants",
+    "RuleName": "Rule101",
+    "FailureValue": "0",
+    "IsEnabled": true,
+    "ConditionSets": [
+        {
+            "ConditionSetName": "SetOne",
+            "SetValue": "10",
+            "Conditions": [
+                {
+                    "ContextTypeName": "DevsRule.Tests.SharedDataAndFixtures.Models.Customer",
+                    "ConditionName": "Customer Name and number",
+                    "ToEvaluate": "c => ((c.CustomerName == \"CustomerOne\") AndAlso (c.CustomerNo == 2))",
+                    "FailureMessage": "Customer name or number is not correct",
+                    "EvaluatorTypeName": "PredicateConditionEvaluator",
+                    "IsLambdaPredicate": true,
+                    "AdditionalInfo": {}
+                }
+            ]
+        },
+        {
+            "ConditionSetName": "SetTwo",
+            "SetValue": "20",
+            "Conditions": [
+                {
+                    "ContextTypeName": "DevsRule.Tests.SharedDataAndFixtures.Models.Supplier",
+                    "ConditionName": "Supllier Name",
+                    "ToEvaluate": "SupplierName",
+                    "FailureMessage": "Contains two consequtive spaces, dahes, apostrophes or underscores",
+                    "EvaluatorTypeName": "RegexConditionEvaluator",
+                    "IsLambdaPredicate": false,
+                    "AdditionalInfo": {
+                        "Pattern": "^(?!.*[\\-&'' _]{2})[\\w][-\\w&'' ]{1,100}(?<![\\-_& ])$"
+                    }
+                }
+            ]
+        },
+        {
+            "ConditionSetName": "SetThree",
+            "SetValue": "30",
+            "Conditions": [
+                {
+                    "ContextTypeName": "DevsRule.Tests.SharedDataAndFixtures.Models.Customer",
+                    "ConditionName": "Member years",
+                    "ToEvaluate": "c => (c.MemberYears == 4)",
+                    "FailureMessage": "Member years should be four but had @{MemberYears}",
+                    "EvaluatorTypeName": "CustomDIRequiredEvaluator",
+                    "IsLambdaPredicate": true,
+                    "AdditionalInfo": {}
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFrameworks>net7.0;net8.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <SignAssembly>True</SignAssembly>
+    <Title>Devs Rule</Title>
+    <Authors>Paul Kent;</Authors>
+    <Description>A predicate condition based rules engine. Store and evaluate rules in code or from ingested JSON, 
+enabling seamless integration and dynamic rule management.</Description>
+	<PackageTags>rules engine; predicate evaluator; lambda expressions</PackageTags>
+	<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+	<PackageLicenseFile>License.txt</PackageLicenseFile>
+	<AssemblyOriginatorKeyFile>..\..\Assets\DevsRule.snk</AssemblyOriginatorKeyFile>
+	<GenerateDocumentationFile>False</GenerateDocumentationFile>
+	<PackageReadmeFile>ReadMe.md</PackageReadmeFile>
+	<PackageIcon>icon-128.png</PackageIcon>
+	<RepositoryType></RepositoryType>
+	<PackageProjectUrl>https://github.com/code-dispenser/DevsRule</PackageProjectUrl>
+	<FileVersion>1.0.0</FileVersion>
+	<Copyright>Copyright (c) 2023 Paul Kent.</Copyright>
+	<PackageVersion>1.0.0</PackageVersion>
+	<AssemblyVersion>1.0.0</AssemblyVersion>
+	<InformationalVersion>1.0.0</InformationalVersion>
+	<Version>1.0.0</Version>
+	<RepositoryUrl>https://github.com/code-dispenser/DevsRule</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.3.5" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="DevsRule.Core.Tests.Unit" key="002400000480000094000000060200000024000052534131000400000100010069d8cc8e49e0dcb3e8422f7ba1e7514251fd9a29ec0331409c96df115f9506fe8e568c21891847fc3125e670bef0aa7cecdb59785b637dc1efeade59fca9784fff378ac6ab9eda6de39fdd2904defeef81c71649d7badc814ff07a4805d996c95f8a6d3a0b0b513746e2461b5d4c1e10e92db184314f0f1658fc53616f77dff6" />
+        <InternalsVisibleTo Include="DevsRule.Core.Tests.Integration" key="002400000480000094000000060200000024000052534131000400000100010069d8cc8e49e0dcb3e8422f7ba1e7514251fd9a29ec0331409c96df115f9506fe8e568c21891847fc3125e670bef0aa7cecdb59785b637dc1efeade59fca9784fff378ac6ab9eda6de39fdd2904defeef81c71649d7badc814ff07a4805d996c95f8a6d3a0b0b513746e2461b5d4c1e10e92db184314f0f1658fc53616f77dff6" />
+		<InternalsVisibleTo Include="DevsRule.Tests.SharedDataAndixtures" key="002400000480000094000000060200000024000052534131000400000100010069d8cc8e49e0dcb3e8422f7ba1e7514251fd9a29ec0331409c96df115f9506fe8e568c21891847fc3125e670bef0aa7cecdb59785b637dc1efeade59fca9784fff378ac6ab9eda6de39fdd2904defeef81c71649d7badc814ff07a4805d996c95f8a6d3a0b0b513746e2461b5d4c1e10e92db184314f0f1658fc53616f77dff6" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\..\Assets\icon-128.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Include="..\..\License.txt">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Include="..\..\ReadMe.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+</Project>

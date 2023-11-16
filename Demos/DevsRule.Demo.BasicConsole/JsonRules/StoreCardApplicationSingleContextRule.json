@@ -1,0 +1,27 @@
+{
+  "RuleName": "StoreCardApplicationSingleContextRule",
+  "TenantID": "All_Tenants",
+  "CultureID": "en-GB",
+  "FailureValue": "",
+  "IsEnabled": true,
+  "RuleEventDetails": null,
+  "ConditionSets": [
+    {
+      "ConditionSetName": "AllRequirements",
+      "SetValue": "",
+      "Conditions": [
+        {
+            "ConditionName": "Application",
+            "ContextTypeName": "DevsRule.Demo.BasicConsole.Common.Models.StoreCardApplication",
+            "ToEvaluate": "s =\u003E (((s.Age \u003E= 18) AndAlso (s.CountryOfResidence == \u0022United Kingdom\u0022)) AndAlso (s.TotalOrders \u003E 5))",
+            "FailureMessage": "You must be over 18, living in the United Kingdom and have made at least 5 orders to be eligible",
+            "EvaluatorTypeName": "PredicateConditionEvaluator",
+            "IsLambdaPredicate": true,
+            "AdditionalInfo": {},
+            "ConditionEventDetails":null
+
+        }
+      ]
+    }
+  ]
+}

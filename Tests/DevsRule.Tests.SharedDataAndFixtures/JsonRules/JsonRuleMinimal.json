@@ -1,0 +1,18 @@
+{
+    "RuleName": "Rule102",
+    "ConditionSets": [
+        {
+            "ConditionSetName": "SetOne",
+            "Conditions": [
+                {
+                    "ContextTypeName": "DevsRule.Tests.SharedDataAndFixtures.Models.Customer",
+                    "ConditionName": "Customer Name and number",
+                    "ToEvaluate": "c => ((c.CustomerName == \"CustomerOne\") AndAlso (c.CustomerNo == 2))",
+                    "FailureMessage": "Customer name or number is not correct",
+                    "EvaluatorTypeName": "PredicateConditionEvaluator",
+                    "IsLambdaPredicate":  true
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+{
+  "RuleName": "RuleWithEventFireAndForget",
+  "TenantID": "All_Tenants",
+  "CultureID": "en-GB",
+  "FailureValue": "",
+  "IsEnabled": true,
+  "RuleEventDetails": null,
+  "ConditionSets": [
+    {
+      "ConditionSetName": "DiscountIf",
+      "SetValue": "",
+      "Conditions": [
+        {
+          "ConditionName": "IsStudent",
+          "ContextTypeName": "DevsRule.Demo.BasicConsole.Common.Models.Customer",
+          "ToEvaluate": "c => (c.CustomerType.ToString() == \"Student\")",
+          "FailureMessage": "Customer @{CustomerName} is not a student",
+          "EvaluatorTypeName": "PredicateConditionEvaluator",
+          "IsLambdaPredicate": true,
+          "AdditionalInfo": {},
+          "ConditionEventDetails": {
+            "EventTypeName": "DevsRule.Demo.BasicConsole.Common.Events.DiscountRuleConditionEvent",
+            "EventWhenType": "OnSuccessOrFailure",
+            "PublishMethod": "FireAndForget"
+          }
+        }
+      ]
+    }
+  ]
+}
