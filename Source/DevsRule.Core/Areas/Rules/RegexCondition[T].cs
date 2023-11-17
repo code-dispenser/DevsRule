@@ -24,13 +24,13 @@ public sealed class RegexCondition<TContext> : Condition<TContext>
     /// <param name="pattern">The pattern for the reqular expression.</param>
     /// <param name="failureMessage">The message used if the pattern does not match the properties data.</param>
     /// <param name="regexOptions">Options used for the .Net Regex class. These get added to the underlying Dictionary&lt;string,string&gt;</param>
-    /// <param name="additionalInfo">An array of key value pairs that will get added to the underlying conditions Dictionary&lt;string,string&gt; used to pass addtional information to a custom evaluator.</param>
+    /// <param name="eventDetails">An optional EventDetails object used to hold the eventing details.</param>
     /// <returns>the RegexCondition in order for chaining.</returns>
-    public static RegexCondition<TContext> Create(string conditionName, Expression<Func<TContext, object>> propertyExpression, string pattern, string failureMessage, RegexOptions regexOptions, params (string key, string value)[] additionalInfo)
+    public static RegexCondition<TContext> Create(string conditionName, Expression<Func<TContext, object>> propertyExpression, string pattern, string failureMessage, RegexOptions regexOptions, EventDetails? eventDetails= null)
     {
-        Dictionary<string, string> requiredInfo = GeneralUtils.CreateDictionaryForRegex(pattern, regexOptions, additionalInfo);
+        Dictionary<string, string> requiredInfo = GeneralUtils.CreateDictionaryForRegex(pattern, regexOptions);
 
-        return new RegexCondition<TContext>(conditionName, propertyExpression, failureMessage, requiredInfo);
+        return new RegexCondition<TContext>(conditionName, propertyExpression, failureMessage, requiredInfo, eventDetails, GlobalStrings.Regex_Condition_Evaluator);
     }
 
     /// <summary>
@@ -41,21 +41,28 @@ public sealed class RegexCondition<TContext> : Condition<TContext>
     /// <param name="pattern">The pattern for the reqular expression.</param>
     /// <param name="failureMessage">The message used if the pattern does not match the properties data.</param>
     /// <param name="regexOptions">Options used for the .Net Regex class. These get added to the underlying Dictionary&lt;string,string&gt;</param>
-    /// <param name="eventDetails">A optional EventDetails object used to hold the eventing details.</param>
+    /// <param name="evaluatorTypeName">The name of the customer evaluator for the RegexCondition</param>
+    /// <param name="eventDetails">An optional EventDetails object used to hold the eventing details, use null if not needed.</param>
     /// <param name="additionalInfo">An array of key value pairs that will get added to the underlying conditions Dictionary&lt;string,string&gt; used to pass addtional information to a custom evaluator.</param>
     /// <returns>the RegexCondition in order for chaining.</returns>
-    public static RegexCondition<TContext> Create(string conditionName, Expression<Func<TContext, object>> propertyExpression, string pattern, string failureMessage, RegexOptions regexOptions, EventDetails eventDetails, params (string key, string value)[] additionalInfo)
+    public static RegexCondition<TContext> Create(string conditionName, Expression<Func<TContext, object>> propertyExpression, string pattern, string failureMessage, RegexOptions regexOptions, string evaluatorTypeName, EventDetails? eventDetails, params (string key, string value)[] additionalInfo)
     {
         Dictionary<string, string> requiredInfo = GeneralUtils.CreateDictionaryForRegex(pattern, regexOptions, additionalInfo);
 
-        return new RegexCondition<TContext>(conditionName, propertyExpression, failureMessage, requiredInfo, eventDetails);
+        return new RegexCondition<TContext>(conditionName, propertyExpression, failureMessage, requiredInfo, eventDetails, GlobalStrings.Regex_Condition_Evaluator);
     }
 
+    public RegexCondition(string conditionName, Expression<Func<TContext, object>> propertyExpression, string failureMessage, Dictionary<string, string> additionalInfo)
+
+    : base(conditionName, GetPropertyPathFromExpressionString(propertyExpression), failureMessage, GlobalStrings.Regex_Condition_Evaluator, false, CheckPatternIsInDictionary(additionalInfo, conditionName), null) { }
 
     public RegexCondition(string conditionName, Expression<Func<TContext, object>> propertyExpression, string failureMessage, Dictionary<string, string> additionalInfo, EventDetails? eventDetails = null)
 
-        : base(conditionName, GetPropertyNameFromExpressionString(propertyExpression), failureMessage, GlobalStrings.Regex_Condition_Evaluator, false, CheckPatternIsInDictionary(additionalInfo, conditionName),eventDetails) {}
-   
+        : base(conditionName, GetPropertyPathFromExpressionString(propertyExpression), failureMessage, GlobalStrings.Regex_Condition_Evaluator, false, CheckPatternIsInDictionary(additionalInfo, conditionName),eventDetails) {}
+
+    public RegexCondition(string conditionName, Expression<Func<TContext, object>> propertyExpression, string failureMessage, Dictionary<string, string> additionalInfo, EventDetails? eventDetails = null, string evaluatorTypeName = GlobalStrings.Regex_Condition_Evaluator)
+
+    : base(conditionName, GetPropertyPathFromExpressionString(propertyExpression), failureMessage, GlobalStrings.Regex_Condition_Evaluator, false, CheckPatternIsInDictionary(additionalInfo, conditionName), eventDetails) { }
 
     private static Dictionary<string, string> CheckPatternIsInDictionary(Dictionary<string, string> additionalInfo, string conditionName)
     {
@@ -64,15 +71,33 @@ public sealed class RegexCondition<TContext> : Condition<TContext>
         throw new MissingRegexPatternException(String.Format(GlobalStrings.MIssing_Regex_Pattern_Or_Pattern_Empty_Exception_Message, conditionName));
     }
 
-    private static string GetPropertyNameFromExpressionString(Expression expression)
+    private static string GetPropertyPathFromExpressionString(Expression<Func<TContext,object>> expression)
     {
         var expressionString = Check.ThrowIfNull(expression).ToString();
 
-        var nameParts    = expressionString.Split("=>",StringSplitOptions.TrimEntries);
-        var identifier   = string.Concat(nameParts[0],".");
-        var propertyPath = nameParts[1].Remove(0,identifier.Length);
+        MemberExpression memberExpression;
 
+        if (expression.Body is UnaryExpression unaryExpression)
+        {
+            memberExpression = (MemberExpression)unaryExpression.Operand;
+        }
+        else
+        {
+            memberExpression = (MemberExpression)expression.Body;
+        }
+
+        var propertyPath = GetMemberAccessPath(memberExpression);
+        
         return propertyPath;
     }
 
+    private static string GetMemberAccessPath(MemberExpression memberExpression)
+    {
+        if (memberExpression.Expression is MemberExpression innerMemberExpression)
+        {
+            return GetMemberAccessPath(innerMemberExpression) + "." + memberExpression.Member.Name;
+        }
+
+        return memberExpression.Member.Name;
+    }
 }

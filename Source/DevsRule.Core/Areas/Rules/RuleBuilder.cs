@@ -290,7 +290,7 @@ public class RuleBuilder : IForConditionSetNamed, IForCondition, IContinueWith, 
 
         Dictionary<string, string> additionalInfo = GeneralUtils.CreateDictionaryForRegex(pattern, regexOptions);
 
-        var regexCondition = new RegexCondition<TContext>(conditionName, propertyExpression, failureMessage, additionalInfo, eventDetails);
+        var regexCondition = new RegexCondition<TContext>(conditionName, propertyExpression, failureMessage, additionalInfo, eventDetails, GlobalStrings.Regex_Condition_Evaluator);
 
         if (false == _setConditions[_setName].Exists(c => c.ConditionName == conditionName)) _setConditions[_setName].Add(regexCondition);
     }

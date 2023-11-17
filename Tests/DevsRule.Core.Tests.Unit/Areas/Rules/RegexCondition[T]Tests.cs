@@ -57,5 +57,16 @@ public class RegexConditionTTests
                                                                && r.AdditionalInfo[GlobalStrings.Regex_Pattern_Key] == "^[1-9]{1,2}$");
     }
 
+    [Fact]
+    public void Using_the_static_create_method_be_able_to_create_a_custom_regex_condition_for_a_custom_evaluator()
+    {
+        var regexCondition = RegexCondition<Customer>.Create("RegexCondition", c => c.MemberYears, "^[1-9]{1,2}$", "Member years should be 1 to 99",RegexOptions.None,"CustomRegexEvaluator",null,("One","1"),("Two","2"));
+
+
+        regexCondition.Should().Match<RegexCondition<Customer>>(r => r.ConditionName == "RegexCondition" && r.IsLambdaPredicate == false && r.FailureMessage == "Member years should be 1 to 99"
+                                                               && r.CompiledPrediate == null && r.ContextType == typeof(Customer) && r.AdditionalInfo.Count == 3
+                                                               && r.AdditionalInfo[GlobalStrings.Regex_Pattern_Key] == "^[1-9]{1,2}$"
+                                                               && r.AdditionalInfo["One"] == "1" && r.AdditionalInfo["Two"] == "2");
+    }
 }
 
