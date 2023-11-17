@@ -1,6 +1,11 @@
+[![.NET](https://github.com/code-dispenser/DevsRule/actions/workflows/buildandtest.yml/badge.svg)](https://github.com/code-dispenser/DevsRule/actions/workflows/buildandtest.yml)
 <h1>
-<img src="https://raw.githubusercontent.com/code-dispenser/DevsRule/main/Assets/icon-64.png" align="center" alt="Devs Rule icon" /> Devs' Rule
+<img src="https://raw.github.com/code-dispenser/DevsRule/main/Assets/icon-64.png" align="center" alt="Devs Rule icon" /> Devs' Rule
 </h1>
+<!--
+# ![icon](https://raw.github.com/code-dispenser/DevsRule/main/Assets/icon-64.png) Devs Rule
+-->
+<!-- H1 for git hub, but for nuget the markdown is fine as it centers the image, uncomment as appropriate and do the same at the bottom of this file for the icon author -->
 
 ## Overview
 Devs' Rule at its core is a lamdba predicate condition engine that allows you to create rules comprised of condition sets, with each condition set containing one or more conditions.
@@ -113,6 +118,8 @@ project, [DummyJSON project](https://github.com/Ovi/DummyJSON)
 
 <img src="https://raw.githubusercontent.com/code-dispenser/DevsRule/main/Assets/icon-64.png" align="middle" height="32px" alt="Devs Rule icon" /> Thanks also to Peerapak Takpho the icon creator, which I found on [freepik.com](https://www.freepik.com/icon/setting_7012934).
 
-
+<!--
+![icon](https://raw.github.com/code-dispenser/DevsRule/main/Assets/icon-32.png) Thanks also to Peerapak Takpho the icon creator, which I found on [freepik.com](https://www.freepik.com/icon/setting_7012934).
+-->
 
 
