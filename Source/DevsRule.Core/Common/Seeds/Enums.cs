@@ -8,16 +8,10 @@ public enum EventWhenType : int
     OnFailure           = 3,
     
 }
-
-public enum PublishTo : int
-{
-    All             = 0,
-    Subscribers     = 1,
-    Registrations   = 2
-}
-
 public enum PublishMethod : int
 {
     FireAndForget = 0,
     WaitForAll    = 1  
 }
+
+

@@ -35,7 +35,7 @@ The libray also contains a couple of extension methods for the RuleResult so you
 
 Download and install the latest version of the [DevsRule.Core](https://www.nuget.org/packages/DevsRule.Core) package from [nuget.org](https://www.nuget.org/) using your preferred client tool.
 
-## Example Usage
+## Example usage
 
 At its simplest, it's a matter of creating an instance of the ConditionEngine, adding a rule, and then having that rule evaluated with your instance data. Rules can be built bottom up by 
 creating and adding conditions to condition sets and then adding the conditions sets to a rule, or top down via the RuleBuilder. A Rule can have a failure value (default) for failing conditions 
