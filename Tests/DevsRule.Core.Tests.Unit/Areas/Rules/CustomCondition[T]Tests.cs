@@ -1,5 +1,8 @@
-﻿using DevsRule.Core.Areas.Rules;
+﻿using DevsRule.Core.Areas.Events;
+using DevsRule.Core.Areas.Rules;
+using DevsRule.Core.Common.Seeds;
 using DevsRule.Tests.SharedDataAndFixtures.Data;
+using DevsRule.Tests.SharedDataAndFixtures.Events;
 using DevsRule.Tests.SharedDataAndFixtures.Models;
 using FluentAssertions;
 using System.Linq.Expressions;
@@ -42,5 +45,31 @@ public class CustomConditionTests
 
         thePredicateResult.Should().BeTrue();
 
+    }
+
+    [Fact]
+    public void Constructor_parameters_should_set_the_underlying_condition_properties()
+    {
+        Expression<Func<Customer, bool>> expression = c => c.CustomerNo ==1;
+        
+        var theCondition = new CustomCondition<Customer>("Custom", c => c.CustomerNo == 1, "Customer no should be 1", "CustomEvaluator",
+                                                        EventDetails.Create<ConditionResultEvent>(EventWhenType.OnSuccess, PublishMethod.WaitForAll));  
+        
+        theCondition.Should().Match<Condition<Customer>>(c => c.AdditionalInfo.Count == 0 && c.ContextType == typeof(Customer) && c.EventDetails != null
+                                                          && c.CompiledPrediate != null && c.ConditionName == "Custom" && c.EvaluatorTypeName == "CustomEvaluator"
+                                                          && c.ToEvaluate == expression.ToString()
+                                                          && c.IsLambdaPredicate == true);
+    }
+
+    [Fact]
+    public void Constructor_parameters_should_set_the_underlying_condition_properties_without_a_lambda_predicate()
+    {
+        var theCondition = new CustomCondition<Customer>("Custom","Some text to evaluate", "Failure message", "CustomEvaluator",
+                                                        EventDetails.Create<ConditionResultEvent>(EventWhenType.OnSuccess, PublishMethod.WaitForAll));
+
+        theCondition.Should().Match<Condition<Customer>>(c => c.AdditionalInfo.Count == 0 && c.ContextType == typeof(Customer) && c.EventDetails != null
+                                                          && c.CompiledPrediate == null && c.ConditionName == "Custom" && c.EvaluatorTypeName == "CustomEvaluator"
+                                                          && c.ToEvaluate == "Some text to evaluate"
+                                                          && c.IsLambdaPredicate == false);
     }
 }

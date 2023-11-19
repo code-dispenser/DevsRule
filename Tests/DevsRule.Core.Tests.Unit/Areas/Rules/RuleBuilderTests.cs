@@ -1,5 +1,6 @@
 ﻿using DevsRule.Core.Areas.Events;
 using DevsRule.Core.Areas.Rules;
+using DevsRule.Core.Common.Exceptions;
 using DevsRule.Core.Common.Models;
 using DevsRule.Core.Common.Seeds;
 using DevsRule.Tests.SharedDataAndFixtures.Events;
@@ -129,4 +130,131 @@ public class RuleBuilderTests
 
     }
 
+    [Fact]
+    public void Should_add_custom_condtions_correctly()
+    {
+        var theRule = RuleBuilder.WithName("RuleOne")
+                        .ForConditionSetNamed("One")
+                            .WithCustomCondition<Customer>("CustOne", "expression string", "failure message", "FirstEvaluator", new Dictionary<string, string>(),
+                                                            EventDetails.Create<ConditionResultEvent>(EventWhenType.OnFailure,PublishMethod.FireAndForget))
+                            .AndCustomCondition<Customer>("CustTwo", "expression string", "failure message two", "SecondEvaluator", new Dictionary<string, string>(),
+                                                            EventDetails.Create<ConditionResultEvent>(EventWhenType.OnSuccess, PublishMethod.WaitForAll))
+                            .WithoutFailureValue()
+                        .CreateRule();
+        
+        var condtionOne = theRule.ConditionSets[0].Conditions[0];
+        var condtionTwo = theRule.ConditionSets[0].Conditions[1];
+
+        using(new AssertionScope())
+        {
+            condtionOne.Should().Match<Condition<Customer>>(c => c.AdditionalInfo.Count == 0 && c.ContextType == typeof(Customer) && c.FailureMessage == "failure message"
+                                                                    && c.IsLambdaPredicate == false && c.EventDetails != null && c.ConditionName == "CustOne" && c.EvaluatorTypeName == "FirstEvaluator");
+
+            condtionTwo.Should().Match<Condition<Customer>>(c => c.AdditionalInfo.Count == 0 && c.ContextType == typeof(Customer) && c.FailureMessage == "failure message two"
+                                                        && c.IsLambdaPredicate == false && c.EventDetails != null && c.ConditionName == "CustTwo" && c.EvaluatorTypeName == "SecondEvaluator");
+        }
+    }
+
+    [Fact]
+    public void Should_add_custom_predicate_conditions_correctly()
+    {
+        var theRule = RuleBuilder.WithName("RuleOne")
+                            .ForConditionSetNamed("One")
+                                .WithCustomPredicateCondition<Customer>("Custom", c => c.CustomerName == "CustomerOne", "Should be CustomerOne", "CustomEvaluator", new Dictionary<string, string>(),
+                                                                        EventDetails.Create<ConditionResultEvent>(EventWhenType.Never, PublishMethod.FireAndForget))
+                                .AndCustomPredicateCondition<Customer>("CustomTwo", c => c.CustomerName == "CustomerOne", "Should be CustomerTwo", "CustomEvaluatorTwo", new Dictionary<string, string>())
+                                                                        
+                                .WithFailureValue(null!)
+                                .CreateRule();
+
+        var conditionOne = theRule.ConditionSets[0].Conditions[0];
+        var conditionTwo = theRule.ConditionSets[0].Conditions[1];
+
+        using (new AssertionScope())
+        {
+            conditionOne.Should().Match<Condition<Customer>>(c => c.ConditionName == "Custom" && c.FailureMessage == "Should be CustomerOne" && c.EvaluatorTypeName == "CustomEvaluator"
+                                                        && c.IsLambdaPredicate == true && c.ContextType == typeof(Customer) && c.EventDetails != null && c.AdditionalInfo.Count == 0
+                                                        && c.CompiledPrediate != null);
+
+            conditionTwo.Should().Match<Condition<Customer>>(c => c.ConditionName == "CustomTwo" && c.FailureMessage == "Should be CustomerTwo" && c.EvaluatorTypeName == "CustomEvaluatorTwo"
+                                         && c.IsLambdaPredicate == true && c.ContextType == typeof(Customer) && c.EventDetails == null && c.AdditionalInfo.Count == 0
+                                         && c.CompiledPrediate != null);
+
+            theRule.FailureValue.Should().Be("");
+        }
+
+    }
+
+    [Fact]
+    public void Should_add_regex_conditions_correctly()
+    {
+        var theRule = RuleBuilder.WithName("RegexRules")
+                      .ForConditionSetNamed("RegexSetOne")
+                        .WithRegexCondition<Customer>("RegexOne", c => c.Address.Town, "[A-Z]*", "Town should be in uppercase", RegexOptions.IgnoreCase,
+                                                        EventDetails.Create<ConditionResultEvent>(EventWhenType.OnSuccessOrFailure))
+
+                        .AndRegexCondition<Supplier>("RegexTwo", s => s.SupplierNo,"[0-9]{1,3}","Should be a number between 0 and 999",RegexOptions.None,
+                                                         EventDetails.Create<ConditionResultEvent>(EventWhenType.OnSuccessOrFailure))
+
+                        .AndRegexCondition<Supplier>("RegexThree", s => s.SupplierNo, "[0-9]{1,3}", "Should be a number between 0 and 999")
+                        .AndRegexCondition<Supplier>("RegexFour", s => s.SupplierNo, "[0-9]{1,3}", "Should be a number between 0 and 999",
+                                                        EventDetails.Create<ConditionResultEvent>(EventWhenType.OnSuccessOrFailure))
+                        .OrConditionSetNamed("RegexSetTwo")
+                            .WithRegexCondition<Supplier>("RegexFive", s => s.SupplierNo, "[0-9]{1,3} ", "Should be a number between 0 and 999",
+                                                        EventDetails.Create<ConditionResultEvent>(EventWhenType.OnSuccessOrFailure))
+
+                        .WithoutFailureValue()
+                        .CreateRule();
+        
+        var conditionOne    = theRule.ConditionSets[0].Conditions[0];
+        var conditionTwo    = theRule.ConditionSets[0].Conditions[1];
+        var conditionThree  = theRule.ConditionSets[0].Conditions[2];
+        var conditionFour   = theRule.ConditionSets[0].Conditions[3];
+        var conditionFive   = theRule.ConditionSets[1].Conditions[0];
+
+        using (new AssertionScope())
+        {
+
+            conditionOne.Should().Match<Condition<Customer>>(c => c.ConditionName == "RegexOne" && c.FailureMessage == "Town should be in uppercase" 
+                                                              && c.EvaluatorTypeName == GlobalStrings.Regex_Condition_Evaluator && c.IsLambdaPredicate == false 
+                                                              && c.ContextType == typeof(Customer) && c.EventDetails != null && c.AdditionalInfo.Count == 2
+                                                              && c.CompiledPrediate == null && c.ToEvaluate == "Address.Town");
+
+            conditionTwo.Should().Match<Condition<Supplier>>(c => c.ConditionName == "RegexTwo" && c.FailureMessage == "Should be a number between 0 and 999"
+                                                              && c.EvaluatorTypeName == GlobalStrings.Regex_Condition_Evaluator && c.IsLambdaPredicate == false
+                                                              && c.ContextType == typeof(Supplier) && c.EventDetails != null && c.AdditionalInfo.Count == 1
+                                                              && c.CompiledPrediate == null && c.ToEvaluate == "SupplierNo");
+
+
+            conditionThree.Should().Match<Condition<Supplier>>(c => c.ConditionName == "RegexThree" && c.FailureMessage == "Should be a number between 0 and 999"
+                                                              && c.EvaluatorTypeName == GlobalStrings.Regex_Condition_Evaluator && c.IsLambdaPredicate == false
+                                                              && c.ContextType == typeof(Supplier) && c.EventDetails == null && c.AdditionalInfo.Count == 1
+                                                              && c.CompiledPrediate == null && c.ToEvaluate == "SupplierNo");
+
+            conditionFour.Should().Match<Condition<Supplier>>(c => c.ConditionName == "RegexFour" && c.FailureMessage == "Should be a number between 0 and 999"
+                                                              && c.EvaluatorTypeName == GlobalStrings.Regex_Condition_Evaluator && c.IsLambdaPredicate == false
+                                                              && c.ContextType == typeof(Supplier) && c.EventDetails != null && c.AdditionalInfo.Count == 1
+                                                              && c.CompiledPrediate == null && c.ToEvaluate == "SupplierNo");
+
+            conditionFive.Should().Match<Condition<Supplier>>(c => c.ConditionName == "RegexFive" && c.FailureMessage == "Should be a number between 0 and 999"
+                                                              && c.EvaluatorTypeName == GlobalStrings.Regex_Condition_Evaluator && c.IsLambdaPredicate == false
+                                                              && c.ContextType == typeof(Supplier) && c.EventDetails != null && c.AdditionalInfo.Count == 1
+                                                              && c.CompiledPrediate == null && c.ToEvaluate == "SupplierNo");
+        }
+
+
+    }
+
+    [Fact]
+    public void Creating_a_regex_condition_without_a_pattern_should_throw_an_exception()
+    {
+        FluentActions.Invoking(() => RuleBuilder.WithName("RegexRules")
+                                      .ForConditionSetNamed("RegexSetOne")
+                                        .WithRegexCondition<Customer>("RegexOne", c => c.Address.Town, "", "Town should be in uppercase", RegexOptions.IgnoreCase,
+                                                                        EventDetails.Create<ConditionResultEvent>(EventWhenType.OnSuccessOrFailure))
+                                        .WithFailureValue("23")
+                                        .CreateRule()).Should().ThrowExactly<MissingRegexPatternException>();
+
+       
+    }
 }

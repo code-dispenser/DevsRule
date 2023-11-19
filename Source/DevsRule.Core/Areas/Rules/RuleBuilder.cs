@@ -92,11 +92,7 @@ public class RuleBuilder : IForConditionSetNamed, IForCondition, IContinueWith, 
         return this;
     }
 
-    public IContinueWith WithCustomCondition<TContext>(string conditionName, string expressionString, string failureMessage, string evaluatorTypeName, Dictionary<string, string> customData)
-    {
-        AddCustomCondition<TContext>(conditionName, expressionString, failureMessage, evaluatorTypeName, customData);
-        return this;
-    }
+  
     public IContinueWith WithCustomCondition<TContext>(string conditionName, string expressionString, string failureMessage, string evaluatorTypeName, Dictionary<string, string> customData, EventDetails? eventDetails = null)
     {
         AddCustomCondition<TContext>(conditionName, expressionString, failureMessage, evaluatorTypeName, customData, eventDetails);
@@ -153,7 +149,7 @@ public class RuleBuilder : IForConditionSetNamed, IForCondition, IContinueWith, 
 
     public IContinueWith AndCustomCondition<TContext>(string conditionName, string expressionString, string failureMessage, string evaluatorTypeName, Dictionary<string, string> customData)
     {
-        AddCustomCondition<TContext>(conditionName, expressionString, failureMessage, evaluatorTypeName, customData);
+        AddCustomCondition<TContext>(conditionName, expressionString, failureMessage, evaluatorTypeName, customData, null);
         return this;
     }
     public IContinueWith AndCustomCondition<TContext>(string conditionName, string expressionString, string failureMessage, string evaluatorTypeName, Dictionary<string, string> customData, EventDetails? eventDetails)

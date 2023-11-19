@@ -6,6 +6,7 @@ using DevsRule.Tests.SharedDataAndFixtures.Events;
 using DevsRule.Tests.SharedDataAndFixtures.Models;
 using FluentAssertions;
 using Xunit;
+using Xunit.Sdk;
 
 namespace DevsRule.Core.Tests.Integration.Areas.Events;
 
@@ -38,7 +39,7 @@ public class EventAggregatorTests
     }
 
     [Fact]
-    public async void DI_registered_event_handlers_should_be_able_to_be_called_using_fire_and_forget()
+    public async Task DI_registered_event_handlers_should_be_able_to_be_called_using_fire_and_forget()
     {
         var conditionResultEvent = new ConditionResultEvent("SomeSender", true, typeof(Customer), StaticData.CustomerOneAsJsonString(), "TenantID", new(), null);
 
@@ -51,7 +52,7 @@ public class EventAggregatorTests
     }
 
     [Fact]
-    public async void DI_registered_event_handlers_should_be_able_to_be_called_using_wait_for_all()
+    public async Task DI_registered_event_handlers_should_be_able_to_be_called_using_wait_for_all()
     {
         var conditionResultEvent = new ConditionResultEvent("SomeSender", true, typeof(Customer), StaticData.CustomerOneAsJsonString(), "TenantID", new(), null);
 
@@ -60,7 +61,22 @@ public class EventAggregatorTests
         this.MyHandlerCallCount.Should().Be(1);
     }
 
-   
+    [Fact]
+    public async Task Should_sqaush_un_handled_wait_for_all_errors_in_handlers()
+    {
+
+        var ruleEvent = new RuleResultEvent("TheRule", false, String.Empty, String.Empty, GlobalStrings.Default_TenantID, new List<Exception>());
+        var subscription = _eventAggregator.Subscribe<RuleResultEvent>(Badhandler);
+
+        await FluentActions.Invoking(() => _eventAggregator.Publish(ruleEvent, CancellationToken.None, PublishMethod.WaitForAll)).Should().NotThrowAfterAsync(TimeSpan.FromMilliseconds(100), TimeSpan.FromMicroseconds(50));
+
+        async Task Badhandler(RuleResultEvent conditionResultEvent, CancellationToken cancellationToken)
+        {
+            await Task.Delay(TimeSpan.FromMilliseconds(25));
+            throw new NotImplementedException();
+        }
+    }
+
     public class MyHandler : IEventHandler<ConditionResultEvent>
     {
         private readonly EventAggregatorTests _parentClass;

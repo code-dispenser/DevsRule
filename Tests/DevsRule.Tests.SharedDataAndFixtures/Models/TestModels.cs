@@ -16,9 +16,9 @@ public record CaseAction(DateTime ActionDateTime, Emplyoee ActionBy, List<Outcom
 public record Case(string CaseRef, string CaseName, List<CaseAction> CaseActions);
 public record Client(string ClientName, List<Case> Cases);
 
+public record FakeCondition(Type ContextType);
 
-
-
+public record NonSerializable(string Name, int Age, Type ContextType);
 
 
 public interface IInjectableTestItem

@@ -194,5 +194,18 @@ public class RuleTests : IClassFixture<ConditionEngineFixture>
         }
     }
 
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void The_rule_to_json_string_method_should_not_escape_charaters_when_set_to_false(bool useEscaped)
+    {
+        var condtionSet = new ConditionSet("SetOne", new PredicateCondition<Customer>("CustomerCondition", c => c.CustomerName == "CustomerOne", "Should be CustomerOne"));
+        var theRule     = new Rule("RuleOne", condtionSet, "FailureValue");
 
+        var theJsonString = theRule.ToJsonString(false, useEscaped);
+
+        if (true  == useEscaped) theJsonString.Should().NotContain("=>");
+        if (false == useEscaped) theJsonString.Should().Contain("=>");
+
+    }
 }

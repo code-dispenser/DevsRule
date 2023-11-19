@@ -1,6 +1,8 @@
 ﻿using DevsRule.Core.Areas.Engine;
 using DevsRule.Core.Areas.Events;
 using DevsRule.Core.Areas.Rules;
+using DevsRule.Core.Common.Exceptions;
+using DevsRule.Core.Common.Models;
 using DevsRule.Core.Common.Seeds;
 using DevsRule.Tests.SharedDataAndFixtures.Data;
 using DevsRule.Tests.SharedDataAndFixtures.Evaluators;
@@ -183,4 +185,99 @@ public class RuleTests :IClassFixture<ConditionEngineDIFixture>
         }
 
     }
+
+    [Fact]
+    public async Task The_rule_should_return_a_failed_rule_result_with_an_missing_rule_contexts_exception_for_un_matched_condition_data_contexts()
+    {
+        var theRule = RuleBuilder.WithName("RuleOne")
+                            .ForConditionSetNamed("ConditionOne")
+                                .WithPredicateCondition<Customer>("CustomerName", c => c.CustomerName == "CustomerOne", "The name should be CustomerOne")
+                                .WithoutFailureValue()
+                                .CreateRule();
+
+        var ruleData = RuleDataBuilder.AddForCondition("WrongName", StaticData.CustomerOne()).Create();
+
+        var theResult = await theRule.Evaluate(_conditionEngine.GetEvaluatorByName, ruleData, _conditionEngine.EventPublisher);
+
+        theResult.Exceptions[0].Should().BeOfType<MissingRuleContextsException>();
+    }
+
+    [Fact]
+    public async Task Should_raise_a_failed_event_with_a_failing_result_when_set_to_do_so()
+    {
+        var theRule = RuleBuilder.WithName("RuleOne", EventDetails.Create<RuleResultEvent>(EventWhenType.OnFailure, PublishMethod.WaitForAll))
+                                 .ForConditionSetNamed("SetOne")
+                                    .WithPredicateCondition<Customer>("CustOne", c => c.CustomerName == "WrongName", "Should be CustomerOne")
+                                 .WithoutFailureValue()
+                                 .CreateRule();
+
+        var ruleData = RuleDataBuilder.AddForCondition("CustOne",StaticData.CustomerOne()).Create();
+        
+        var eventHandled = false;
+
+        var subscription = _conditionEngine.SubscribeToEvent<RuleResultEvent>(HandleEvent);
+
+        var theResult = await theRule.Evaluate(_conditionEngine.GetEvaluatorByName,ruleData, _conditionEngine.EventPublisher);
+
+        using(new AssertionScope())
+        {
+            theResult.IsSuccess.Should().BeFalse();
+            eventHandled.Should().BeTrue();
+        }
+
+        async Task HandleEvent(RuleResultEvent ruleEvent, CancellationToken cancellationToken)
+        {
+            eventHandled = true;
+            await Task.CompletedTask;
+        }
+    }
+    [Fact]
+    public async Task Should_raise_an_event_with_any_condition_exceptions_added_to_the_events_exception_list()
+    {
+        var condtionSet = new ConditionSet("SetOne", new PredicateCondition<Customer>("CustomerCondition", c => c.Address.AddressLine == "Some Street", "Should be some street", "IncorrectEvaluator"));
+        var theRule     = new Rule("RuleOne", condtionSet,"", EventDetails.Create<RuleResultEvent>(EventWhenType.OnSuccessOrFailure, PublishMethod.WaitForAll));
+
+        var customer = new Customer("Customer", 1, 1, 1, new Address("Some Street", "Some Town", "Some City", "Some Post Code"));
+        var ruleData = RuleDataBuilder.AddForCondition("CustomerCondition", customer).Create();
+
+        var theExceptionListCount = 0;
+
+        var subscription = _conditionEngine.SubscribeToEvent<RuleResultEvent>(HandleEvent);
+        var theResult    = await theRule.Evaluate(_conditionEngine.GetEvaluatorByName, ruleData, _conditionEngine.EventPublisher);
+
+        using (new AssertionScope())
+        {
+            theResult.IsSuccess.Should().BeFalse();
+            theExceptionListCount.Should().Be(1);
+        }
+
+        async Task HandleEvent(RuleResultEvent ruleEvent, CancellationToken cancellationToken)
+        {
+            theExceptionListCount = ruleEvent.ExecutionExceptions.Count;
+            await Task.CompletedTask;
+        }
+    }
+
+    [Fact]
+    public async Task Rule_should_end_execution_if_a_condition_set_conditions_have_errors_somewhere_in_its_evaluation_chain()
+    {
+        var condtionSetOne = new ConditionSet("SetOne", new PredicateCondition<Customer>("CustomerCondition", c => c.Address.AddressLine == "Not Some Street", "Should be some street"));
+        var conditionSetTwo = new ConditionSet("SetTwo", new PredicateCondition<Customer>("HasError", c => c.CustomerName == "CustomerOne", "Customer name should be CustomerOne", "IncorrectEvaluatorTypeName"));
+
+        var theRule = new Rule("RuleOne", condtionSetOne).OrConditionSet(conditionSetTwo);
+
+        var customer = new Customer("Customer", 1, 1, 1, new Address("Some Street", "Some Town", "Some City", "Some Post Code"));
+        var ruleData = RuleDataBuilder.AddForCondition("CustomerCondition", customer).Create();
+
+        var theResult = await theRule.Evaluate(_conditionEngine.GetEvaluatorByName, ruleData, _conditionEngine.EventPublisher);
+
+        using (new AssertionScope())
+        {
+            theResult.IsSuccess.Should().BeFalse();
+            theResult.Exceptions.Should().HaveCount(1);
+        }
+
+    }
+
+
 }

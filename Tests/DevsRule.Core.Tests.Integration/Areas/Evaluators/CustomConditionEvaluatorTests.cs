@@ -53,41 +53,7 @@ public class CustomConditionEvaluatorTests : IClassFixture<ConditionEngineFixtur
     }
 
 
-    //[Fact]
-    //public async Task Should_be_able_to_chain_results_using_()
-    //{
-    //    var ruleOne = RuleBuilder.WithName("paul")
-    //                                 .ForConditionSetNamed("kent", "50")
-    //                                 .WithPredicateCondition<Customer>("CustName", c => c.CustomerName == "CustomerOne", "Should be customer one")
-    //                                 .WithoutFailureValue()
-    //                                 .CreateRule();
 
-    //    var ruleTwo = RuleBuilder.WithName("russ")
-    //                                 .ForConditionSetNamed("kent", "100")
-    //                                 .WithPredicateCondition<Customer>("CustName", c => c.CustomerName == "CustomerTwo", "Should be customer one")
-    //                                 .WithoutFailureValue()
-    //                                 .CreateRule();
-
-    //    var ruleThree = RuleBuilder.WithName("chris")
-    //                                 .ForConditionSetNamed("kent", "200")
-    //                                 .WithPredicateCondition<Supplier>("SupName", s => s.SupplierName == "CustomerTwo", "Should be suppliers name")
-    //                                 .WithoutFailureValue()
-    //                                 .CreateRule();
-
-
-    //    _conditionEngine.AddRule(ruleOne);
-    //    _conditionEngine.AddRule(ruleTwo);
-    //    _conditionEngine.AddRule(ruleThree);
-
-    //    var result = await _conditionEngine.FindAndEvaluateRule(ruleOne.RuleName, StaticData.CustomerOne())
-    //                               .OnSuccess(ruleThree.RuleName, _conditionEngine, StaticData.SupplierOne())
-    //                               .OnSuccess(ruleTwo.RuleName, _conditionEngine, StaticData.CustomerTwo())
-    //                               .OnFailure(r => _outputHelper.WriteLine($"{r.RuleName} failed"));
-
-
-
-
-    //}
 
 
 

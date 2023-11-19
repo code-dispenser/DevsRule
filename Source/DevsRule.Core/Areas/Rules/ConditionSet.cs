@@ -194,13 +194,13 @@ public sealed class ConditionSet : IConditionSet
     {
         var contextData = contexts.Contexts.Where(c => c.ConditionName == condition.ConditionName && c.Data.GetType() == condition.ContextType).FirstOrDefault()?.Data;
 
-        return contextData ?? contexts.Contexts.Where(c => c.Data.GetType() == condition.ContextType).FirstOrDefault()?.Data;
+        return contextData ?? contexts.Contexts.Where(c => c.Data.GetType() == condition.ContextType).FirstOrDefault()!.Data;
     }
     private List<string> GetMissingContexts(RuleData ruleData)
     {
         var typeNameList = _conditions.Select(c => c.ContextType.AssemblyQualifiedName).Cast<String>().ToList();
 
-        if (ruleData == null || ruleData.Length == 0) return typeNameList;
+        if (ruleData.Length == 0) return typeNameList;
 
         foreach (var context in ruleData.Contexts)
         {
@@ -213,6 +213,8 @@ public sealed class ConditionSet : IConditionSet
 
     private bool HasNullContextData(RuleData contexts)
     {
+        if (contexts == null) return true;
+
         foreach (var context in contexts.Contexts)
         {
             if (context.Data == null) return true;

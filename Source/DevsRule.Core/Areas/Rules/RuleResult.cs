@@ -31,11 +31,11 @@ public class RuleResult
         RuleName                = Check.ThrowIfNullOrWhitespace(ruleName);
         DataTenantID            = String.IsNullOrWhiteSpace(evaluationChain?.TenantID) ? "N/A" : evaluationChain.TenantID;
         RuleTenantID            = String.IsNullOrWhiteSpace(ruleTenantID) ? GlobalStrings.Default_TenantID : ruleTenantID;
-        SuccessValue            = evaluationChain?.SetValue  ?? string.Empty;
-        SuccessfulSet           = evaluationChain?.SetName   ?? string.Empty;
+        SuccessfulSet           = evaluationChain?.SetName   ?? String.Empty;
         IsSuccess               = evaluationChain?.IsSuccess ?? false;
+        SuccessValue            = IsSuccess ? evaluationChain!.SetValue : String.Empty;
 
-        FailureValue            = failureValue  ?? string.Empty;
+        FailureValue            = String.IsNullOrWhiteSpace(failureValue) ? string.Empty : failureValue;
         EvaluationChain         = evaluationChain;
         FailureMessages         = failureMessages   ?? new List<string>();
         Exceptions              = exceptions        ?? new List<Exception>();

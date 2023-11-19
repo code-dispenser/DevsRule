@@ -34,7 +34,7 @@ public class ConditionResult
         ContextType         = contextType   ?? String.Empty;
         ToEvaluate          = toEvaluate    ?? String.Empty;
         EvaluatedBy         = evaluatedBy   ?? String.Empty;
-        TenantID            = String.IsNullOrWhiteSpace(tenantID) ? GlobalStrings.Default_TenantID : tenantID;
+        TenantID            = String.IsNullOrWhiteSpace(tenantID) ? "N/A" : tenantID;
         IsSuccess           = isSuccess;
         FailureMessage      = failureMessage ?? String.Empty;
         EvaluationData      = evaluationData;

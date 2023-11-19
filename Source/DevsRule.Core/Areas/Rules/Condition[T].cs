@@ -34,10 +34,10 @@ public class Condition<TContext> : ICondition
 
     internal Condition(string conditionName, string toEvaluate, string failureMessage, string evaluatorTypeName, bool isLambdaPredicate, Dictionary<string, string> additionalInfo, EventDetails? eventDetails = null)
     {
-        ConditionName       = Check.ThrowIfNullOrWhitespace(conditionName?.Trim())!; 
-        ToEvaluate          = Check.ThrowIfNullOrWhitespace(toEvaluate?.Trim())!;
+        ConditionName       = Check.ThrowIfNullOrWhitespace(conditionName).Trim(); 
+        ToEvaluate          = Check.ThrowIfNullOrWhitespace(toEvaluate).Trim();
         FailureMessage      = Check.ThrowIfNullOrWhitespace(failureMessage);
-        EvaluatorTypeName   = Check.ThrowIfNullOrWhitespace(evaluatorTypeName?.Trim())!;
+        EvaluatorTypeName   = Check.ThrowIfNullOrWhitespace(evaluatorTypeName).Trim();
         ContextType         = typeof(TContext);
         IsLambdaPredicate   = isLambdaPredicate;
         EventDetails        = eventDetails;

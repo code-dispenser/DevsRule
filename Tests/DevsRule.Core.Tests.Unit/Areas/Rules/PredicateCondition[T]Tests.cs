@@ -1,7 +1,11 @@
-﻿using DevsRule.Core.Common.Models;
+﻿using DevsRule.Core.Areas.Events;
+using DevsRule.Core.Common.Models;
+using DevsRule.Core.Common.Seeds;
 using DevsRule.Tests.SharedDataAndFixtures.Data;
+using DevsRule.Tests.SharedDataAndFixtures.Events;
 using DevsRule.Tests.SharedDataAndFixtures.Models;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using System.Linq.Expressions;
 using Xunit;
 
@@ -42,6 +46,22 @@ public class PredicateConditionTests
         var thePredicateResult = compiledFunc(StaticData.CustomerOne());
 
         thePredicateResult.Should().BeTrue();
+
+    }
+
+    [Fact]
+    public void The_predicate_constructor_chaining_should_pass_the_correct_data()
+    {
+        var theCondition = new PredicateCondition<Customer>("Customer One", c => c.CustomerName == "CustomerOne", StaticData.Customer_One_Name_Message, 
+                                                         EventDetails.Create<ConditionResultEvent>(EventWhenType.OnSuccess,PublishMethod.FireAndForget));
+
+        using(new AssertionScope())
+        {
+            theCondition.Should().Match<PredicateCondition<Customer>>(c => c.EventDetails != null && c.EvaluatorTypeName == GlobalStrings.Predicate_Condition_Evaluator && c.AdditionalInfo != null
+                                                                  && c.IsLambdaPredicate == true && c.CompiledPrediate != null && c.ConditionName == "Customer One"
+                                                                  && c.ContextType == typeof(Customer)  && c.FailureMessage == StaticData.Customer_One_Name_Message);
+        }
+       
 
     }
 

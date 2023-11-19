@@ -1,6 +1,7 @@
 ﻿using DevsRule.Core.Areas.Engine;
 using DevsRule.Core.Areas.Rules;
 using DevsRule.Core.Common.Models;
+using DevsRule.Core.Common.Seeds;
 using DevsRule.Core.Common.Utilities;
 using DevsRule.Tests.SharedDataAndFixtures.Data;
 using DevsRule.Tests.SharedDataAndFixtures.Models;
@@ -358,7 +359,56 @@ public class RegexConditionEvaluatorTests : IClassFixture<ConditionEngineFixture
 
         var contexts = RuleDataBuilder.AddForAny(customer).Create();
 
-        (await rule.Evaluate(_conditionEngine.GetEvaluatorByName,contexts, _conditionEngine.EventPublisher)).Should().Match<RuleResult>(r => r.IsSuccess == true);
+        var theResult = await rule.Evaluate(_conditionEngine.GetEvaluatorByName, contexts, _conditionEngine.EventPublisher);
+
+        theResult.Should().Match<RuleResult>(r => r.IsSuccess == true);
 
     }
+
+    [Fact]
+    public async Task Check_all_flags_are_passed_and_set_in_the_evaluator_via_code_coverage_despite_nosensical_combination()
+    {
+
+        var additionalInfo = GeneralUtils.CreateDictionaryForRegex("[A-Za-z]+$",RegexOptions.None | RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.ECMAScript 
+                                                                               | RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline
+                                                                               | RegexOptions.NonBacktracking | RegexOptions.RightToLeft | RegexOptions.Singleline);
+
+        var customer = new Customer("CUSTOMER", 1, 1, 1);
+
+        var regexCondition = new RegexCondition<Customer>("RegexOne", c => c.CustomerName, "Should be upper case", additionalInfo);
+        var conditionSet = new ConditionSet("SetOne", regexCondition);
+        var rule = new Rule("RuleOne", conditionSet);
+
+        var contexts = RuleDataBuilder.AddForAny(customer).Create();
+
+        var theReslut = await rule.Evaluate(_conditionEngine.GetEvaluatorByName, contexts, _conditionEngine.EventPublisher);
+
+        theReslut.Should().Match<RuleResult>(r => r.IsSuccess == false);
+
+    }
+    [Fact]
+    public async Task Check_flags_manually_passed_as_false_are_not_used()
+    {
+
+        Dictionary<string, string> additionalInfo = new Dictionary<string, string>
+        {
+            [GlobalStrings.Regex_IgnoreCase_Key] = "false",
+            [GlobalStrings.Regex_Pattern_Key] = "[A-Z]+$"
+
+        };    
+
+        var customer = new Customer("customer", 1, 1, 1);
+
+        var regexCondition = new RegexCondition<Customer>("RegexOne", c => c.CustomerName, "Should be upper case case", additionalInfo);
+        var conditionSet = new ConditionSet("SetOne", regexCondition);
+        var rule = new Rule("RuleOne", conditionSet);
+
+        var contexts = RuleDataBuilder.AddForAny(customer).Create();
+
+        var theReslut = await rule.Evaluate(_conditionEngine.GetEvaluatorByName, contexts, _conditionEngine.EventPublisher);
+
+        theReslut.Should().Match<RuleResult>(r => r.IsSuccess == false);
+
+    }
+
 }

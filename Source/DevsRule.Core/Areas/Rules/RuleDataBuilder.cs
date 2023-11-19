@@ -53,7 +53,7 @@ public class RuleDataBuilder : IAddData
     
     public static IAddData AddForCondition(string named, dynamic data)
 
-        => new RuleDataBuilder().AndForCondition("", data);
+        => new RuleDataBuilder().AndForCondition(named, data);
 
     public IAddData AndForCondition(string named, dynamic data)
         

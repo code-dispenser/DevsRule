@@ -151,6 +151,33 @@ namespace DevsRule.Core.Tests.Integration.Common.Extensions
                                                    && r.RuleResultChain!.RuleName == "RuleOne" && r.RuleResultChain.IsSuccess == true);
 
         }
+
+        [Fact]
+        public async Task Should_get_the_current_result_when_its_a_failure_but_using_on_success_when_chaining_rules_not_in_the_engine()
+        {
+            var ruleOne = RuleBuilder.WithName("RuleOne")
+                                         .ForConditionSetNamed("SetOne", "50")
+                                         .WithPredicateCondition<Customer>("CustomerNameOne", c => c.CustomerName == "Wrong", "The customer name must be CustomerOne")
+                                         .WithoutFailureValue()
+                                         .CreateRule();
+
+            var ruleTwo = RuleBuilder.WithName("RuleTwo")
+                                         .ForConditionSetNamed("SetTwo", "100")
+                                         .WithPredicateCondition<Customer>("CustomerNameTwo", c => c.CustomerName == "CustomerTwo", "The customer name must be CustomerTwo")
+                                         .WithoutFailureValue()
+                                         .CreateRule();
+
+            _conditionEngine.AddOrUpdateRule(ruleOne);
+
+           
+            var theResult = await _conditionEngine.EvaluateRule(ruleOne.RuleName, RuleDataBuilder.AddForAny(StaticData.CustomerOne()).Create())
+                                                  .OnSuccess(ruleTwo, _conditionEngine.GetEvaluatorByName, RuleDataBuilder.AddForAny(StaticData.CustomerTwo()).Create(), _conditionEngine.EventPublisher);
+
+             theResult.Should().Match<RuleResult>(r => r.RuleName == "RuleOne" && r.IsSuccess == false && r.SuccessValue == ""
+                                                   && r.RuleResultChain == null);
+
+        }
+
         [Fact]
         public async Task Should_be_able_to_take_some_action_on_a_successfule_result()
         {
@@ -297,32 +324,6 @@ namespace DevsRule.Core.Tests.Integration.Common.Extensions
 
         }
 
-        //[Fact]
-        //public async Task Should_be_able_to_chain_a_failed_rule_result_in_order_to_run_another_rule_not_in_the_engine()
-        //{
-        //    var ruleOne = RuleBuilder.WithName("RuleOne")
-        //                                 .ForConditionSetNamed("SetOne", "50")
-        //                                 .WithPredicateCondition<Customer>("CustomerNameOne", c => c.CustomerName == "NotCustomerOne", "The customer name must be CustomerOne")
-        //                                 .WithoutFailureValue()
-        //                                 .CreateRule();
-
-        //    var ruleTwo = RuleBuilder.WithName("RuleTwo")
-        //                                 .ForConditionSetNamed("SetTwo", "100")
-        //                                 .WithPredicateCondition<Customer>("CustomerNameTwo", c => c.CustomerName == "CustomerTwo", "The customer name must be CustomerTwo")
-        //                                 .WithoutFailureValue()
-        //                                 .CreateRule();
-
-        //    _conditionEngine.AddOrUpdateRule(ruleOne);
-
-        //    var theResult = await _conditionEngine.EvaluateRule(ruleOne.RuleName, ContextBuilder.AddForAny(StaticData.CustomerOne()).ToContextArray())
-        //                               .OnFailure(ruleTwo, _conditionEngine.GetEvaluatorByName, ContextBuilder.AddForAny(StaticData.CustomerTwo()).ToContextArray());
-
-
-        //    theResult.Should().Match<RuleResult>(r => r.RuleName == "RuleTwo" && r.IsSuccess == true && r.SuccessValue == "100"
-        //                                           && r.RuleResultChain!.RuleName == "RuleOne" && r.RuleResultChain.IsSuccess == false);
-
-        //}
-
         [Fact]
         public async Task Should_pass_through_failures_if_result_is_a_success()
         {
@@ -448,6 +449,46 @@ namespace DevsRule.Core.Tests.Integration.Common.Extensions
             }
 
         }
+
+        [Fact]
+        public async Task Should_get_the_current_result_when_it_is_not_a_failure_but_chaining_on_failure()
+        {
+            var ruleOne = RuleBuilder.WithName("RuleOne")
+                     .ForConditionSetNamed("SetOne", "50")
+                     .WithPredicateCondition<Customer>("CustomerNameOne", c => c.CustomerName == "CustomerOne", "The customer name must be CustomerOne")
+                     .WithoutFailureValue()
+                     .CreateRule();
+
+            var ruleTwo = RuleBuilder.WithName("RuleTwo")
+                     .ForConditionSetNamed("SetOne", "50")
+                     .WithPredicateCondition<Customer>("CustomerNameTwo", c => c.CustomerName == "Wrong", "The customer name must be CustomerTwo")
+                     .WithoutFailureValue()
+                     .CreateRule();
+
+            _conditionEngine.AddOrUpdateRule(ruleOne);
+            _conditionEngine.AddOrUpdateRule(ruleTwo);
+
+            var customerOneData = RuleDataBuilder.AddForAny(StaticData.CustomerOne()).Create();
+            var customerTwoData = RuleDataBuilder.AddForAny(StaticData.CustomerTwo()).Create();
+
+            var calledChainedMethod = false;
+
+            var theResult = await _conditionEngine.EvaluateRule(ruleOne.RuleName, customerOneData)
+                                                .OnFailure(async (result) =>
+                                                {
+                                                    calledChainedMethod = true;
+                                                    return await _conditionEngine.EvaluateRule(ruleTwo.RuleName, customerTwoData);
+                                                });
+
+            using (new AssertionScope())
+            {
+                calledChainedMethod.Should().BeFalse();
+                theResult.IsSuccess.Should().BeTrue();
+            }
+
+        }
+
+
     }
 }
 

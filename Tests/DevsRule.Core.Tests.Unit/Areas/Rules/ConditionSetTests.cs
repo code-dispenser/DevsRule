@@ -136,6 +136,19 @@ public class ConditionSetTests : IClassFixture<ConditionEngineFixture>
 
         
     }
+    [Fact]
+    public void Passing_an_incorrect_index_to_remove_a_condition_should_not_throw_an_exception()
+    {
+        var setOne = new ConditionSet("Set One", new PredicateCondition<Customer>("Customer Name", c => c.CustomerName == "CustomerOne", StaticData.Customer_One_Name_Message));
+
+        setOne.RemoveConditionByIndex(100);
+
+        using (new AssertionScope())
+        {
+            setOne.Conditions.Count.Should().Be(1);
+        }
+
+    }
 
     [Fact]
     public async Task Should_be_able_to_replace_failure_message_place_holders_with_property_values_if_the_condition_fails()
@@ -164,8 +177,30 @@ public class ConditionSetTests : IClassFixture<ConditionEngineFixture>
 
     }
 
+    [Fact]
+    public void Should_throw_an_argument_exception_when_adding_a_condition_that_is_not_assignable_from_iCondition_tContext()
+    {
+        FluentActions.Invoking(() => new ConditionSet("SetOne", new FakeCondition(typeof(string)))).Should().ThrowExactly<ArgumentException>();
+    }
 
+    [Fact]
+    public void Should_throw_a_missing_rule_contexts_exception_if_rule_data_null_or_contexts_are_null()
+    {
+        var theCoditionSet = new ConditionSet("SetOne", new PredicateCondition<Customer>("CustomerName", c => c.CustomerName == "CustomerOne", "Should be CustomerOne"));
+        
+        using(new AssertionScope())
+        {
+            FluentActions.Invoking(() => theCoditionSet.EvaluateConditions(_conditionEngine.GetEvaluatorByName, null, _conditionEngine.EventPublisher, CancellationToken.None))
+                .Should().ThrowExactlyAsync<MissingRuleContextsException>();
 
+            FluentActions.Invoking(() => theCoditionSet.EvaluateConditions(_conditionEngine.GetEvaluatorByName, RuleDataBuilder.AddForCondition("test", null).Create(), _conditionEngine.EventPublisher, CancellationToken.None))
+                .Should().ThrowExactlyAsync<MissingRuleContextsException>();
+
+            FluentActions.Invoking(() => theCoditionSet.EvaluateConditions(_conditionEngine.GetEvaluatorByName, new RuleData(null!), _conditionEngine.EventPublisher, CancellationToken.None))
+                .Should().ThrowExactlyAsync<MissingRuleContextsException>();
+
+        }
+    }
 }
 
 

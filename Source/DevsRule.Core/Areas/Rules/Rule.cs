@@ -134,27 +134,15 @@ public class Rule : IRule
     }
 
     private bool HasExceptionInChain(ConditionResult currentResult)
-    {
-        if (currentResult.Exception != null) return true;
-
-        var resultAtChainEnd = currentResult;
-
-        while (resultAtChainEnd.EvaluationtChain != null)
-        {
-            resultAtChainEnd = resultAtChainEnd.EvaluationtChain;
-
-            if (resultAtChainEnd.Exception != null) return true;
-        }
-
-        return false;
-    }
+    
+        => currentResult.Exception != null;
 
     private List<Exception> GetExecutionExceptions(ConditionResult setResult)
     {
         var exceptions = new List<Exception>();
         var resultAtChainEnd = setResult;
 
-        while (resultAtChainEnd.EvaluationtChain != null)
+        while (resultAtChainEnd != null)
         {
             if (resultAtChainEnd.Exception != null) exceptions.Add(resultAtChainEnd.Exception);
             resultAtChainEnd = resultAtChainEnd.EvaluationtChain;
@@ -204,13 +192,13 @@ public class Rule : IRule
 
        => new (this.RuleName, this.FailureValue, null, this.TenantID, new(), new(), 0, totalTimeForRule, true);
 
-    private List<string> GetUnMatchedDataContexts(List<string> conditionName, RuleData ruleData)
+    private List<string> GetUnMatchedDataContexts(List<string> conditionNames, RuleData ruleData)
     {
         List<string> unmatchedContext = new();
 
         foreach (var data in ruleData.Contexts.Where(d => String.IsNullOrWhiteSpace(d.ConditionName) == false))
         {
-            if (false == conditionName.Any(c => c == data.ConditionName)) unmatchedContext.Add(data.ConditionName);
+            if (false == conditionNames.Any(c => c == data.ConditionName)) unmatchedContext.Add(data.ConditionName);
         }
 
         return unmatchedContext;

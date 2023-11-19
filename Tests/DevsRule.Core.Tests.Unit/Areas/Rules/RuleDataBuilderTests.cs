@@ -44,6 +44,8 @@ public class RuleDataBuilderTests
                                              .AndForAny(StaticData.CustomerOne())
                                              .Create();
 
+        var theCustomerContext = theRuleData.Contexts[1];
+
         Type contextOne      = theRuleData.Contexts[0].Data.GetType();
         Type contextTwo      = theRuleData.Contexts[1].Data.GetType();
         Type contextThree    = theRuleData.Contexts[2].Data.GetType();
@@ -53,6 +55,8 @@ public class RuleDataBuilderTests
             theRuleData.Should().BeOfType<RuleData>();
             theRuleData.Contexts.Should().HaveCount(3);
 
+            theCustomerContext.Should().Match<DataContext>(d => d.ConditionName == "ConditionOne");
+            
             contextOne.Should().Be(typeof(Customer));
             contextTwo.Should().Be(typeof(Customer));
             contextThree.Should().Be(typeof(Supplier));

@@ -1,9 +1,13 @@
-﻿using DevsRule.Core.Common.Exceptions;
+﻿using DevsRule.Core.Areas.Events;
+using DevsRule.Core.Common.Exceptions;
 using DevsRule.Core.Common.Models;
 using DevsRule.Core.Common.Seeds;
 using DevsRule.Tests.SharedDataAndFixtures.Data;
+using DevsRule.Tests.SharedDataAndFixtures.Events;
 using DevsRule.Tests.SharedDataAndFixtures.Models;
 using FluentAssertions;
+using FluentAssertions.Execution;
+using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using Xunit;
 
@@ -68,5 +72,21 @@ public class RegexConditionTTests
                                                                && r.AdditionalInfo[GlobalStrings.Regex_Pattern_Key] == "^[1-9]{1,2}$"
                                                                && r.AdditionalInfo["One"] == "1" && r.AdditionalInfo["Two"] == "2");
     }
-}
 
+
+    [Fact]
+    public void The_regex_condition_constructor_should_pass_data_to_its_base_for_the_properties_to_be_set()
+    {
+        var theCondition = new RegexCondition<Customer>("Customer One", c => c.CustomerName,"Should be upper case", new Dictionary<string, string> { [GlobalStrings.Regex_Pattern_Key] = "[A-Z]*"},
+                                                        EventDetails.Create<ConditionResultEvent>(EventWhenType.OnSuccess, PublishMethod.FireAndForget));
+
+        using (new AssertionScope())
+        {
+            theCondition.Should().Match<RegexCondition<Customer>>(c => c.EventDetails != null && c.EvaluatorTypeName == GlobalStrings.Regex_Condition_Evaluator && c.AdditionalInfo != null 
+                                                                  && c.IsLambdaPredicate == false && c.CompiledPrediate == null && c.ConditionName == "Customer One"  
+                                                                  && c.ContextType == typeof(Customer)  && c.FailureMessage == "Should be upper case");
+        }
+
+
+    }
+}
