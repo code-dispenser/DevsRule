@@ -179,7 +179,7 @@ public class ConditionEngineTests
         var conditionEngine = new ConditionEngine();
         var rule            = new Rule("RuleOne");
 
-        conditionEngine.AddOrUpdateRule(rule, null, null);
+        conditionEngine.AddOrUpdateRule(rule, null!, null!);
 
         var foundRule = conditionEngine.ContainsRule("RuleOne", "All_Tenants", "en-GB");
 

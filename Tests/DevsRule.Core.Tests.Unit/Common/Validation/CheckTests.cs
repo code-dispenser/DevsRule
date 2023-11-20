@@ -16,12 +16,12 @@ public class CheckTests
     [InlineData("")]
     [InlineData("   ")]
     [InlineData(null)]
-    public void Should_throw_argument_exception_if_argument_is_null_empty_or_whitespace(string requiredValue)
+    public void Should_throw_argument_exception_if_argument_is_null_empty_or_whitespace(string? requiredValue)
     {
-        FluentActions.Invoking(() => SomeApplicationMethod("")).Should().ThrowExactly<ArgumentException>();
+        FluentActions.Invoking(() => SomeApplicationMethod(requiredValue)).Should().ThrowExactly<ArgumentException>();
     }
 
-    private string SomeApplicationMethod(string requiredValue)
+    private string? SomeApplicationMethod(string? requiredValue)
     {
         Check.ThrowIfNullOrWhitespace(requiredValue);
 

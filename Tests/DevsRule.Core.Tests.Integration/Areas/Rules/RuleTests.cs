@@ -234,7 +234,7 @@ public class RuleTests :IClassFixture<ConditionEngineDIFixture>
     [Fact]
     public async Task Should_raise_an_event_with_any_condition_exceptions_added_to_the_events_exception_list()
     {
-        var condtionSet = new ConditionSet("SetOne", new PredicateCondition<Customer>("CustomerCondition", c => c.Address.AddressLine == "Some Street", "Should be some street", "IncorrectEvaluator"));
+        var condtionSet = new ConditionSet("SetOne", new PredicateCondition<Customer>("CustomerCondition", c => c.Address!.AddressLine == "Some Street", "Should be some street", "IncorrectEvaluator"));
         var theRule     = new Rule("RuleOne", condtionSet,"", EventDetails.Create<RuleResultEvent>(EventWhenType.OnSuccessOrFailure, PublishMethod.WaitForAll));
 
         var customer = new Customer("Customer", 1, 1, 1, new Address("Some Street", "Some Town", "Some City", "Some Post Code"));
@@ -261,7 +261,7 @@ public class RuleTests :IClassFixture<ConditionEngineDIFixture>
     [Fact]
     public async Task Rule_should_end_execution_if_a_condition_set_conditions_have_errors_somewhere_in_its_evaluation_chain()
     {
-        var condtionSetOne = new ConditionSet("SetOne", new PredicateCondition<Customer>("CustomerCondition", c => c.Address.AddressLine == "Not Some Street", "Should be some street"));
+        var condtionSetOne = new ConditionSet("SetOne", new PredicateCondition<Customer>("CustomerCondition", c => c.Address!.AddressLine == "Not Some Street", "Should be some street"));
         var conditionSetTwo = new ConditionSet("SetTwo", new PredicateCondition<Customer>("HasError", c => c.CustomerName == "CustomerOne", "Customer name should be CustomerOne", "IncorrectEvaluatorTypeName"));
 
         var theRule = new Rule("RuleOne", condtionSetOne).OrConditionSet(conditionSetTwo);

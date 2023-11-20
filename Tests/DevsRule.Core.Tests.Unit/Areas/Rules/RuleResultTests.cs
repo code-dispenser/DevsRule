@@ -29,8 +29,8 @@ public class RuleResultTests
     [Fact]
     public void Should_set_properties_to_defaults_from_constructor_where_necessary()
     {
-        var theConditionResult = new ConditionResult("SetName", null, "ConditionName", 0, "ContextType", "ToEValuate", 42, "EvaluatedBy", true, "FailureMessage", 1, 1, null, null);
-        var theRuleResult = new RuleResult("RuleName", null, theConditionResult, null, null,null, 1, 0, true);
+        var theConditionResult = new ConditionResult("SetName", null, "ConditionName", 0, "ContextType", "ToEValuate", 42, "EvaluatedBy", true, "FailureMessage", 1, 1, null!, null);
+        var theRuleResult = new RuleResult("RuleName", null!, theConditionResult, null!, null!, null!, 1, 0, true);
 
         theRuleResult.Should().Match<RuleResult>(r => r.RuleName == "RuleName" && r.IsSuccess == true && r.RuleDisabled == true
                                                          && r.SuccessValue == String.Empty && r.SuccessfulSet == "SetName" && r.TotalEvaluations == 1

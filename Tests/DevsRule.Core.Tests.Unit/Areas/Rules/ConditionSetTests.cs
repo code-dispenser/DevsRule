@@ -190,10 +190,10 @@ public class ConditionSetTests : IClassFixture<ConditionEngineFixture>
         
         using(new AssertionScope())
         {
-            FluentActions.Invoking(() => theCoditionSet.EvaluateConditions(_conditionEngine.GetEvaluatorByName, null, _conditionEngine.EventPublisher, CancellationToken.None))
+            FluentActions.Invoking(() => theCoditionSet.EvaluateConditions(_conditionEngine.GetEvaluatorByName, null!, _conditionEngine.EventPublisher, CancellationToken.None))
                 .Should().ThrowExactlyAsync<MissingRuleContextsException>();
 
-            FluentActions.Invoking(() => theCoditionSet.EvaluateConditions(_conditionEngine.GetEvaluatorByName, RuleDataBuilder.AddForCondition("test", null).Create(), _conditionEngine.EventPublisher, CancellationToken.None))
+            FluentActions.Invoking(() => theCoditionSet.EvaluateConditions(_conditionEngine.GetEvaluatorByName, RuleDataBuilder.AddForCondition("test", null!).Create(), _conditionEngine.EventPublisher, CancellationToken.None))
                 .Should().ThrowExactlyAsync<MissingRuleContextsException>();
 
             FluentActions.Invoking(() => theCoditionSet.EvaluateConditions(_conditionEngine.GetEvaluatorByName, new RuleData(null!), _conditionEngine.EventPublisher, CancellationToken.None))

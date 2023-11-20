@@ -190,7 +190,7 @@ public class RuleBuilderTests
     {
         var theRule = RuleBuilder.WithName("RegexRules")
                       .ForConditionSetNamed("RegexSetOne")
-                        .WithRegexCondition<Customer>("RegexOne", c => c.Address.Town, "[A-Z]*", "Town should be in uppercase", RegexOptions.IgnoreCase,
+                        .WithRegexCondition<Customer>("RegexOne", c => c.Address!.Town, "[A-Z]*", "Town should be in uppercase", RegexOptions.IgnoreCase,
                                                         EventDetails.Create<ConditionResultEvent>(EventWhenType.OnSuccessOrFailure))
 
                         .AndRegexCondition<Supplier>("RegexTwo", s => s.SupplierNo,"[0-9]{1,3}","Should be a number between 0 and 999",RegexOptions.None,
@@ -250,7 +250,7 @@ public class RuleBuilderTests
     {
         FluentActions.Invoking(() => RuleBuilder.WithName("RegexRules")
                                       .ForConditionSetNamed("RegexSetOne")
-                                        .WithRegexCondition<Customer>("RegexOne", c => c.Address.Town, "", "Town should be in uppercase", RegexOptions.IgnoreCase,
+                                        .WithRegexCondition<Customer>("RegexOne", c => c.Address!.Town, "", "Town should be in uppercase", RegexOptions.IgnoreCase,
                                                                         EventDetails.Create<ConditionResultEvent>(EventWhenType.OnSuccessOrFailure))
                                         .WithFailureValue("23")
                                         .CreateRule()).Should().ThrowExactly<MissingRegexPatternException>();

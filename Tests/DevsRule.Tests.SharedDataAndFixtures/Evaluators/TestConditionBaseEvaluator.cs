@@ -11,7 +11,7 @@ namespace DevsRule.Tests.SharedDataAndFixtures.Evaluators
 
         public override async Task<EvaluationResult> Evaluate(Condition<TContext> condition, TContext data, CancellationToken cancellationToken, string tenantID)
         {
-            var failureMessage = base.BuildFailureMessage(condition.FailureMessage, data, MessageRegex, _missingPropertyText);
+            var failureMessage = base.BuildFailureMessage(condition.FailureMessage, data!, MessageRegex, _missingPropertyText);
 
             return await Task.FromResult(new EvaluationResult(false, failureMessage));
         }
