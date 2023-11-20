@@ -21,11 +21,11 @@ public class CondtionTests
     }
 
     [Fact]
-    public void Should_trim_condtion_name_to_evaluate_and_evaluator_type_name()
+    public void Should_trim_condtion_name_and_evaluator_type_name()
     {
-        var theCondition = new Condition<Customer>("  ConditionName   ", "  ToEvaluate   ", "  FailureMessage", "  EvaluatorTypeName   ", false, null, null);
+        var theCondition = new Condition<Customer>("  ConditionName   ","ToEvaluator","FailureMessage", "  EvaluatorTypeName   ", false, null, null);
 
-        theCondition.Should().Match<Condition<Customer>>(c => c.ConditionName == "ConditionName" && c.ToEvaluate == "ToEvaluate" && c.EvaluatorTypeName == "EvaluatorTypeName");
+        theCondition.Should().Match<Condition<Customer>>(c => c.ConditionName == "ConditionName" && c.EvaluatorTypeName == "EvaluatorTypeName");
     }
 
 

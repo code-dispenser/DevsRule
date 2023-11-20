@@ -210,8 +210,8 @@ public class ConditionEngine : IConditionEngine
         /*
             * I could not get the code to work without seperating out the code in to this and CreateConditionCreator<TContext> method?
         */
-        var failureMessage      = false == String.IsNullOrWhiteSpace(jsonRuleCondition.FailureMessage?.Trim()) ? jsonRuleCondition.FailureMessage.Trim() : "Condition failed";
-        var evaluatorTypeName   = false == String.IsNullOrWhiteSpace(jsonRuleCondition.EvaluatorTypeName?.Trim()) ? jsonRuleCondition.EvaluatorTypeName.Trim() : "N/A";
+        var failureMessage      = false == String.IsNullOrWhiteSpace(jsonRuleCondition.FailureMessage) ? jsonRuleCondition.FailureMessage.Trim() : "Condition failed";
+        var evaluatorTypeName   = false == String.IsNullOrWhiteSpace(jsonRuleCondition.EvaluatorTypeName) ? jsonRuleCondition.EvaluatorTypeName.Trim() : "N/A";
         /*
             * Add a condition creator for each combination of the condition<TContext> and evaluator type, should only be a handfull
          */
@@ -286,36 +286,28 @@ public class ConditionEngine : IConditionEngine
         {
             Type evaluatorType;
 
-            try
+            switch (evaluatorName)
             {
-                switch (evaluatorName)
-                {
-                    case GlobalStrings.Predicate_Condition_Evaluator: evaluatorType = typeof(PredicateConditionEvaluator<>).MakeGenericType(theContextType); break;
-                    case GlobalStrings.Regex_Condition_Evaluator: evaluatorType = typeof(RegexConditionEvaluator<>).MakeGenericType(theContextType); break;
-                    default:
+                case GlobalStrings.Predicate_Condition_Evaluator: evaluatorType = typeof(PredicateConditionEvaluator<>).MakeGenericType(theContextType); break;
+                case GlobalStrings.Regex_Condition_Evaluator: evaluatorType = typeof(RegexConditionEvaluator<>).MakeGenericType(theContextType); break;
+                default:
 
-                        var evaluatorTypeKey = String.Join("_", GlobalStrings.CacheKey_Part_Evaluator_Type, evaluatorName);
+                    var evaluatorTypeKey = String.Join("_", GlobalStrings.CacheKey_Part_Evaluator_Type, evaluatorName);
 
-                        if (true == _cache.TryGetItem<Type>(evaluatorTypeKey, out var customEvaluatorType))
-                        {
-                            evaluatorType = customEvaluatorType!.IsGenericType && customEvaluatorType.ContainsGenericParameters == true ? customEvaluatorType.MakeGenericType(theContextType) : customEvaluatorType;
-                        }
-                        else
-                        {
-                            throw new MissingConditionEvaluatorException(String.Format(GlobalStrings.Missing_Condition_Evaluator_Exception_Message, evaluatorName));
-                        }
+                    if (true == _cache.TryGetItem<Type>(evaluatorTypeKey, out var customEvaluatorType))
+                    {
+                        evaluatorType = customEvaluatorType!.IsGenericType && customEvaluatorType.ContainsGenericParameters == true ? customEvaluatorType.MakeGenericType(theContextType) : customEvaluatorType;
+                    }
+                    else
+                    {
+                        throw new MissingConditionEvaluatorException(String.Format(GlobalStrings.Missing_Condition_Evaluator_Exception_Message, evaluatorName));
+                    }
 
-                        break;
-                }
-
-                return (IConditionEvaluator)Activator.CreateInstance(evaluatorType)!;
-            }
-            catch (MissingConditionEvaluatorException) { throw new MissingConditionEvaluatorException(String.Format(GlobalStrings.Missing_Condition_Evaluator_Exception_Message, evaluatorName)); }
-            catch (Exception ex)
-            {
-                throw new MissingConditionEvaluatorException(String.Format(GlobalStrings.Missing_Condition_Evaluator_Exception_Message, evaluatorName), ex);
+                    break;
             }
 
+            return (IConditionEvaluator)Activator.CreateInstance(evaluatorType)!;
+            
         };
 
         return _cache.GetOrAddItem(cacheKey, contextType, makeEvaluator);
@@ -329,8 +321,8 @@ public class ConditionEngine : IConditionEngine
     public async Task EventPublisher<TEvent>(TEvent eventToPublish, CancellationToken cancellationToken, PublishMethod publishMethod = PublishMethod.FireAndForget) where TEvent : IEvent
     {
         /*
-             * If this method is called via the delegate void EventPublisher(Event eventToPublish), which in 99% cases it will be 
-             * the TEvent is always IEvent so we need to call the publish method via reflection using its actual type that is registered/subscribed to
+             * If this method is called via the delegate void EventPublisher(Event eventToPublish), which in 99% cases  
+             * TEvent is always IEvent so we need to call the publish method via reflection using its actual type that is registered/subscribed to
              * Suggestions welcome on how to solve this type in a better way?
          */
         try

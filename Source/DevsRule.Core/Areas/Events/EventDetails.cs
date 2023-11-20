@@ -37,13 +37,12 @@ namespace DevsRule.Core.Areas.Events
 
         internal static EventDetails? FromJsonRule(JsonRule.EventDetails? eventDetails)
         {
-            if (eventDetails == null) return null;
+            if (eventDetails == null || eventDetails.EventTypeName == null) return null;
 
-            string searchName = eventDetails.EventTypeName?.Contains('.') == true ? eventDetails.EventTypeName : String.Concat(".", eventDetails?.EventTypeName);
+            string searchName = eventDetails.EventTypeName.Contains('.') == true ? eventDetails.EventTypeName : String.Concat(".", eventDetails.EventTypeName);
 
-            string? assemblyQualifiedName = (GeneralUtils.EventTypeNames.Where(e => e.fullName.EndsWith(searchName))?.SingleOrDefault())?.assemblyQualifiedName;
-
-     
+            string? assemblyQualifiedName = (GeneralUtils.EventTypeNames.Where(e => e.fullName.EndsWith(searchName)).SingleOrDefault()).assemblyQualifiedName;
+    
             PublishMethod publishMethod = Enum.TryParse<PublishMethod>(eventDetails!.PublishMethod, out var publishMethodValue) == true ? publishMethodValue : PublishMethod.FireAndForget;
             EventWhenType eventWhenType = Enum.TryParse<EventWhenType>(eventDetails.EventWhenType, out var eventWhenValue) == true ? eventWhenValue : EventWhenType.Never;
 

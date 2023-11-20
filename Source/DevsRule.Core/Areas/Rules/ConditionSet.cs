@@ -85,7 +85,6 @@ public sealed class ConditionSet : IConditionSet
             throw new MissingRuleContextsException(String.Format(GlobalStrings.Missing_Rule_Contexts_Exception_Message, this.ConditionSetName) + String.Join(", ", missingContexts));
         }
 
-
         var currentResult   = default(ConditionResult);
         var previousResult  = default(ConditionResult);
         var tenantID        = contexts.TenantID;

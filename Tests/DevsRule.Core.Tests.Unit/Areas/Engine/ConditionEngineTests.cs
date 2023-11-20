@@ -173,7 +173,17 @@ public class ConditionEngineTests
         theEvaluationResult.Should().NotBeNull();
     }
 
+    [Fact]
+    public void Should_replace_null_tenantid_and_cultureid_with_defaults_when_using_add_or_update_rule()
+    {
+        var conditionEngine = new ConditionEngine();
+        var rule            = new Rule("RuleOne");
 
+        conditionEngine.AddOrUpdateRule(rule, null, null);
 
-   
+        var foundRule = conditionEngine.ContainsRule("RuleOne", "All_Tenants", "en-GB");
+
+        foundRule.Should().BeTrue();    
+    }
+
 }

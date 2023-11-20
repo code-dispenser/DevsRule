@@ -21,9 +21,9 @@ internal class EventAggregator : IEventAggregator
         => (_resolver, _dependencyInjectionEnabled) = (null, false);
 
     private void Unsubscribe(Type eventType, WeakReference<Delegate> handler)
-    
-       => _eventSubscriptions[eventType]?.Remove(handler);
-    
+    {
+        if (_eventSubscriptions.ContainsKey(eventType)) _eventSubscriptions.Remove(eventType, out _);
+    }
 
     public async Task Publish<TEvent>(TEvent conditionRuleEvent, CancellationToken cancellationToken, PublishMethod publishMethod = PublishMethod.FireAndForget) where TEvent : IEvent
     {
@@ -68,7 +68,7 @@ internal class EventAggregator : IEventAggregator
             {
                 _ = Task.Run(async () => await handler(conditionRuleEvent, cancellationToken),cancellationToken);//Fire and forget
             }
-            catch { }//Just ignore, fire and forget, user can log in the handler
+            catch  {}//Just ignore, fire and forget, user can log in the handler
         }
     }
 

@@ -32,10 +32,8 @@ public abstract class ConditionEvaluatorBase<TContext> : IConditionEvaluator<TCo
     /// <param name="replaceNullWith">Optional string value used when properties are not found. If left blank any unmatched 
     /// property paths will use "N/A".</param>
     /// <returns></returns>
-    protected virtual string GetPropertValueAsString(object context, string propertyPath, string replaceNullWith = "")
+    protected virtual string GetPropertValueAsString(object context, string propertyPath, string replaceNullWith = "N/A")
     {
-        replaceNullWith ??= "";
-
         propertyPath = Check.ThrowIfNull(propertyPath);
         context = Check.ThrowIfNull(context);
 
@@ -48,7 +46,7 @@ public abstract class ConditionEvaluatorBase<TContext> : IConditionEvaluator<TCo
 
             if (propertyInfo == null) break;
 
-            objectValue = propertyInfo?.GetValue(objectValue, null);
+            objectValue = propertyInfo.GetValue(objectValue, null);
             propertyValue = objectValue;
 
             if (objectValue == null) break;
@@ -64,8 +62,10 @@ public abstract class ConditionEvaluatorBase<TContext> : IConditionEvaluator<TCo
     /// <param name="failureMessage">The failure message, predominately this will be from the condition.</param>
     /// <param name="contextData">The data used in the condition.</param>
     /// <param name="matcher">A regex for matching the replacement pattern. The condition base has a compiled MessageRegex for this purpose.</param>
+    /// <param name="missingPropertyText">Optional string value used when properties are not found. If left blank any unmatched 
+    /// property paths will use "N/A".</param>
     /// <returns></returns>
-    protected virtual string BuildFailureMessage(string failureMessage, object contextData, Regex matcher)
+    protected virtual string BuildFailureMessage(string failureMessage, object contextData, Regex matcher, string missingPropertyText = "N/A")
     {
         if (string.IsNullOrWhiteSpace(failureMessage)) return failureMessage;
 
@@ -74,7 +74,7 @@ public abstract class ConditionEvaluatorBase<TContext> : IConditionEvaluator<TCo
         foreach (Match match in matches)//TODO maybe optimize by using span and slicing?
         {
             var propertyPath = match.Value.Substring(2, match.Value.Length - 3);
-            var replacementValue = GetPropertValueAsString(contextData, propertyPath, "N/A");
+            var replacementValue = GetPropertValueAsString(contextData, propertyPath, missingPropertyText);
 
             failureMessage = Regex.Replace(failureMessage, match.Value, replacementValue);
         }

@@ -279,7 +279,7 @@ public class RuleBuilder : IForConditionSetNamed, IForCondition, IContinueWith, 
 
     private void AddRegexCondition<TContext>(string conditionName, Expression<Func<TContext, object>> propertyExpression, string pattern, string failureMessage, RegexOptions regexOptions, EventDetails? eventDetails = null)
     {
-        pattern             = String.IsNullOrWhiteSpace(pattern) ? String.Empty : pattern.Trim();
+        pattern             = String.IsNullOrWhiteSpace(pattern) ? String.Empty : pattern;
         conditionName       = Check.ThrowIfNullOrWhitespace(conditionName);
         propertyExpression  = Check.ThrowIfNull(propertyExpression);
         failureMessage      = Check.ThrowIfNull(failureMessage);

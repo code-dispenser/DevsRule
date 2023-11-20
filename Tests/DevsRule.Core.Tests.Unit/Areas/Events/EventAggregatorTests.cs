@@ -72,7 +72,7 @@ public class EventAggregatorTests
 
         using (EventSubscription theEventSubscription = _eventAggregator.Subscribe<ConditionResultEvent>(HandleEvent))
         {
-            await _eventAggregator.Publish(conditionResultEvent, CancellationToken.None);
+            await _eventAggregator.Publish(conditionResultEvent, CancellationToken.None, PublishMethod.WaitForAll);
         }
 
         await _eventAggregator.Publish(conditionResultEvent, CancellationToken.None);
@@ -82,8 +82,6 @@ public class EventAggregatorTests
             theHandleCount++;
             await Task.CompletedTask;
         }
-
-        await Task.Delay(1);
 
         theHandleCount.Should().Be(1);
 

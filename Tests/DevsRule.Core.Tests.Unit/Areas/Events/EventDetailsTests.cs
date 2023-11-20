@@ -60,4 +60,15 @@ public class EventDetailsTests
 
         theEventDetails.Should().BeNull();
     }
+
+    [Fact]
+    public void When_converting_json_event_details_a_dot_should_be_added()
+    {
+        var jsonEventDetails = new JsonRule.EventDetails { EventTypeName="NoDotInBadName", EventWhenType= null!, PublishMethod = null! };
+
+        EventDetails theEventDetails = EventDetails.FromJsonRule(jsonEventDetails)!;
+
+        theEventDetails.Should().BeNull();
+    }
 }
+ 

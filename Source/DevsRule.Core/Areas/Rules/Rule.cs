@@ -77,7 +77,6 @@ public class Rule : IRule
                 throw new MissingRuleContextsException(String.Format(GlobalStrings.Unmatched_Condition_Contexts_Exception_Message, this.RuleName) + String.Join(", ", unmatchedContexts));
             }
 
-
             foreach (var conditionSet in _conditionSets)
             {
                 var currentResult = await conditionSet.EvaluateConditions(resolver, contexts, eventPublisher, cancellationToken).ConfigureAwait(false);
@@ -85,7 +84,6 @@ public class Rule : IRule
                 if (setResult is null)
                 {
                     setResult = currentResult;
-                    if (true == HasExceptionInChain(currentResult)) break;
                     if (true == currentResult.IsSuccess) break;//Logical OR so done if true or fail due to exception
                     continue;//nothing to chain
                 }
@@ -93,8 +91,6 @@ public class Rule : IRule
                 SetEndOfChain(ref setResult, ref currentResult);
 
                 setResult = currentResult;
-
-                if (true == HasExceptionInChain(currentResult)) break;
                 if (true == currentResult.IsSuccess) break;//Logical or so done if true
             }
 
@@ -111,7 +107,6 @@ public class Rule : IRule
         {
             return new RuleResult(this.RuleName, this.FailureValue, setResult,this.TenantID, new List<string>(), new List<Exception> { ex }, -1, -1);
         }
-
     }
 
     private void SetEndOfChain(ref ConditionResult previousResult, ref ConditionResult currentResult)
@@ -130,12 +125,7 @@ public class Rule : IRule
         }
 
         resultAtChainEnd.EvaluationtChain = previousResult;
-
     }
-
-    private bool HasExceptionInChain(ConditionResult currentResult)
-    
-        => currentResult.Exception != null;
 
     private List<Exception> GetExecutionExceptions(ConditionResult setResult)
     {
