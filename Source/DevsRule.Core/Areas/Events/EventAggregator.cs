@@ -48,13 +48,8 @@ internal class EventAggregator : IEventAggregator
         {
             foreach (var handler in eventHandlers)
             {
-                try
-                {
-                    tasks.Add(handler(conditionRuleEvent, cancellationToken));
-                }
-                catch { }//Just ignore errors user can log in the handler
+                tasks.Add(handler(conditionRuleEvent, cancellationToken));
             }
-
             await Task.WhenAll(tasks).ConfigureAwait(false);
         }
         catch { }
@@ -64,11 +59,7 @@ internal class EventAggregator : IEventAggregator
     {
         foreach (var handler in eventHandlers)
         {
-            try
-            {
-                _ = Task.Run(async () => await handler(conditionRuleEvent, cancellationToken),cancellationToken);//Fire and forget
-            }
-            catch  {}//Just ignore, fire and forget, user can log in the handler
+           _ = Task.Run(async () => await handler(conditionRuleEvent, cancellationToken), cancellationToken);//Fire and forget
         }
     }
 
