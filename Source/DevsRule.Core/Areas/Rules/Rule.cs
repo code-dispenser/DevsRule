@@ -171,10 +171,15 @@ public class Rule : IRule
         {
             var executionExceptions = new List<Exception>(exceptions);
             var stringType = typeof(string);
-            var constructorInfo = Type.GetType(eventDetails.EventTypeName)!.GetConstructor(new[] { stringType, typeof(bool), stringType, stringType, stringType, typeof(List<Exception>) });
-            var eventToPublish = (RuleEventBase)constructorInfo!.Invoke(new object[] { senderName, successEvent, successValue, failureValue, tenantID, executionExceptions });
 
-            await eventPublisher(eventToPublish, cancellationToken, eventDetails.PublishMethod).ConfigureAwait(false);
+            try
+            {
+                var constructorInfo = Type.GetType(eventDetails.EventTypeName)!.GetConstructor(new[] { stringType, typeof(bool), stringType, stringType, stringType, typeof(List<Exception>) });
+                var eventToPublish = (RuleEventBase)constructorInfo!.Invoke(new object[] { senderName, successEvent, successValue, failureValue, tenantID, executionExceptions });
+
+                await eventPublisher(eventToPublish, cancellationToken, eventDetails.PublishMethod).ConfigureAwait(false);
+            }
+            catch { }//squashing wrong EventTypes for now. i.e user has specified a ConditionEventType for a rule which have different constructors.
         }
     }
 

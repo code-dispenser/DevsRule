@@ -181,10 +181,14 @@ public sealed class ConditionSet : IConditionSet
 
             if (result.Exception != null) executionExceptions.Add(result.Exception);
 
-            var constructorInfo = Type.GetType(eventDetails.EventTypeName)!.GetConstructor(new[] { typeof(string), typeof(bool), typeof(Type), typeof(string), typeof(string), typeof(List<Exception>), typeof(Exception) });
-            var eventToPublish = (ConditionEventBase)constructorInfo!.Invoke(new object[] { result.ConditionName, result.IsSuccess, contextType, jsonDataClone!, tenantID, executionExceptions, serializationExcepion! });
+            try
+            {
+                var constructorInfo = Type.GetType(eventDetails.EventTypeName)!.GetConstructor(new[] { typeof(string), typeof(bool), typeof(Type), typeof(string), typeof(string), typeof(List<Exception>), typeof(Exception) });
+                var eventToPublish = (ConditionEventBase)constructorInfo!.Invoke(new object[] { result.ConditionName, result.IsSuccess, contextType, jsonDataClone!, tenantID, executionExceptions, serializationExcepion! });
 
-            await eventPublisher(eventToPublish, cancellationToken, eventDetails.PublishMethod).ConfigureAwait(false);
+                await eventPublisher(eventToPublish, cancellationToken, eventDetails.PublishMethod).ConfigureAwait(false);
+            }
+            catch { }//Squashing wrong event types for now. i.e user has specified a RuleEventType for a condition which have different contructors.
         }
     }
 
