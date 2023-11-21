@@ -35,14 +35,6 @@ The libray also contains a couple of extension methods for the RuleResult so you
 
 Download and install the latest version of the [DevsRule.Core](https://www.nuget.org/packages/DevsRule.Core) package from [nuget.org](https://www.nuget.org/) using your preferred client tool.
 
-## Important!
-
-If you are using and/or want to use the native AOT Publish method in .net 8, this breaks the JSON serialization process used by the **'Rule.ToJsonString()'** method as well as the serialization process used by condition events that implement **'ConditionEventBase'**. If you do not use either of these then you will have no issues. If you do want to use these features then the options are, disable AOT Publishing or add the following to your project file:
-```
-<PropertyGroup>
-  <JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>
-</PropertyGroup>
-```
 ## Example usage
 
 At its simplest, it's a matter of creating an instance of the ConditionEngine, adding a rule, and then having that rule evaluated with your instance data. Rules can be built bottom up by 
