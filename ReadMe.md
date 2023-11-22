@@ -1,4 +1,5 @@
-[![.NET](https://github.com/code-dispenser/DevsRule/actions/workflows/buildandtest.yml/badge.svg)](https://github.com/code-dispenser/DevsRule/actions/workflows/buildandtest.yml)
+[![.NET](https://github.com/code-dispenser/DevsRule/actions/workflows/buildandtest.yml/badge.svg)](https://github.com/code-dispenser/DevsRule/actions/workflows/buildandtest.yml) ![Nuget](https://img.shields.io/nuget/dt/DevsRule.Core)
+
 <h1>
 <img src="https://raw.github.com/code-dispenser/DevsRule/main/Assets/icon-64.png" align="center" alt="Devs Rule icon" /> Devs' Rule
 </h1>
