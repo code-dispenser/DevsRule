@@ -1,5 +1,7 @@
-[![.NET](https://github.com/code-dispenser/DevsRule/actions/workflows/buildandtest.yml/badge.svg)](https://github.com/code-dispenser/DevsRule/actions/workflows/buildandtest.yml) ![Nuget](https://img.shields.io/nuget/dt/DevsRule.Core) [![Coverage Status](https://coveralls.io/repos/github/code-dispenser/DevsRule/badge.svg?branch=main)](https://coveralls.io/github/code-dispenser/DevsRule?branch=main)
+[![.NET](https://github.com/code-dispenser/DevsRule/actions/workflows/buildandtest.yml/badge.svg)](https://github.com/code-dispenser/DevsRule/actions/workflows/buildandtest.yml) [![Coverage Status](https://coveralls.io/repos/github/code-dispenser/DevsRule/badge.svg?branch=main)](https://coveralls.io/github/code-dispenser/DevsRule?branch=main) [![Nuget download][download-image]][download-url]
 
+[download-image]: https://img.shields.io/nuget/dt/DevsRule.Core
+[download-url]: https://www.nuget.org/packages/DevsRule.Core
 <h1>
 <img src="https://raw.github.com/code-dispenser/DevsRule/main/Assets/icon-64.png" align="center" alt="Devs Rule icon" /> Devs' Rule
 </h1>
