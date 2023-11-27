@@ -20,10 +20,6 @@ internal class EventAggregator : IEventAggregator
 
         => (_resolver, _dependencyInjectionEnabled) = (null, false);
 
-    //private void Unsubscribe(Type eventType, WeakReference<Delegate> handler)
-    //{
-    //    if (_eventSubscriptions.ContainsKey(eventType)) _eventSubscriptions.Remove(eventType, out _);
-    //}
     private void Unsubscribe(Type eventType, WeakReference<Delegate> handler)
     {
         if (true == _eventSubscriptions.TryGetValue(eventType, out var handlers))
@@ -70,20 +66,6 @@ internal class EventAggregator : IEventAggregator
            _ = Task.Run(async () => await handler(conditionRuleEvent, cancellationToken), cancellationToken);//Fire and forget
         }
     }
-
-    //public EventSubscription Subscribe<TEvent>(HandleEvent<TEvent> handler) where TEvent : IEvent
-    //{
-
-    //    var eventType = typeof(TEvent);
-
-    //    var handlerList     = _eventSubscriptions.GetOrAdd(eventType, _ => new());
-    //    var weakRefHandler  = new WeakReference<Delegate>(handler);
-
-    //    handlerList.Add(weakRefHandler);
-
-    //    return new EventSubscription(() => Unsubscribe(eventType, weakRefHandler), handler);
-
-    //}
 
     public EventSubscription Subscribe<TEvent>(HandleEvent<TEvent> handler) where TEvent : IEvent
     {
