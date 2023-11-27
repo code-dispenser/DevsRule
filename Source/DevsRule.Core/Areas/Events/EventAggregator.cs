@@ -20,11 +20,19 @@ internal class EventAggregator : IEventAggregator
 
         => (_resolver, _dependencyInjectionEnabled) = (null, false);
 
+    //private void Unsubscribe(Type eventType, WeakReference<Delegate> handler)
+    //{
+    //    if (_eventSubscriptions.ContainsKey(eventType)) _eventSubscriptions.Remove(eventType, out _);
+    //}
     private void Unsubscribe(Type eventType, WeakReference<Delegate> handler)
     {
-        if (_eventSubscriptions.ContainsKey(eventType)) _eventSubscriptions.Remove(eventType, out _);
-    }
+        if (true == _eventSubscriptions.TryGetValue(eventType, out var handlers))
+        {
+            handlers.Remove(handler);
 
+            if (handlers.Count == 0) _eventSubscriptions.TryRemove(eventType, out _);
+        }
+    }
     public async Task Publish<TEvent>(TEvent conditionRuleEvent, CancellationToken cancellationToken, PublishMethod publishMethod = PublishMethod.FireAndForget) where TEvent : IEvent
     {
         List<HandleEvent<TEvent>> eventHandlers = new();
@@ -63,19 +71,33 @@ internal class EventAggregator : IEventAggregator
         }
     }
 
+    //public EventSubscription Subscribe<TEvent>(HandleEvent<TEvent> handler) where TEvent : IEvent
+    //{
+
+    //    var eventType = typeof(TEvent);
+
+    //    var handlerList     = _eventSubscriptions.GetOrAdd(eventType, _ => new());
+    //    var weakRefHandler  = new WeakReference<Delegate>(handler);
+
+    //    handlerList.Add(weakRefHandler);
+
+    //    return new EventSubscription(() => Unsubscribe(eventType, weakRefHandler), handler);
+
+    //}
+
     public EventSubscription Subscribe<TEvent>(HandleEvent<TEvent> handler) where TEvent : IEvent
     {
-
         var eventType = typeof(TEvent);
 
         var handlerList     = _eventSubscriptions.GetOrAdd(eventType, _ => new());
         var weakRefHandler  = new WeakReference<Delegate>(handler);
-        
-        handlerList.Add(weakRefHandler);
+        var comparer        = new WeakReferenceComparer<Delegate>();
+
+        if (false == handlerList.Any(existing => comparer.Equals(existing, weakRefHandler))) handlerList.Add(weakRefHandler);
 
         return new EventSubscription(() => Unsubscribe(eventType, weakRefHandler), handler);
-
     }
+
 
 
     private List<HandleEvent<TEvent>> GetRegisteredHandlers<TEvent>(CancellationToken cancellationToken) where TEvent : IEvent
@@ -127,6 +149,24 @@ internal class EventAggregator : IEventAggregator
         }
 
         return eventHandlers;
+    }
+
+    public class WeakReferenceComparer<T> : IEqualityComparer<WeakReference<T>> where T : class
+    {
+        public bool Equals(WeakReference<T> x, WeakReference<T> y)
+        {
+            if (x == null || y == null) return false;
+     
+            T xTarget, yTarget;
+            if (false == x.TryGetTarget(out xTarget) || false == y.TryGetTarget(out yTarget)) return false;
+ 
+            return xTarget == yTarget || (xTarget != null && xTarget.Equals(yTarget));
+        }
+        public int GetHashCode(WeakReference<T> obj)
+        {
+            T target;
+            return obj.TryGetTarget(out target) && target != null ? target.GetHashCode() : obj.GetHashCode();
+        }
     }
 }
 

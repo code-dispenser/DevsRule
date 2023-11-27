@@ -140,9 +140,7 @@ public class ConditionEngineTests : IClassFixture<ConditionEngineDIFixture>
         var conditionResultEvent    = new ConditionResultEvent("SomeSender", true, typeof(Customer), StaticData.CustomerOneAsJsonString(),"TenantID",new(), null);
         var theSubscription         = _conditionEngine.SubscribeToEvent<ConditionResultEvent>(HandleEvent);
 
-         await _conditionEngine.EventPublisher(conditionResultEvent,CancellationToken.None);
-
-        await Task.Delay(50); ;//published events are done with fire and forget so need delay set higher than needed
+        await _conditionEngine.EventPublisher(conditionResultEvent,CancellationToken.None, PublishMethod.WaitForAll);
 
         async Task HandleEvent(ConditionResultEvent theEvent, CancellationToken cancellationToken)
         {

@@ -1,10 +1,13 @@
 ﻿using Autofac;
 using DevsRule.Core.Areas.Events;
+using DevsRule.Core.Areas.Rules;
+using DevsRule.Core.Common.Models;
 using DevsRule.Core.Common.Seeds;
 using DevsRule.Tests.SharedDataAndFixtures.Data;
 using DevsRule.Tests.SharedDataAndFixtures.Events;
 using DevsRule.Tests.SharedDataAndFixtures.Models;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using Xunit;
 using Xunit.Sdk;
 
@@ -15,6 +18,8 @@ public class EventAggregatorTests
     internal IEventAggregator _eventAggregator;
 
     public int MyHandlerCallCount  { get; set; } = 0;
+
+    
 
     public EventAggregatorTests()
     {
@@ -77,6 +82,82 @@ public class EventAggregatorTests
         }
     }
 
+    [Fact]
+    public async Task Disposing_an_event_subscription_should_only_remove_the_handler_from_the_event_subscription_list_not_the_event_type()
+    {
+        var ruleEvent = new RuleResultEvent("TheRule", false, String.Empty, String.Empty, GlobalStrings.Default_TenantID, new List<Exception>());
+        var handlerOneSub = _eventAggregator.Subscribe<RuleResultEvent>(handlerOne);
+        var handlerTwoSub = _eventAggregator.Subscribe<RuleResultEvent>(handlerTwo);
+
+        handlerTwoSub.Dispose();
+
+        await _eventAggregator.Publish(ruleEvent, CancellationToken.None, PublishMethod.WaitForAll);
+
+        this.MyHandlerCallCount.Should().Be(1);
+
+        async Task handlerOne(RuleResultEvent conditionResultEvent, CancellationToken cancellationToken)
+        {
+            this.MyHandlerCallCount++;
+
+            await Task.CompletedTask;
+        }
+
+        async Task handlerTwo(RuleResultEvent conditionResultEvent, CancellationToken cancellationToken)
+        {
+            this.MyHandlerCallCount++;
+
+            await Task.CompletedTask;
+        }
+    }
+
+    [Fact]
+    public async Task Trying_to_add_a_duplicate_handler_should_just_return_a_subscription_without_adding_a_second_handler()
+    {
+        var ruleEvent = new RuleResultEvent("TheRule", false, String.Empty, String.Empty, GlobalStrings.Default_TenantID, new List<Exception>());
+        var handlerOneSub = _eventAggregator.Subscribe<RuleResultEvent>(handlerOne);
+        var duplicateSub  = _eventAggregator.Subscribe<RuleResultEvent>(handlerOne);
+
+        await _eventAggregator.Publish(ruleEvent, CancellationToken.None, PublishMethod.WaitForAll);
+        var firstCount = this.MyHandlerCallCount;
+
+        handlerOneSub.Dispose();
+        
+        await _eventAggregator.Publish(ruleEvent, CancellationToken.None, PublishMethod.WaitForAll);
+        var secondCount = this.MyHandlerCallCount;
+
+        duplicateSub.Dispose();
+
+        using(new AssertionScope())
+        {
+            firstCount.Should().Be(1);
+            secondCount.Should().Be(firstCount);
+        }
+
+        async Task handlerOne(RuleResultEvent conditionResultEvent, CancellationToken cancellationToken)
+        {
+            this.MyHandlerCallCount++;
+
+            await Task.CompletedTask;
+        }
+
+    }
+    [Fact]
+    public void A_duplicate_sub_should_not_error_when_disposing()
+    {
+        var ruleEvent = new RuleResultEvent("TheRule", false, String.Empty, String.Empty, GlobalStrings.Default_TenantID, new List<Exception>());
+        var handlerOneSub = _eventAggregator.Subscribe<RuleResultEvent>(handlerOne);
+        var duplicateSub = _eventAggregator.Subscribe<RuleResultEvent>(handlerOne);
+
+        handlerOneSub.Dispose();
+
+        FluentActions.Invoking(() => duplicateSub.Dispose()).Should().NotThrow();
+
+        async Task handlerOne(RuleResultEvent conditionResultEvent, CancellationToken cancellationToken)
+        {
+            await Task.CompletedTask;
+        }
+
+    }
     public class MyHandler : IEventHandler<ConditionResultEvent>
     {
         private readonly EventAggregatorTests _parentClass;
@@ -88,6 +169,6 @@ public class EventAggregatorTests
             await Task.CompletedTask;
         }
     }
-
+ 
 }
 

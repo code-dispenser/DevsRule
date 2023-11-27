@@ -32,7 +32,7 @@ public class ConditionSetTests : IClassFixture<ConditionEngineFixture>
     
         var ruleData = RuleDataBuilder.AddForAny(new NonSerializable("SomeValue",42,typeof(string))).Create();
 
-        var subscription = _conditionEngine.SubscribeToEvent<ConditionResultEvent>(HandelEvent);
+        var subscription = _conditionEngine.SubscribeToEvent<ConditionResultEvent>(HandelTheEvent);
         
         Exception? theException = null;
 
@@ -40,7 +40,7 @@ public class ConditionSetTests : IClassFixture<ConditionEngineFixture>
 
         theException.Should().NotBeNull();
 
-        async Task HandelEvent(ConditionResultEvent theEvent, CancellationToken cancellationToken)
+        async Task HandelTheEvent(ConditionResultEvent theEvent, CancellationToken cancellationToken)
         {
             theException =  theEvent.SerializationException;
             await Task.CompletedTask;
