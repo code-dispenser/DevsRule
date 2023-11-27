@@ -153,18 +153,18 @@ internal class EventAggregator : IEventAggregator
 
     public class WeakReferenceComparer<T> : IEqualityComparer<WeakReference<T>> where T : class
     {
-        public bool Equals(WeakReference<T> x, WeakReference<T> y)
+        public bool Equals(WeakReference<T>? x, WeakReference<T>? y)
         {
             if (x == null || y == null) return false;
      
-            T xTarget, yTarget;
+            T? xTarget, yTarget;
             if (false == x.TryGetTarget(out xTarget) || false == y.TryGetTarget(out yTarget)) return false;
  
             return xTarget == yTarget || (xTarget != null && xTarget.Equals(yTarget));
         }
         public int GetHashCode(WeakReference<T> obj)
         {
-            T target;
+            T? target;
             return obj.TryGetTarget(out target) && target != null ? target.GetHashCode() : obj.GetHashCode();
         }
     }
