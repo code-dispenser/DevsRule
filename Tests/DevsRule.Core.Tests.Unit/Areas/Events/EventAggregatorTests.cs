@@ -4,6 +4,7 @@ using DevsRule.Tests.SharedDataAndFixtures.Data;
 using DevsRule.Tests.SharedDataAndFixtures.Events;
 using DevsRule.Tests.SharedDataAndFixtures.Models;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using Xunit;
 
 namespace DevsRule.Core.Tests.Unit.Areas.Events;
@@ -90,7 +91,7 @@ public class EventAggregatorTests
     [Fact]
     public async Task Nullified_objects_should_not_be_kept_alive_by_un_disposed_subscriptions()
     {
-        ForRemoveUnregestered? testClass = new ForRemoveUnregestered(_eventAggregator, this);
+        ForRemoveUnregistered? testClass = new ForRemoveUnregistered(_eventAggregator, this);
         var conditionResultEvent = new ConditionResultEvent("SomeSender", true, typeof(Customer), StaticData.CustomerOneAsJsonString(), "TenantID", new());
 
         await _eventAggregator.Publish(conditionResultEvent, CancellationToken.None);
@@ -110,11 +111,80 @@ public class EventAggregatorTests
 
     }
 
-    public class ForRemoveUnregestered
+
+
+    [Fact]
+    public void The_weak_reference_comparer_should_return_true_for_indentical_references()
+    {
+        var theComparer       = new EventAggregator.WeakReferenceDelegateComparer();
+        var weakRefHandlerOne = new WeakReference<Delegate>(RuleEventHandler);
+        var weakRefHandlerTwo = new WeakReference<Delegate>(RuleEventHandler);
+
+        theComparer.Equals(weakRefHandlerOne, weakRefHandlerTwo).Should().BeTrue();
+
+        async Task RuleEventHandler(RuleResultEvent ruleEvent, CancellationToken cancellationToken) { await Task.CompletedTask; }
+    }
+    [Fact]
+    public void The_weak_reference_comparer_should_return_false_for_different_references()
+    {
+        var theComparer = new EventAggregator.WeakReferenceDelegateComparer();
+        var weakRefHandlerOne = new WeakReference<Delegate>(RuleEventHandlerOne);
+        var weakRefHandlerTwo = new WeakReference<Delegate>(RuleEventHandlerTwo);
+
+        theComparer.Equals(weakRefHandlerOne, weakRefHandlerTwo).Should().BeFalse();
+
+        async Task RuleEventHandlerOne(RuleResultEvent ruleEvent, CancellationToken cancellationToken) { await Task.CompletedTask; }
+        async Task RuleEventHandlerTwo(RuleResultEvent ruleEvent, CancellationToken cancellationToken) { await Task.CompletedTask; }
+    }
+
+    [Fact]
+    public void The_weak_reference_comparer_should_return_false_for_a_null_reference()
+    {
+        var theComparer = new EventAggregator.WeakReferenceDelegateComparer();
+        WeakReference<Delegate>? weakRefHandlerOne = null;
+        var weakRefHandlerTwo = new WeakReference<Delegate>(RuleEventHandlerTwo);
+
+        theComparer.Equals(weakRefHandlerOne, weakRefHandlerTwo).Should().BeFalse();
+
+        async Task RuleEventHandlerTwo(RuleResultEvent ruleEvent, CancellationToken cancellationToken) { await Task.CompletedTask; }
+    }
+
+    [Fact]
+    public void The_weak_reference_comparer_should_return_false_for_a_null_reference_target()
+    {
+        var theComparer = new EventAggregator.WeakReferenceDelegateComparer();
+        WeakReference<Delegate>? weakRefHandlerOne = new WeakReference<Delegate>(null!);
+        var weakRefHandlerTwo = new WeakReference<Delegate>(RuleEventHandlerTwo);
+
+        theComparer.Equals(weakRefHandlerOne, weakRefHandlerTwo).Should().BeFalse();
+
+        async Task RuleEventHandlerTwo(RuleResultEvent ruleEvent, CancellationToken cancellationToken) { await Task.CompletedTask; }
+    }
+
+    [Fact]
+    public void The_weak_reference_comparer_get_hash_code_should_return_an_integer_value()
+    {
+        var theComparer = new EventAggregator.WeakReferenceDelegateComparer();
+        var weakRefHandlerOne = new WeakReference<Delegate>(RuleEventHandler);
+        var weakRefHandlerTwo = new WeakReference<Delegate>(RuleEventHandler);
+
+        var theCodeValue = theComparer.GetHashCode(weakRefHandlerOne);
+
+        using (new AssertionScope())
+        {
+            theCodeValue.Should().BeGreaterThan(0);
+            theCodeValue.Should().Be(theComparer.GetHashCode(weakRefHandlerTwo));
+        }
+
+        async Task RuleEventHandler(RuleResultEvent ruleEvent, CancellationToken cancellationToken) { await Task.CompletedTask; }
+    }
+
+
+    private class ForRemoveUnregistered
     {
         private readonly EventSubscription _eventSubscription;
         private readonly EventAggregatorTests _parentClass;
-        internal ForRemoveUnregestered(IEventAggregator eventAggregator, EventAggregatorTests parentClass)
+        internal ForRemoveUnregistered(IEventAggregator eventAggregator, EventAggregatorTests parentClass)
         {
             _eventSubscription = eventAggregator.Subscribe<ConditionResultEvent>(FixedHandler);
             _parentClass = parentClass;

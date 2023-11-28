@@ -73,7 +73,7 @@ internal class EventAggregator : IEventAggregator
 
         var handlerList     = _eventSubscriptions.GetOrAdd(eventType, _ => new());
         var weakRefHandler  = new WeakReference<Delegate>(handler);
-        var comparer        = new WeakReferenceComparer<Delegate>();
+        var comparer        = new WeakReferenceDelegateComparer();
 
         if (false == handlerList.Any(existing => comparer.Equals(existing, weakRefHandler))) handlerList.Add(weakRefHandler);
 
@@ -133,20 +133,21 @@ internal class EventAggregator : IEventAggregator
         return eventHandlers;
     }
 
-    public class WeakReferenceComparer<T> : IEqualityComparer<WeakReference<T>> where T : class
+    internal class WeakReferenceDelegateComparer : IEqualityComparer<WeakReference<Delegate>>
     {
-        public bool Equals(WeakReference<T>? x, WeakReference<T>? y)
+        public bool Equals(WeakReference<Delegate>? x, WeakReference<Delegate>? y)
         {
             if (x == null || y == null) return false;
-     
-            T? xTarget, yTarget;
+
+            Delegate? xTarget, yTarget;
             if (false == x.TryGetTarget(out xTarget) || false == y.TryGetTarget(out yTarget)) return false;
- 
-            return xTarget == yTarget || (xTarget != null && xTarget.Equals(yTarget));
+
+            return xTarget == yTarget || xTarget.Equals(yTarget);
         }
-        public int GetHashCode(WeakReference<T> obj)
+
+        public int GetHashCode(WeakReference<Delegate> obj)
         {
-            T? target;
+            Delegate? target;
             return obj.TryGetTarget(out target) && target != null ? target.GetHashCode() : obj.GetHashCode();
         }
     }
