@@ -166,12 +166,13 @@ internal class Program
         builder.RegisterType<DeviceBatteryEventHandler>().As<IEventHandler<DeviceConditionEvent>>().InstancePerDependency();
         builder.RegisterType<MyCustomGenericDIAwareEvaulator<Address>>().InstancePerDependency();
         builder.RegisterType<ProbeValueConditionEvaluator>().InstancePerDependency();
-        builder.Register<ConditionEngine>(c =>
+        builder.Register(c =>
         {
             var context = c.Resolve<IComponentContext>();
             return new ConditionEngine(type => context.Resolve(type));
-        }).SingleInstance();
-        
+        }).As<ConditionEngine>().SingleInstance();
+
+
         return builder.Build();
 
     }
