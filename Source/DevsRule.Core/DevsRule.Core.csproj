@@ -18,7 +18,7 @@ enabling seamless integration and dynamic rule management.</Description>
 	<PackageIcon>icon-128.png</PackageIcon>
 	<RepositoryType></RepositoryType>
 	<PackageProjectUrl>https://github.com/code-dispenser/DevsRule</PackageProjectUrl>
-	<FileVersion>1.0.0</FileVersion>
+	<FileVersion>1.0.1</FileVersion>
 	<Copyright>Copyright (c) 2023 Paul Kent.</Copyright>
 	<PackageVersion>1.0.1</PackageVersion>
 	<AssemblyVersion>1.0.1</AssemblyVersion>
