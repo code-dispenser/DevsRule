@@ -59,7 +59,7 @@ namespace DevsRule.Core.Areas.Rules
         /// Allows for the output of a JSON containing the rule details that can be written to file or a database, for example.
         /// </summary>
         /// <param name="writeIndented">When true will pretty print the JSON.</param>
-        /// <param name="useEscaped">When true will escape certain charaters such as &lt; using UTF8 encoding.</param>
+        /// <param name="useEscaped">When true will escape certain characters such as &lt; using UTF8 encoding.</param>
         /// <returns>a rule as a JSON formatted string.</returns>
         string ToJsonString(bool writeIndented = false, bool useEscaped = true);
     }

@@ -9,7 +9,7 @@ namespace DevsRule.Core.Areas.Evaluators;
 /// Base class used for condition evaluators. The base class has helper methods to build failure messages if tokens are present within the in the 
 /// conditions failure message.
 /// </summary>
-/// <typeparam name="TContext">The data type used for the evaulation of the condition</typeparam>
+/// <typeparam name="TContext">The data type used for the evaluation of the condition</typeparam>
 public abstract class ConditionEvaluatorBase<TContext> : IConditionEvaluator<TContext>
 {
     protected static Regex MessageRegex { get; } = new Regex("@{.*?}", RegexOptions.Compiled);

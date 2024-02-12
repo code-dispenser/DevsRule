@@ -26,7 +26,7 @@ public class ConditionEngine : IConditionEngine
     
     /// <summary>
     /// Initialises the condition engine with a callback function that is used to resolve custom evaluators requiring dependency injection support
-    /// and/or that uses dynamic event handlers. Please see the online documentation for more information on how to link this to your choosen 
+    /// and/or that uses dynamic event handlers. Please see the online documentation for more information on how to link this to your chosen 
     /// IOC container.
     /// </summary>
     /// <param name="customTypeResolver">A call back function used to communicate with an IOC container</param>
@@ -208,12 +208,12 @@ public class ConditionEngine : IConditionEngine
     private Condition<TContext> ConditionFromJsonCondition<TContext>(JsonRule.ConditionSet.Condition jsonRuleCondition, EventDetails? eventDetails)
     {
         /*
-            * I could not get the code to work without seperating out the code in to this and CreateConditionCreator<TContext> method?
+            * I could not get the code to work without separating out the code in to this and CreateConditionCreator<TContext> method?
         */
         var failureMessage      = false == String.IsNullOrWhiteSpace(jsonRuleCondition.FailureMessage) ? jsonRuleCondition.FailureMessage.Trim() : "Condition failed";
         var evaluatorTypeName   = false == String.IsNullOrWhiteSpace(jsonRuleCondition.EvaluatorTypeName) ? jsonRuleCondition.EvaluatorTypeName.Trim() : "N/A";
         /*
-            * Add a condition creator for each combination of the condition<TContext> and evaluator type, should only be a handfull
+            * Add a condition creator for each combination of the condition<TContext> and evaluator type, should only be a handful
          */
         var cacheKey = String.Join("_", GlobalStrings.CacheKey_Part_ConditionCreator, typeof(TContext).FullName, evaluatorTypeName);
 

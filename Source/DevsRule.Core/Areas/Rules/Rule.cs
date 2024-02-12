@@ -200,8 +200,8 @@ public class Rule : IRule
     }
 
     /*
-        * Not keen on using attributes and I also wanted a layer between the rule and json for any slight changes so as not to affect serialization and desearialization.
-        * Opted pted to create a small jsonrule object as an intermediary -> DevsRule.Core.Common.Models
+        * Not keen on using attributes and I also wanted a layer between the rule and json for any slight changes so as not to affect serialization and deserialization.
+        * Opted to create a small jsonrule object as an intermediary -> DevsRule.Core.Common.Models
     */
     internal JsonRule RuleToJsonRule()
     {
@@ -271,10 +271,10 @@ public class Rule : IRule
 
                 var eventDetailsType = typeof(EventDetails);
                 var stringType = typeof(string);
-                var contructorTypes = new Type[7] { stringType, stringType, stringType, stringType, typeof(bool), typeof(Dictionary<string, string>), eventDetailsType };
+                var constructorTypes = new Type[7] { stringType, stringType, stringType, stringType, typeof(bool), typeof(Dictionary<string, string>), eventDetailsType };
                 Type closedConditionType = typeof(Condition<>).MakeGenericType(condition.ContextType);
                 var additionalInfo = ((Dictionary<string, string>)(condition.AdditionalInfo)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-                var conditionClone = closedConditionType.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, contructorTypes)!
+                var conditionClone = closedConditionType.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, constructorTypes)!
                                                 .Invoke(new object[] { condition.ConditionName, condition.ToEvaluate, condition.FailureMessage, condition.EvaluatorTypeName, condition.IsLambdaPredicate, additionalInfo, eventDetails! });
 
                 conditionSetClone.AndCondition(conditionClone);

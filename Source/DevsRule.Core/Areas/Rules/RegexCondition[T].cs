@@ -13,7 +13,7 @@ namespace DevsRule.Core.Common.Models;
 /// A condition that uses a regular expression for its evaluation. The ToEvaluate property holds the property path for the property to be evaluated.
 /// Various regex options can be set which are passed via the underlying conditions additionalinfo Dictionary&lt;string,string&gt; property.
 /// </summary>
-/// <typeparam name="TContext">The data type used for the evaulation of the condition.</typeparam>
+/// <typeparam name="TContext">The data type used for the evaluation of the condition.</typeparam>
 public sealed class RegexCondition<TContext> : Condition<TContext>
 {
     /// <summary>
@@ -68,7 +68,7 @@ public sealed class RegexCondition<TContext> : Condition<TContext>
     {
         if (additionalInfo != null && additionalInfo.ContainsKey(GlobalStrings.Regex_Pattern_Key) && false == String.IsNullOrWhiteSpace(additionalInfo[GlobalStrings.Regex_Pattern_Key])) return additionalInfo;
 
-        throw new MissingRegexPatternException(String.Format(GlobalStrings.MIssing_Regex_Pattern_Or_Pattern_Empty_Exception_Message, conditionName));
+        throw new MissingRegexPatternException(String.Format(GlobalStrings.Missing_Regex_Pattern_Or_Pattern_Empty_Exception_Message, conditionName));
     }
 
     private static string GetPropertyPathFromExpressionString(Expression<Func<TContext,object>> expression)

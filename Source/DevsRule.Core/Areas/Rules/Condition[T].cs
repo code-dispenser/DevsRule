@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 namespace DevsRule.Core.Areas.Rules;
 
 ///<inheritdoc cref="ICondition"/>
-/// <typeparam name="TContext">The data type used for the evaulation of the condition.</typeparam>
+/// <typeparam name="TContext">The data type used for the evaluation of the condition.</typeparam>
 public class Condition<TContext> : ICondition
 {
     public Dictionary<string, string> AdditionalInfo { get; }//TODO immutable fix?
@@ -50,8 +50,8 @@ public class Condition<TContext> : ICondition
     /// <summary>
     /// Evaluates the condition using the condition evaluator.
     /// </summary>
-    /// <param name="evaluator">An object that implements the IConditionEvaulator&al;TContext&gt; interface.</param>
-    /// <param name="data">The data context to be evaulated with.</param>
+    /// <param name="evaluator">An object that implements the IConditionEvaluator&al;TContext&gt; interface.</param>
+    /// <param name="data">The data context to be evaluated with.</param>
     /// <param name="cancellationToken">The cancellation token used to signify any cancellation requests.</param>
     /// <param name="tenantID">Optional tenantID for multitenant scenarios, the default is "All_Tenants".</param>
     /// <returns>an EvaluationResult which contains a boolean indicating success or failure, any failure message and/or exception.</returns>
@@ -63,9 +63,9 @@ public class Condition<TContext> : ICondition
     {
         string[] expressionParts = conditionExpression.Split("=>", StringSplitOptions.TrimEntries);
 
-        var indentifier = expressionParts[0];
+        var identifier = expressionParts[0];
 
-        ParameterExpression parameter = Expression.Parameter(typeof(TContext), indentifier);
+        ParameterExpression parameter = Expression.Parameter(typeof(TContext), identifier);
 
         LambdaExpression lambdaExpression = DynamicExpressionParser.ParseLambda(new[] { parameter }, typeof(bool), conditionExpression);
 

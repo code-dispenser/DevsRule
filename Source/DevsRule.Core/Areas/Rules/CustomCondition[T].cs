@@ -8,7 +8,7 @@ namespace DevsRule.Core.Areas.Rules;
 /// <summary>
 /// A condition that allows for either a predicate lambda or just a string to be evaluated by a custom evaluator.
 /// </summary>
-/// <typeparam name="TContext">The data type used for the evaulation of the condition.</typeparam>
+/// <typeparam name="TContext">The data type used for the evaluation of the condition.</typeparam>
 public class CustomCondition<TContext> : Condition<TContext>
 {
     public CustomCondition(string conditionName, Expression<Func<TContext, bool>> predicateExpression, string failureMessage, string evaluatorTypeName)

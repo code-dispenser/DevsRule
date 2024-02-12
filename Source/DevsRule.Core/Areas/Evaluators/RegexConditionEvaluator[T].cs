@@ -22,9 +22,9 @@ namespace DevsRule.Core.Areas.Evaluators
             var pattern         = regexCondition.AdditionalInfo[GlobalStrings.Regex_Pattern_Key];
             var isMatch         = Regex.IsMatch(propertyValue, pattern, regexOptions, TimeSpan.FromSeconds(2));
 
-            var failureMeassage = isMatch ? String.Empty : base.BuildFailureMessage(regexCondition.FailureMessage, context!, ConditionEvaluatorBase<TContext>.MessageRegex);
+            var failureMessage = isMatch ? String.Empty : base.BuildFailureMessage(regexCondition.FailureMessage, context!, ConditionEvaluatorBase<TContext>.MessageRegex);
             
-            return isMatch ? new EvaluationResult(true, failureMeassage) : new EvaluationResult(false,failureMeassage);
+            return isMatch ? new EvaluationResult(true, failureMessage) : new EvaluationResult(false,failureMessage);
         }
 
         private RegexOptions RegexOptionsFromDictionary(IReadOnlyDictionary<string,string> additionalInfo)

@@ -16,7 +16,7 @@ public interface IConditionSet
 
     /// <summary>
     /// The EvaluateConditions enumerates its collection of conditions and for each condition calls the Condition.EvaluateWith method.
-    /// Conditions within a set short-ciruit using And logic, if the first passes it will then evaluate the next condition otherwise
+    /// Conditions within a set short-circuit using And logic, if the first passes it will then evaluate the next condition otherwise
     /// it will return a failing result.
     /// </summary>
     /// <param name="resolver">The resolver is a delegate that is used to find and create the condition evaluator per condition.
@@ -28,7 +28,7 @@ public interface IConditionSet
     /// within scope of the respective rule.
     /// </param>
     /// <exception cref="MissingRuleContextsException">Thrown when <paramref name="contexts"/> is null or contains a null context.</exception>   
-    /// <exception cref="MissingContditionsException">Thrwon when there are no conditions in the condition set.</exception>
+    /// <exception cref="MissingContditionsException">Thrown when there are no conditions in the condition set.</exception>
     /// <returns>A ConditionResult containing all of the information about the evaluation path, failure messages, exceptions and timings.</returns>
     /// <remarks>If EvaluateConditions is called from a rule the exceptions are added to the RuleResult.</remarks>
     public Task<ConditionResult> EvaluateConditions(ConditionEvaluatorResolver resolver, RuleData contexts, EventPublisher eventPublisher, CancellationToken cancellationToken);
@@ -38,7 +38,7 @@ public interface IConditionSet
     /// </summary>
     /// <param name="condition"></param>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="condition"/> is null.</exception>
-    /// <exception cref="ArgumentException">Thrown when the condition is not assignalbe from ICondition&lt;TContext&gt;.</exception>
+    /// <exception cref="ArgumentException">Thrown when the condition is not assignable from ICondition&lt;TContext&gt;.</exception>
     /// <returns>the condition set for chaining.</returns>
     ConditionSet AndCondition(dynamic condition);
 

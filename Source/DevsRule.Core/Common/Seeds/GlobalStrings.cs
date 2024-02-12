@@ -7,7 +7,7 @@ internal static class GlobalStrings
     public static readonly string No_Rule_Conditions_Exception_Message                          = "The rule condition set named '{0}' has no conditions.";
     public static readonly string No_Rule_Condition_Sets_Exception_Message                      = "The rule has no conditions sets.";
     public static readonly string No_Rule_Contexts_Exception_Message                            = "The rule is missing the contexts for the conditions and/or could not match the ConditionSetName '{0}' to the ConditionSetName in the ConditionSetContexts.";
-    public static readonly string No_Matching_ContextSet_Exception_Message                      = "The rule could not match its ConditionSet namee '{0}' to any in the ConditionSetContexts.";
+    public static readonly string No_Matching_ContextSet_Exception_Message                      = "The rule could not match its ConditionSet name '{0}' to any in the ConditionSetContexts.";
     public static readonly string Missing_Rule_Contexts_Exception_Message                       = "The rule condition set named '{0}' is missing the following context types: ";
     public static readonly string Unmatched_Condition_Contexts_Exception_Message                = "The following data context for the rule '{0}' had these unmatching condition names: ";
     public static readonly string Missing_Rule_Contexts_Null_Context_Exception_Message          = "A data context for the rule is null";
@@ -16,9 +16,9 @@ internal static class GlobalStrings
     public static readonly string Rule_From_Json_Exception_Message                              = "The rule could not be created from the json string; please see the inner exception for details.";
     public static readonly string Context_Type_Assembly_Not_Found_Exception_Message             = "The assembly for the type of data context used for the condition {0} could not be found in the assemblies for the current app domain.";
     public static readonly string Missing_Condition_Evaluator_Exception_Message                 = "The condition evaluator named '{0}' has not been registered with the condition engine or could not be created.";
-    public static readonly string Disposing_Removed_Item_Exception_Message                      = "An exception occured whislt trying to dispose of the itme '{0}' that was removed from cache; please see the inner exception for details.";
+    public static readonly string Disposing_Removed_Item_Exception_Message                      = "An exception occurred whilst trying to dispose of the item '{0}' that was removed from cache; please see the inner exception for details.";
     public static readonly string Missing_Condition_ToEvaluate_Property_Value_Exception_Message = "The condition named '{0}' in the condition set '{1}' is missing it's ToEvaluate property value.";
-    public static readonly string MIssing_Regex_Pattern_Or_Pattern_Empty_Exception_Message      = "The condition named {0} is missing the Pattern Key or the pattern is null or empty";
+    public static readonly string Missing_Regex_Pattern_Or_Pattern_Empty_Exception_Message      = "The condition named {0} is missing the Pattern Key or the pattern is null or empty";
 
     public static readonly string Missing_Condition_EvaluatorDI_Exception_Message              = "The condition evaluator named '{0}' was not found in the DI container; please see inner exception for details";
 

@@ -59,7 +59,7 @@ public interface ICreateRule { Rule CreateRule(string tenantID = GlobalStrings.D
 public class RuleBuilder : IForConditionSetNamed, IForCondition, IContinueWith, ICreateRule
 {
     private readonly Dictionary<string, List<dynamic>> _setConditions = new Dictionary<string, List<dynamic>>();
-    private readonly SortedList<int, (string setName, string setValue)> _dictionaryOrder = new SortedList<int, (string setName, string setValue)>();//using seperate list as its easier than dictionary of dictionaries or casting with ordereddictionary etc
+    private readonly SortedList<int, (string setName, string setValue)> _dictionaryOrder = new SortedList<int, (string setName, string setValue)>();//using separate list as its easier than dictionary of dictionaries or casting with ordered-dictionary etc
     private readonly EventDetails? _ruleEventDetails = null;
 
     private string _ruleName = String.Empty;

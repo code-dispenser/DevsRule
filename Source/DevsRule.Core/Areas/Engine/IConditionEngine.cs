@@ -16,7 +16,7 @@ namespace DevsRule.Core.Areas.Engine
     /// The condition engine is responsible for converting json into rules, storing and fetching rules from an internal cache, starting a rule evaluation 
     /// process and for the creation of the the condition evaluators. 
     /// With regards to custom evaluators and dynamic event handlers, the engine stores registration details for these, and requests them from the IOC 
-    /// container when needed. Dyanamic event handlers are created by the IOC container when the condition engine publishes their associated events.
+    /// container when needed. Dynamic event handlers are created by the IOC container when the condition engine publishes their associated events.
     /// </summary>
     public interface IConditionEngine
     {
@@ -26,7 +26,7 @@ namespace DevsRule.Core.Areas.Engine
         /// cache it is added otherwise the existing entry is replaced.
         /// </summary>
         /// <param name="rule">The rule to be added to or updated in the cache.</param>
-        /// <param name="tenantID">The ID of the tenant for multitenant applications, a rule could be for a specific tennat.</param>
+        /// <param name="tenantID">The ID of the tenant for multitenant applications, a rule could be for a specific tenant.</param>
         /// <param name="cultureID">
         /// A rule could have text in a specific language, this allows for that selection. Nb. This does not affect an thread culture.
         /// </param>
@@ -65,7 +65,7 @@ namespace DevsRule.Core.Areas.Engine
 
 
         /// <summary>
-        /// Gets the rule from cache and then starts the evaulation process using the provided data contexts.
+        /// Gets the rule from cache and then starts the evaluation process using the provided data contexts.
         /// </summary>
         /// <param name="ruleName">The name of the rule to evaluate.</param>
         /// <param name="contexts">Contains the array of DataContexts for all conditions within a rule.</param>
@@ -79,7 +79,7 @@ namespace DevsRule.Core.Areas.Engine
         Task<RuleResult> EvaluateRule(string ruleName, RuleData contexts);
 
         /// <summary>
-        /// Gets the rule from cache and then starts the evaulation process using the data provided. The evaluation process can be cancelled by way of the
+        /// Gets the rule from cache and then starts the evaluation process using the data provided. The evaluation process can be cancelled by way of the
         /// provided cancellation token.
         /// </summary>
         /// <param name="ruleName">The name of the rule to evaluate, with its data contexts.</param>
@@ -97,7 +97,7 @@ namespace DevsRule.Core.Areas.Engine
         Task<RuleResult> EvaluateRule(string ruleName, RuleData contexts, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Gets the rule from cache and then evaulates it using the data provided, passing along a cancellationToken. The cache lookup uses the a cache key which
+        /// Gets the rule from cache and then evaluates it using the data provided, passing along a cancellationToken. The cache lookup uses the a cache key which
         /// is the combination of ruleName, tenantID and cultureID.
         /// </summary>
         /// <param name="ruleName">The name of the rule to evaluate, with its data contexts.</param>
@@ -107,7 +107,7 @@ namespace DevsRule.Core.Areas.Engine
         /// </param>
         /// <param name="tenantID">The ID of the tenant in multitenant applications (default is "All_Tenants" for when no tenantID is specified or when the rule is good for all tenants).</param>
         /// <param name="cultureID">The ID of the culture used by the rule, to signify the language used in text messages (default is "en-GB")
-        /// This does not affect any Thread culutres, its merely an ID to enable rules in with specific languages to be stored using the three part key - ruleName, tenantID and cultureID
+        /// This does not affect any Thread cultures, its merely an ID to enable rules in with specific languages to be stored using the three part key - ruleName, tenantID and cultureID
         /// </param>
         /// <exception cref="RuleNotFoundException">Thrown when the <paramref name="ruleName"/> is not found in the cache.</exception>
         /// <exception cref="MissingRuleContextsException">Thrown when the <paramref name="contexts"/> is null or an empty array.</exception>
@@ -122,7 +122,7 @@ namespace DevsRule.Core.Areas.Engine
 
         /// <summary>
         /// Gets the condition evaluator from cache or from an IOC container that is required in order for the rule condition
-        /// to be evluated.
+        /// to be evaluated.
         /// </summary>
         /// <param name="evaluatorName">The name of the evaluator</param>
         /// <param name="contextType">The data type expected by the condition</param>
@@ -132,9 +132,9 @@ namespace DevsRule.Core.Areas.Engine
 
 
         /// <summary>
-        /// Ingests a json formated string representing a rule. This json is converted into a Rule and then cached using the AddOrUpdate method.
+        /// Ingests a json formatted string representing a rule. This json is converted into a Rule and then cached using the AddOrUpdate method.
         /// </summary>
-        /// <param name="ruleJson">The json formated string containing the rule information.</param>
+        /// <param name="ruleJson">The json formatted string containing the rule information.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="ruleJson"/> the string is null, empty or just whitespace.</exception>
         /// <exception cref="MissingConditionToEvaluatePropertyValue">Thrown when the ToEvaluate property is null or missing.</exception>
         /// <exception cref="ContextTypeAssemblyNotFound">Thrown when the context data type for any condition is not found in your local assembly types.</exception>
@@ -142,10 +142,10 @@ namespace DevsRule.Core.Areas.Engine
         void IngestRuleFromJson(string ruleJson);
 
         /// <summary>
-        /// Converts a json formated string containing rule information into a rule. This method does not add a rule to cache but rather returns it.
+        /// Converts a json formatted string containing rule information into a rule. This method does not add a rule to cache but rather returns it.
         /// This method is useful for test/ensuring that json strings can be ingested.
         /// </summary>
-        /// <param name="ruleJson">The json formated string containing the rule information.</param>
+        /// <param name="ruleJson">The json formatted string containing the rule information.</param>
         /// <exception cref="ArgumentException">Thrown when <paramref name="ruleJson"/> the string is null, empty or just whitespace.</exception>
         /// <exception cref="MissingConditionToEvaluatePropertyValue">Thrown when the ToEvaluate property is null or missing.</exception>
         /// <exception cref="ContextTypeAssemblyNotFound">Thrown when the context data type for any condition is not found in your local assembly types.</exception>
@@ -191,11 +191,11 @@ namespace DevsRule.Core.Areas.Engine
 
         /// <summary>
         /// The SubscribeToEvent allows you to subscribe to events that you can handle locally via handlers created in forms and view models, for example.
-        /// Events can also be handled dynaically via registration of event handler classes in an IOC container.
+        /// Events can also be handled dynamically via registration of event handler classes in an IOC container.
         /// </summary>
         /// <typeparam name="TEvent">The type of event i.e typeof(MyEvent)</typeparam>
         /// <param name="eventHandler">This is the EventHandler you have defined. This method must accept two arguments, the actual type of event and a CancellationToken.</param>
-        /// <returns>an EventSubscription to be disposed when you no longer wish to recieve events.</returns>
+        /// <returns>an EventSubscription to be disposed when you no longer wish to receive events.</returns>
         EventSubscription SubscribeToEvent<TEvent>(HandleEvent<TEvent> eventHandler) where TEvent : IEvent;
 
     }

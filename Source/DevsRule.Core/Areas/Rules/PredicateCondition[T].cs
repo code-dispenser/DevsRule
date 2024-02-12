@@ -9,7 +9,7 @@ namespace DevsRule.Core.Common.Models;
 /// <summary>
 /// A condition that uses a compiled lambda predicate for its evaluation.
 /// </summary>
-/// <typeparam name="TContext">The data type used for the evaulation of the condition.</typeparam>
+/// <typeparam name="TContext">The data type used for the evaluation of the condition.</typeparam>
 public sealed class PredicateCondition<TContext> : Condition<TContext>
 {
     public PredicateCondition(string conditionName, Expression<Func<TContext, bool>> conditionExpression, string failureMessage)

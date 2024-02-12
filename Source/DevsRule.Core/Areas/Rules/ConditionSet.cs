@@ -168,14 +168,14 @@ public sealed class ConditionSet : IConditionSet
         {
             var contextType = result.EvaluationData!.GetType();
             string? jsonDataClone = null;
-            Exception? serializationExcepion = null;
+            Exception? serializationException = null;
 
 
             try
             {
                 jsonDataClone = JsonSerializer.Serialize(result.EvaluationData, contextType);
             }
-            catch (Exception ex) { serializationExcepion = ex; }
+            catch (Exception ex) { serializationException = ex; }
 
             var executionExceptions = new List<Exception>();
 
@@ -184,11 +184,11 @@ public sealed class ConditionSet : IConditionSet
             try
             {
                 var constructorInfo = Type.GetType(eventDetails.EventTypeName)!.GetConstructor(new[] { typeof(string), typeof(bool), typeof(Type), typeof(string), typeof(string), typeof(List<Exception>), typeof(Exception) });
-                var eventToPublish = (ConditionEventBase)constructorInfo!.Invoke(new object[] { result.ConditionName, result.IsSuccess, contextType, jsonDataClone!, tenantID, executionExceptions, serializationExcepion! });
+                var eventToPublish = (ConditionEventBase)constructorInfo!.Invoke(new object[] { result.ConditionName, result.IsSuccess, contextType, jsonDataClone!, tenantID, executionExceptions, serializationException! });
 
                 await eventPublisher(eventToPublish, cancellationToken, eventDetails.PublishMethod).ConfigureAwait(false);
             }
-            catch { }//Squashing wrong event types for now. i.e user has specified a RuleEventType for a condition which have different contructors.
+            catch { }//Squashing wrong event types for now. i.e user has specified a RuleEventType for a condition which have different constructors.
         }
     }
 
