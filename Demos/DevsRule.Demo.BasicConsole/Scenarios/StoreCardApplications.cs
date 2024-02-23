@@ -18,7 +18,7 @@ public class StoreCardApplications
     
     public async Task UsingCodeSingleContextAndCondition()
     {
-        var applicant = DataStore.GenerateStoreCardAppliation(1)!;
+        var applicant = DataStore.GenerateStoreCardApplication(1)!;
 
         var storeCardRule = CreateSingleContextUsingTheRuleBuilder();
         //Or
@@ -52,7 +52,7 @@ public class StoreCardApplications
 
         var storeCardRuleJsonString = await ConsoleGeneralUtils.ReadJsonRuleFile(Path.Combine(ConsoleGlobalStrings.Json_Rules_Folder_Path, "StoreCardApplicationSingleContextRule.json"));
 
-        var applicant = DataStore.GenerateStoreCardAppliation(2)!;
+        var applicant = DataStore.GenerateStoreCardApplication(2)!;
 
         //var storeCardRuleJsonString = CreateSingleContextUsingBuilder().ToJsonString();
 

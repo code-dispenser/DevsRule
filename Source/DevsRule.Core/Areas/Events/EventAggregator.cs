@@ -92,9 +92,9 @@ internal class EventAggregator : IEventAggregator
         {
 
             var enumerableHandlersType  = typeof(IEnumerable<>).MakeGenericType(eventHandlerType);
-            var domaninEventHandlers    = _resolver!(enumerableHandlersType) as Array;
+            var domainEventHandlers    = _resolver!(enumerableHandlersType) as Array;
 
-            foreach (var eventHandler in domaninEventHandlers!)
+            foreach (var eventHandler in domainEventHandlers!)
             {
                 try
                 {
@@ -102,7 +102,7 @@ internal class EventAggregator : IEventAggregator
 
                     registeredHandlers.Add(handler);
                 }
-                catch { }//TODO, convertion errors should be caught on import so probaly ok? 
+                catch { }//TODO, conversion errors should be caught on import so probably ok? 
             }
             
         }

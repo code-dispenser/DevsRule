@@ -33,7 +33,7 @@ public static class DataStore
 
         => OrderHistories.Where(o => o.CustomerID == customerID).SingleOrDefault();
 
-    public static StoreCardApplication? GenerateStoreCardAppliation(int customerID)
+    public static StoreCardApplication? GenerateStoreCardApplication(int customerID)
     {
 
         var customer        = Customers.Where(c => c.CustomerID == customerID).SingleOrDefault()!;
@@ -64,14 +64,15 @@ public static class DataStore
             ? (DateTime.Now.Year - firstOrderDate.Year - 1) <= 0 ? 0 : DateTime.Now.Year - firstOrderDate.Year
             : (DateTime.Now.Year - firstOrderDate.Year) <= 0 ? 0 : DateTime.Now.Year - firstOrderDate.Year;
     private static int AgeFromDOB(DateOnly DOB)
-    
-    => DateTime.Now.DayOfYear < DateTime.Now.DayOfYear ? DateTime.Now.Year - DOB.Year -1 : DateTime.Now.Year - DOB.Year;
+
+     => (DateTime.UtcNow.DayOfYear < DOB.DayOfYear) ? DateTime.UtcNow.Year - DOB.Year - 1 : DateTime.UtcNow.Year - DOB.Year;
+
 
     private static List<Customer> BuildCustomerList()
 
         => new List<Customer>()
         {
-            new Customer(1,"Danielle Baker",new DateOnly(2006,05,09),"01695 720312",CustomerType.Student),
+            new Customer(1,"Danielle Baker",new DateOnly(2010,05,09),"01695 720312",CustomerType.Student),
             new Customer(2, "Frederik Goodwin", new DateOnly(1974,01,30),"(732) 528-6445", CustomerType.Subscriber),
             new Customer(3,"Alexander Griffiths", new DateOnly(1986,09,27),"020 8204 0666", CustomerType.Ordinary),
             new Customer(4,"Gerard Donnelly", new DateOnly(1950,07,12),"(866) 592-2742", CustomerType.Pensioner)
