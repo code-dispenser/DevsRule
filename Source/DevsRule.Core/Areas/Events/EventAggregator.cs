@@ -37,14 +37,14 @@ internal class EventAggregator : IEventAggregator
 
         if (true == _dependencyInjectionEnabled) eventHandlers.AddRange(GetRegisteredHandlers<TEvent>(cancellationToken));
 
-        if (publishMethod == PublishMethod.FireAndForget) FireAndForgetStategy(conditionRuleEvent,eventHandlers, cancellationToken);
+        if (publishMethod == PublishMethod.FireAndForget) FireAndForgetStrategy(conditionRuleEvent,eventHandlers, cancellationToken);
 
-        if (publishMethod == PublishMethod.WaitForAll) await WaitAllStategy(conditionRuleEvent, eventHandlers, cancellationToken).ConfigureAwait(false);
+        if (publishMethod == PublishMethod.WaitForAll) await WaitAllStrategy(conditionRuleEvent, eventHandlers, cancellationToken).ConfigureAwait(false);
 
 
     }
 
-    private async Task WaitAllStategy<TEvent>(TEvent conditionRuleEvent, List<HandleEvent<TEvent>> eventHandlers, CancellationToken cancellationToken) where TEvent : IEvent
+    private async Task WaitAllStrategy<TEvent>(TEvent conditionRuleEvent, List<HandleEvent<TEvent>> eventHandlers, CancellationToken cancellationToken) where TEvent : IEvent
     {
         List<Task> tasks = new();
 
@@ -59,7 +59,7 @@ internal class EventAggregator : IEventAggregator
         catch { }
     }
 
-    private void FireAndForgetStategy<TEvent>(TEvent conditionRuleEvent, List<HandleEvent<TEvent>> eventHandlers, CancellationToken cancellationToken) where TEvent : IEvent
+    private void FireAndForgetStrategy<TEvent>(TEvent conditionRuleEvent, List<HandleEvent<TEvent>> eventHandlers, CancellationToken cancellationToken) where TEvent : IEvent
     {
         foreach (var handler in eventHandlers)
         {
