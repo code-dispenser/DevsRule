@@ -63,7 +63,7 @@ internal class EventAggregator : IEventAggregator
     {
         foreach (var handler in eventHandlers)
         {
-           _ = Task.Run(async () => await handler(conditionRuleEvent, cancellationToken), cancellationToken);//Fire and forget
+           _ = Task.Run(async () => await handler(conditionRuleEvent, cancellationToken));//Fire and forget
         }
     }
 
