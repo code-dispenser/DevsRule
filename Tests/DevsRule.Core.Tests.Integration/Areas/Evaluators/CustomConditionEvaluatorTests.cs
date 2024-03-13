@@ -18,15 +18,15 @@ public class CustomConditionEvaluatorTests : IClassFixture<ConditionEngineFixtur
         => (_conditionEngine, _outputHelper) = (conditionEngineFixture.ConditionEngine, outputHelper);
 
     [Fact]
-    public async Task Should_be_able_to_add_and_use_custom_condition_evaluators_for_conditions_along_side_the_builtin_evlauators()
+    public async Task Should_be_able_to_add_and_use_custom_condition_evaluators_for_conditions_along_side_the_built_in_evaluators()
     {
         var openGenericEvaluatorName = "MyCustomPredicateEvaluator";
         var closedGenericEvaluatorName = "CustomerOnlyEvaluator";
 
-        var openGenericEvaluatorType = typeof(CustomPredicteEvaluator<>);
+        var openGenericEvaluatorType = typeof(CustomPredicateEvaluator<>);
         var closedGenericEvaluatorType = typeof(CustomerOnlyEvaluator);
 
-        var customer = new Customer("John Smith", 101, 1000M, 5, new Address("25 Green Stree", "Camden", "London", "NW1 0HX"));
+        var customer = new Customer("John Smith", 101, 1000M, 5, new Address("25 Green Street", "Camden", "London", "NW1 0HX"));
         var supplier = new Supplier("Harveys", 1002, 10_000M);
 
         _conditionEngine.RegisterCustomEvaluator(openGenericEvaluatorName, openGenericEvaluatorType);
@@ -34,7 +34,7 @@ public class CustomConditionEvaluatorTests : IClassFixture<ConditionEngineFixtur
 
         var rule = RuleBuilder.WithName("RuleOne")
                         .ForConditionSetNamed("SetOne", "100")
-                            .WithRegexCondition<Supplier>("NoDoubleSpaceOrAmbersanceName", s => s.SupplierName, @"^(?!.*[\-&''_]{2})(?!.* {2})[\w][-\w&'' ]{1,100}(?<![\-_& ])$", "Name must be between 2 and 100 character, no double spaces or double ambersands")
+                            .WithRegexCondition<Supplier>("NoDoubleSpaceOrAmpersandName", s => s.SupplierName, @"^(?!.*[\-&''_]{2})(?!.* {2})[\w][-\w&'' ]{1,100}(?<![\-_& ])$", "Name must be between 2 and 100 character, no double spaces or double ampersands")
                             .AndCustomPredicateCondition<Supplier>("Supplier Name", s => s.SupplierName.StartsWith("S"), "Suppliers name should start with 'J'", openGenericEvaluatorName)
                         .OrConditionSetNamed("SetTwo", "200")
                             .WithCustomPredicateCondition<Customer>("Customer Name", c => c.Address!.City == "London", "Customers need to live in London", closedGenericEvaluatorName, new Dictionary<string, string>() { ["One"] = "some value" })

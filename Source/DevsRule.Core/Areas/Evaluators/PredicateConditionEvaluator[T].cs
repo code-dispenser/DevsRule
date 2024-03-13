@@ -17,7 +17,7 @@ public sealed class PredicateConditionEvaluator<TContext> : ConditionEvaluatorBa
                                 .ConfigureAwait(false);
         }
      
-        var result          = condition.CompiledPrediate!(data);
+        var result          = condition.CompiledPredicate!(data);
         var failureMessage = result ? String.Empty : base.BuildFailureMessage(condition.FailureMessage, data!, ConditionEvaluatorBase<TContext>.MessageRegex);
 
         return await Task.FromResult(new EvaluationResult(result,failureMessage)).ConfigureAwait(false);

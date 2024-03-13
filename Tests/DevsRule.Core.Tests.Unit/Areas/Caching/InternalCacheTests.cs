@@ -87,26 +87,26 @@ public class InternalCacheTests
     public void Should_squash_exceptions_when_tying_to_dispose_objects_in_the_add_or_update_method()
     {
         var cache           = new InternalCache();
-        var badEvaluatorOne = new ExcepitionInDisposEvaluator<Customer>();
-        var badEvaluatorTwo = new ExcepitionInDisposEvaluator<Supplier>();
+        var badEvaluatorOne = new ExceptionInDisposeEvaluator<Customer>();
+        var badEvaluatorTwo = new ExceptionInDisposeEvaluator<Supplier>();
         var cacheKey        = String.Join("_", "Evaluator", badEvaluatorOne.GetType().FullName);
 
         cache.AddOrUpdateItem(cacheKey, badEvaluatorOne);
         cache.AddOrUpdateItem(cacheKey, badEvaluatorTwo);
 
-        var theEvaluator = cache.TryGetItem<ExcepitionInDisposEvaluator<Supplier>>(cacheKey, out var evaluator) ? evaluator : null;
+        var theEvaluator = cache.TryGetItem<ExceptionInDisposeEvaluator<Supplier>>(cacheKey, out var evaluator) ? evaluator : null;
 
-        theEvaluator.Should().NotBeNull().And.BeOfType<ExcepitionInDisposEvaluator<Supplier>>();
+        theEvaluator.Should().NotBeNull().And.BeOfType<ExceptionInDisposeEvaluator<Supplier>>();
     }
 
     [Fact]
     public void Should_throw_disposing_removed_Item_exception_when_tying_to_dispose_objects_in_the_remove_Item_method()
     {
         var cache               = new InternalCache();
-        var badEvaluatorOne     = new ExcepitionInDisposEvaluator<Customer>();
+        var badEvaluatorOne     = new ExceptionInDisposeEvaluator<Customer>();
         var cacheKey            = String.Join("_", "Evaluator", badEvaluatorOne.GetType().FullName);
         
-        var evaluatorIsInCache = cache.GetOrAddItem<ExcepitionInDisposEvaluator<Customer>>(cacheKey, () => badEvaluatorOne);
+        var evaluatorIsInCache = cache.GetOrAddItem<ExceptionInDisposeEvaluator<Customer>>(cacheKey, () => badEvaluatorOne);
 
         using (new AssertionScope())
         {

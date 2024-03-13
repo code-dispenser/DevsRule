@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace DevsRule.Tests.SharedDataAndFixtures.Evaluators
 {
-    public class CustomPredicteEvaluator<TContext> : ConditionEvaluatorBase<TContext>
+    public class CustomPredicateEvaluator<TContext> : ConditionEvaluatorBase<TContext>
     {
         public override async Task<EvaluationResult> Evaluate(Condition<TContext> condition, TContext data, CancellationToken cancellationToken, string tenantID)
         {   /*
                 * custom code, other checks etc 
             */ 
-            var isSuccess = condition.IsLambdaPredicate ? condition.CompiledPrediate!(data) : false;
+            var isSuccess = condition.IsLambdaPredicate ? condition.CompiledPredicate!(data) : false;
 
             var failureMessage = condition.FailureMessage;
 

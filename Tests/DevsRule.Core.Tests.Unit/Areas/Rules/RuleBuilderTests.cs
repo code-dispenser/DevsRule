@@ -107,31 +107,31 @@ public class RuleBuilderTests
                         .CreateRule();
 
 
-        var theRuleEvent                = theRule.RuleEventDetails;
-        var custNameConditionEvent      = theRule.ConditionSets[0].Conditions[0].EventDetails;
-        var supNameConditionEvent       = theRule.ConditionSets[0].Conditions[1].EventDetails;
-        var custYearsConditionevent     = theRule.ConditionSets[0].Conditions[2].EventDetails;
-        var custAddressConditionEvent   = theRule.ConditionSets[0].Conditions[3].EventDetails;
+        var theRuleEvent                    = theRule.RuleEventDetails;
+        var customerNameConditionEvent      = theRule.ConditionSets[0].Conditions[0].EventDetails;
+        var supNameConditionEvent           = theRule.ConditionSets[0].Conditions[1].EventDetails;
+        var customerYearsConditionEvent     = theRule.ConditionSets[0].Conditions[2].EventDetails;
+        var customerAddressConditionEvent   = theRule.ConditionSets[0].Conditions[3].EventDetails;
 
 
         using (new AssertionScope())
         {
             theRuleEvent.Should().Match<EventDetails>(e => e.PublishMethod == PublishMethod.FireAndForget && e.EventWhenType == EventWhenType.OnFailure);
 
-            custNameConditionEvent.Should().Match<EventDetails>(e => e.EventWhenType == EventWhenType.Never && e.PublishMethod == PublishMethod.WaitForAll);
+            customerNameConditionEvent.Should().Match<EventDetails>(e => e.EventWhenType == EventWhenType.Never && e.PublishMethod == PublishMethod.WaitForAll);
 
             supNameConditionEvent.Should().Match<EventDetails>(e => e.EventWhenType == EventWhenType.OnSuccess && e.PublishMethod == PublishMethod.WaitForAll);
 
-            custYearsConditionevent.Should().Match<EventDetails>(e => e.EventWhenType == EventWhenType.OnFailure && e.PublishMethod == PublishMethod.FireAndForget);
+            customerYearsConditionEvent.Should().Match<EventDetails>(e => e.EventWhenType == EventWhenType.OnFailure && e.PublishMethod == PublishMethod.FireAndForget);
 
-            custAddressConditionEvent.Should().Match<EventDetails>(e => e.EventWhenType == EventWhenType.OnSuccessOrFailure && e.PublishMethod == PublishMethod.FireAndForget);
+            customerAddressConditionEvent.Should().Match<EventDetails>(e => e.EventWhenType == EventWhenType.OnSuccessOrFailure && e.PublishMethod == PublishMethod.FireAndForget);
         }
 
 
     }
 
     [Fact]
-    public void Should_add_custom_condtions_correctly()
+    public void Should_add_custom_conditions_correctly()
     {
         var theRule = RuleBuilder.WithName("RuleOne")
                         .ForConditionSetNamed("One")
@@ -142,15 +142,15 @@ public class RuleBuilderTests
                             .WithoutFailureValue()
                         .CreateRule();
         
-        var condtionOne = theRule.ConditionSets[0].Conditions[0];
-        var condtionTwo = theRule.ConditionSets[0].Conditions[1];
+        var conditionOne = theRule.ConditionSets[0].Conditions[0];
+        var conditionTwo = theRule.ConditionSets[0].Conditions[1];
 
         using(new AssertionScope())
         {
-            condtionOne.Should().Match<Condition<Customer>>(c => c.AdditionalInfo.Count == 0 && c.ContextType == typeof(Customer) && c.FailureMessage == "failure message"
+            conditionOne.Should().Match<Condition<Customer>>(c => c.AdditionalInfo.Count == 0 && c.ContextType == typeof(Customer) && c.FailureMessage == "failure message"
                                                                     && c.IsLambdaPredicate == false && c.EventDetails != null && c.ConditionName == "CustOne" && c.EvaluatorTypeName == "FirstEvaluator");
 
-            condtionTwo.Should().Match<Condition<Customer>>(c => c.AdditionalInfo.Count == 0 && c.ContextType == typeof(Customer) && c.FailureMessage == "failure message two"
+            conditionTwo.Should().Match<Condition<Customer>>(c => c.AdditionalInfo.Count == 0 && c.ContextType == typeof(Customer) && c.FailureMessage == "failure message two"
                                                         && c.IsLambdaPredicate == false && c.EventDetails != null && c.ConditionName == "CustTwo" && c.EvaluatorTypeName == "SecondEvaluator");
         }
     }
@@ -174,11 +174,11 @@ public class RuleBuilderTests
         {
             conditionOne.Should().Match<Condition<Customer>>(c => c.ConditionName == "Custom" && c.FailureMessage == "Should be CustomerOne" && c.EvaluatorTypeName == "CustomEvaluator"
                                                         && c.IsLambdaPredicate == true && c.ContextType == typeof(Customer) && c.EventDetails != null && c.AdditionalInfo.Count == 0
-                                                        && c.CompiledPrediate != null);
+                                                        && c.CompiledPredicate != null);
 
             conditionTwo.Should().Match<Condition<Customer>>(c => c.ConditionName == "CustomTwo" && c.FailureMessage == "Should be CustomerTwo" && c.EvaluatorTypeName == "CustomEvaluatorTwo"
                                          && c.IsLambdaPredicate == true && c.ContextType == typeof(Customer) && c.EventDetails == null && c.AdditionalInfo.Count == 0
-                                         && c.CompiledPrediate != null);
+                                         && c.CompiledPredicate != null);
 
             theRule.FailureValue.Should().Be("");
         }
@@ -218,28 +218,28 @@ public class RuleBuilderTests
             conditionOne.Should().Match<Condition<Customer>>(c => c.ConditionName == "RegexOne" && c.FailureMessage == "Town should be in uppercase" 
                                                               && c.EvaluatorTypeName == GlobalStrings.Regex_Condition_Evaluator && c.IsLambdaPredicate == false 
                                                               && c.ContextType == typeof(Customer) && c.EventDetails != null && c.AdditionalInfo.Count == 2
-                                                              && c.CompiledPrediate == null && c.ToEvaluate == "Address.Town");
+                                                              && c.CompiledPredicate == null && c.ToEvaluate == "Address.Town");
 
             conditionTwo.Should().Match<Condition<Supplier>>(c => c.ConditionName == "RegexTwo" && c.FailureMessage == "Should be a number between 0 and 999"
                                                               && c.EvaluatorTypeName == GlobalStrings.Regex_Condition_Evaluator && c.IsLambdaPredicate == false
                                                               && c.ContextType == typeof(Supplier) && c.EventDetails != null && c.AdditionalInfo.Count == 1
-                                                              && c.CompiledPrediate == null && c.ToEvaluate == "SupplierNo");
+                                                              && c.CompiledPredicate == null && c.ToEvaluate == "SupplierNo");
 
 
             conditionThree.Should().Match<Condition<Supplier>>(c => c.ConditionName == "RegexThree" && c.FailureMessage == "Should be a number between 0 and 999"
                                                               && c.EvaluatorTypeName == GlobalStrings.Regex_Condition_Evaluator && c.IsLambdaPredicate == false
                                                               && c.ContextType == typeof(Supplier) && c.EventDetails == null && c.AdditionalInfo.Count == 1
-                                                              && c.CompiledPrediate == null && c.ToEvaluate == "SupplierNo");
+                                                              && c.CompiledPredicate == null && c.ToEvaluate == "SupplierNo");
 
             conditionFour.Should().Match<Condition<Supplier>>(c => c.ConditionName == "RegexFour" && c.FailureMessage == "Should be a number between 0 and 999"
                                                               && c.EvaluatorTypeName == GlobalStrings.Regex_Condition_Evaluator && c.IsLambdaPredicate == false
                                                               && c.ContextType == typeof(Supplier) && c.EventDetails != null && c.AdditionalInfo.Count == 1
-                                                              && c.CompiledPrediate == null && c.ToEvaluate == "SupplierNo");
+                                                              && c.CompiledPredicate == null && c.ToEvaluate == "SupplierNo");
 
             conditionFive.Should().Match<Condition<Supplier>>(c => c.ConditionName == "RegexFive" && c.FailureMessage == "Should be a number between 0 and 999"
                                                               && c.EvaluatorTypeName == GlobalStrings.Regex_Condition_Evaluator && c.IsLambdaPredicate == false
                                                               && c.ContextType == typeof(Supplier) && c.EventDetails != null && c.AdditionalInfo.Count == 1
-                                                              && c.CompiledPrediate == null && c.ToEvaluate == "SupplierNo");
+                                                              && c.CompiledPredicate == null && c.ToEvaluate == "SupplierNo");
         }
 
 

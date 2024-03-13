@@ -59,7 +59,7 @@ public class RegexConditionEvaluatorTests : IClassFixture<ConditionEngineFixture
 
 
     [Fact]
-    public async Task Should_fail_if_the_culure_invariant_flag_was_not_set()
+    public async Task Should_fail_if_the_culture_invariant_flag_was_not_set()
     {
         var customer = new Customer("PhIl", 1, 1, 1);
 
@@ -71,8 +71,8 @@ public class RegexConditionEvaluatorTests : IClassFixture<ConditionEngineFixture
                     .CreateRule();
 
         /*
-            * Ignore case will work with our cutlure but fail for Turkish because there is no equivalent of a lower case I, so CultureInvariant needs to be set. 
-            * Could not think of an example where I did not need to use both the ignore case flag in conjuction with the culture flag, so this will have to do for now.
+            * Ignore case will work with our culture but fail for Turkish because there is no equivalent of a lower case I, so CultureInvariant needs to be set. 
+            * Could not think of an example where I did not need to use both the ignore case flag in conjunction with the culture flag, so this will have to do for now.
          */ 
         Thread.CurrentThread.CurrentCulture = new CultureInfo("tr-TR");
 
@@ -82,7 +82,7 @@ public class RegexConditionEvaluatorTests : IClassFixture<ConditionEngineFixture
 
     }
     [Fact]
-    public async Task Should_pass_if_the_culure_invariant_flag_was__set()
+    public async Task Should_pass_if_the_culture_invariant_flag_was__set()
     {
         var customer = new Customer("PhIl", 1, 1, 1);
 
@@ -94,8 +94,8 @@ public class RegexConditionEvaluatorTests : IClassFixture<ConditionEngineFixture
                     .CreateRule();
 
         /*
-            * Ignore case will work with our cutlure but fail for Turkish because there is no equivalent of a lower case I, so CultureInvariant needs to be set. 
-            * Could not think of an example where I did not need to use both the ignore case flag in conjuction with the culture flag, so this will have to do for now.
+            * Ignore case will work with our culture but fail for Turkish because there is no equivalent of a lower case I, so CultureInvariant needs to be set. 
+            * Could not think of an example where I did not need to use both the ignore case flag in conjunction with the culture flag, so this will have to do for now.
          */
         Thread.CurrentThread.CurrentCulture = new CultureInfo("tr-TR");
 
@@ -133,7 +133,7 @@ public class RegexConditionEvaluatorTests : IClassFixture<ConditionEngineFixture
     {
         /*
             * Customer name is two lines ^ $ start and end of input line is affected by Multiline
-            * It will pass with Muliline because there is a CustomerOne which matches the start and end of the line
+            * It will pass with Multiline because there is a CustomerOne which matches the start and end of the line
          */ 
         
         var customer = new Customer("CustomerTwo\nCustomerOne", 1, 1, 1);
@@ -345,7 +345,7 @@ public class RegexConditionEvaluatorTests : IClassFixture<ConditionEngineFixture
         (await rule.Evaluate(_conditionEngine.GetEvaluatorByName,contexts, _conditionEngine.EventPublisher)).Should().Match<RuleResult>(r => r.IsSuccess == false);
     }
     [Fact]
-    public async Task Correct_combinations_of_regex_options_such_as_those_combined_with_ecmascritp_should_be_pass()
+    public async Task Correct_combinations_of_regex_options_such_as_those_combined_with_ecmascript_should_be_pass()
     {
         //The RegexOptions.ECMAScript option can be combined only with the RegexOptions.IgnoreCase and RegexOptions.Multiline options. The use of any other option in a regular expression results in an ArgumentOutOfRangeException.
 
@@ -366,7 +366,7 @@ public class RegexConditionEvaluatorTests : IClassFixture<ConditionEngineFixture
     }
 
     [Fact]
-    public async Task Check_all_flags_are_passed_and_set_in_the_evaluator_via_code_coverage_despite_nosensical_combination()
+    public async Task Check_all_flags_are_passed_and_set_in_the_evaluator_via_code_coverage_despite_nonsensical_combination()
     {
 
         var additionalInfo = GeneralUtils.CreateDictionaryForRegex("[A-Za-z]+$",RegexOptions.None | RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.ECMAScript 
@@ -381,9 +381,9 @@ public class RegexConditionEvaluatorTests : IClassFixture<ConditionEngineFixture
 
         var contexts = RuleDataBuilder.AddForAny(customer).Create();
 
-        var theReslut = await rule.Evaluate(_conditionEngine.GetEvaluatorByName, contexts, _conditionEngine.EventPublisher);
+        var theResult = await rule.Evaluate(_conditionEngine.GetEvaluatorByName, contexts, _conditionEngine.EventPublisher);
 
-        theReslut.Should().Match<RuleResult>(r => r.IsSuccess == false);
+        theResult.Should().Match<RuleResult>(r => r.IsSuccess == false);
 
     }
     [Fact]
@@ -405,9 +405,9 @@ public class RegexConditionEvaluatorTests : IClassFixture<ConditionEngineFixture
 
         var contexts = RuleDataBuilder.AddForAny(customer).Create();
 
-        var theReslut = await rule.Evaluate(_conditionEngine.GetEvaluatorByName, contexts, _conditionEngine.EventPublisher);
+        var theResult = await rule.Evaluate(_conditionEngine.GetEvaluatorByName, contexts, _conditionEngine.EventPublisher);
 
-        theReslut.Should().Match<RuleResult>(r => r.IsSuccess == false);
+        theResult.Should().Match<RuleResult>(r => r.IsSuccess == false);
 
     }
 

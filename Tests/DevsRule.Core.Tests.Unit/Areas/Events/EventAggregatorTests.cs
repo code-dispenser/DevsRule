@@ -28,7 +28,7 @@ public class EventAggregatorTests
     }
 
     [Fact]
-    public async Task Should_recieve_events_that_are_subscribed_to_using_fire_and_forget()
+    public async Task Should_receive_events_that_are_subscribed_to_using_fire_and_forget()
     {
         var conditionResultEvent = new ConditionResultEvent("SomeSender", true, typeof(Customer), StaticData.CustomerOneAsJsonString(), "TenantID", new());
 
@@ -37,7 +37,7 @@ public class EventAggregatorTests
         await _eventAggregator.Publish(conditionResultEvent, CancellationToken.None, PublishMethod.FireAndForget);
         /*
             * Publish is using fire and forget, nothing to wait for so asserting in the handler
-            * instead of using a Task.Deley(1) or something similar
+            * instead of using a Task.Delay(1) or something similar
         */
         async Task HandleEvent(ConditionResultEvent theEvent, CancellationToken cancellationToken)
         {
@@ -47,7 +47,7 @@ public class EventAggregatorTests
         }
     }
     [Fact]
-    public async Task Should_recieve_events_that_are_subscribed_to_using_wait_for_all()
+    public async Task Should_receive_events_that_are_subscribed_to_using_wait_for_all()
     {
         var theSenderName = String.Empty;
 
@@ -114,7 +114,7 @@ public class EventAggregatorTests
 
 
     [Fact]
-    public void The_weak_reference_comparer_should_return_true_for_indentical_references()
+    public void The_weak_reference_comparer_should_return_true_for_identical_references()
     {
         var theComparer       = new EventAggregator.WeakReferenceDelegateComparer();
         var weakRefHandlerOne = new WeakReference<Delegate>(RuleEventHandler);

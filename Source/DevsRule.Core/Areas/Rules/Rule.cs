@@ -67,7 +67,7 @@ public class Rule : IRule
         try
         {
             if (contexts is null || contexts.Length == 0) throw new MissingRuleContextsException(GlobalStrings.No_Rule_Contexts_Exception_Message);
-            if (this.ConditionSets.Count == 0) throw new MissingContditionSetsException(GlobalStrings.No_Rule_Condition_Sets_Exception_Message);
+            if (this.ConditionSets.Count == 0) throw new MissingConditionSetsException(GlobalStrings.No_Rule_Condition_Sets_Exception_Message);
 
             var conditionNames    = _conditionSets.SelectMany(conditionSet => conditionSet.Conditions).Select(condition => condition.ConditionName).ToList();
             var unmatchedContexts = GetUnMatchedDataContexts(conditionNames, contexts);
@@ -111,20 +111,20 @@ public class Rule : IRule
 
     private void SetEndOfChain(ref ConditionResult previousResult, ref ConditionResult currentResult)
     {
-        if (currentResult.EvaluationtChain == null)
+        if (currentResult.EvaluationChain == null)
         {
-            currentResult.EvaluationtChain = previousResult;
+            currentResult.EvaluationChain = previousResult;
             return;
         }
 
         var resultAtChainEnd = currentResult;
 
-        while (resultAtChainEnd.EvaluationtChain != null)
+        while (resultAtChainEnd.EvaluationChain != null)
         {
-            resultAtChainEnd = resultAtChainEnd.EvaluationtChain;
+            resultAtChainEnd = resultAtChainEnd.EvaluationChain;
         }
 
-        resultAtChainEnd.EvaluationtChain = previousResult;
+        resultAtChainEnd.EvaluationChain = previousResult;
     }
 
     private List<Exception> GetExecutionExceptions(ConditionResult setResult)
@@ -135,7 +135,7 @@ public class Rule : IRule
         while (resultAtChainEnd != null)
         {
             if (resultAtChainEnd.Exception != null) exceptions.Add(resultAtChainEnd.Exception);
-            resultAtChainEnd = resultAtChainEnd.EvaluationtChain;
+            resultAtChainEnd = resultAtChainEnd.EvaluationChain;
         }
 
         return exceptions;
@@ -153,7 +153,7 @@ public class Rule : IRule
             if (checkResult.Exception != null) exceptions.Insert(0, checkResult.Exception);
             if (false == checkResult.IsSuccess) failureMessages.Insert(0, checkResult.FailureMessage);
 
-            checkResult = checkResult.EvaluationtChain;
+            checkResult = checkResult.EvaluationChain;
 
             evaluationCount++;
         }
@@ -201,7 +201,7 @@ public class Rule : IRule
 
     /*
         * Not keen on using attributes and I also wanted a layer between the rule and json for any slight changes so as not to affect serialization and deserialization.
-        * Opted to create a small jsonrule object as an intermediary -> DevsRule.Core.Common.Models
+        * Opted to create a small json rule object as an intermediary -> DevsRule.Core.Common.Models
     */
     internal JsonRule RuleToJsonRule()
     {

@@ -10,17 +10,17 @@ public static class RuleResultExtensions
 {
 
 
-    public static RuleResult OnSuccess(this RuleResult thisRuleresult, Action<RuleResult> onSuccess)
+    public static RuleResult OnSuccess(this RuleResult thisRuleResult, Action<RuleResult> onSuccess)
     {
-        if (thisRuleresult.IsSuccess) onSuccess(thisRuleresult); 
+        if (thisRuleResult.IsSuccess) onSuccess(thisRuleResult); 
 
-        return thisRuleresult;
+        return thisRuleResult;
     }
-    public static RuleResult OnFailure(this RuleResult thisRuleresult, Action<RuleResult> onFailure)
+    public static RuleResult OnFailure(this RuleResult thisRuleResult, Action<RuleResult> onFailure)
     {
-        if (false == thisRuleresult.IsSuccess) onFailure(thisRuleresult);
+        if (false == thisRuleResult.IsSuccess) onFailure(thisRuleResult);
 
-        return thisRuleresult;
+        return thisRuleResult;
     }
 
     public static async Task<RuleResult> OnSuccess(this Task<RuleResult> thisRuleResult, string ruleName, ConditionEngine conditionEngine, RuleData contexts)

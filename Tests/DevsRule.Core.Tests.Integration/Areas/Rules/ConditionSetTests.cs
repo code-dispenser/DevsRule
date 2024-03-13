@@ -49,7 +49,7 @@ public class ConditionSetTests : IClassFixture<ConditionEngineFixture>
     }
 
     [Fact]
-    public async Task Should_add_result_exception_to_event_exception_list_if_any_occured()
+    public async Task Should_add_result_exception_to_event_exception_list_if_any_occurred()
     {
         var conditionSet = new ConditionSet("SetOne", new PredicateCondition<Customer>("CustomerCondition", c => c.CustomerName == "CustomerName", "Name should be SomeValue",
                                                         EventDetails.Create<ConditionResultEvent>(EventWhenType.OnSuccessOrFailure, PublishMethod.WaitForAll),"WrongEvaluator"));

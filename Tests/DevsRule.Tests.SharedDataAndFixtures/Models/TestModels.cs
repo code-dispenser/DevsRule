@@ -11,8 +11,8 @@ public record Supplier(string SupplierName, int SupplierNo, decimal TotalPurchas
 
 
 public record Outcome(bool IsSuccess, string Details);
-public record Emplyoee(int EmployeeID, string EmployeeName);
-public record CaseAction(DateTime ActionDateTime, Emplyoee ActionBy, List<Outcome> Outcomes);
+public record Employee(int EmployeeID, string EmployeeName);
+public record CaseAction(DateTime ActionDateTime, Employee ActionBy, List<Outcome> Outcomes);
 public record Case(string CaseRef, string CaseName, List<CaseAction> CaseActions);
 public record Client(string ClientName, List<Case> Cases);
 

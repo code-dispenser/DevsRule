@@ -44,7 +44,7 @@ internal static class GlobalStrings
 
 
     public const string Regex_Pattern_Key                  = "Pattern";
-    public const string Regex_Mulitline_Key                = "Mulitline";
+    public const string Regex_Multiline_Key                = "Multiline";
     public const string Regex_Singleline_Key               = "Singleline";
     public const string Regex_IgnoreCase_Key               = "IgnoreCase";
     public const string Regex_CultureInvariant_Key         = "CultureInvariant";

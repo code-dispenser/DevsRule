@@ -106,8 +106,8 @@ public class StaticData
 
         var outcomes = new List<Outcome> { outComeOne,outComeTwo};
 
-        var employeeOne = new Emplyoee(1, "Paul");
-        var employeeTwo = new Emplyoee(1, "Ruess");
+        var employeeOne = new Employee(1, "Paul");
+        var employeeTwo = new Employee(1, "Russ");
 
         var caseActionOne = new CaseAction(DateTime.Now.AddDays(-10), employeeOne, outcomes);
         var caseActionTwo = new CaseAction(DateTime.Now, employeeOne, outcomes);

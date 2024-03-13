@@ -31,7 +31,7 @@ public class RuleResultTests : IClassFixture<ConditionEngineFixture>
                             .WithoutFailureValue()
                         .CreateRule();
         /*
-            * The first condition passes so needs to be And'ed with the second condition
+            * The first condition passes so needs to be And-ed with the second condition
             * The second condition fails which fails the set so the rule then needs to do an Or between the condition sets
             * The third condition is evaluated and passes. The rule is a success with three evaluations
         */
@@ -44,7 +44,7 @@ public class RuleResultTests : IClassFixture<ConditionEngineFixture>
     }
 
     [Fact]
-    public async Task The_rule_result_should_contain_the_name_of_the_rule_evalueated_and_the_total_time_taken_in_both_milli_and_microseconds()
+    public async Task The_rule_result_should_contain_the_name_of_the_rule_evaluated_and_the_total_time_taken_in_both_milli_and_microseconds()
     {
         var theRule = RuleBuilder
                         .WithName("RuleOne")
@@ -56,7 +56,7 @@ public class RuleResultTests : IClassFixture<ConditionEngineFixture>
                             .WithFailureValue("5")
                         .CreateRule();
         /*
-            * The first condition passes, but needs to be And'ed with the second condition
+            * The first condition passes, but needs to be And-ed with the second condition
             * The second condition fails so the rule needs to do an Or between the condition sets
             * The third condition is evaluated an passes. The rule is a success with three evaluations
         */

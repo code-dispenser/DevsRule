@@ -9,9 +9,9 @@ namespace DevsRule.Core.Common.Models;
 /// 'And' logic to determine whether to evaluate any other conditions within its set.
 /// </summary>
 /// <param name="IsSuccess">True or false</param>
-/// <param name="FailureMeassage">The failure message if <paramref name="IsSuccess"/> is false</param>
+/// <param name="FailureMessage">The failure message if <paramref name="IsSuccess"/> is false</param>
 /// <param name="Exception">For any exception that may occur during evaluation of the condition.</param>
-public record EvaluationResult(bool IsSuccess, string FailureMeassage = "", Exception? Exception = null);
+public record EvaluationResult(bool IsSuccess, string FailureMessage = "", Exception? Exception = null);
 
 
 /// <summary>

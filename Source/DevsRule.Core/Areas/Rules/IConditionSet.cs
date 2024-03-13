@@ -28,7 +28,7 @@ public interface IConditionSet
     /// within scope of the respective rule.
     /// </param>
     /// <exception cref="MissingRuleContextsException">Thrown when <paramref name="contexts"/> is null or contains a null context.</exception>   
-    /// <exception cref="MissingContditionsException">Thrown when there are no conditions in the condition set.</exception>
+    /// <exception cref="MissingConditionsException">Thrown when there are no conditions in the condition set.</exception>
     /// <returns>A ConditionResult containing all of the information about the evaluation path, failure messages, exceptions and timings.</returns>
     /// <remarks>If EvaluateConditions is called from a rule the exceptions are added to the RuleResult.</remarks>
     public Task<ConditionResult> EvaluateConditions(ConditionEvaluatorResolver resolver, RuleData contexts, EventPublisher eventPublisher, CancellationToken cancellationToken);

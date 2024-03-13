@@ -41,7 +41,7 @@ public class RegexConditionTTests
                         .ContextType.FullName.Should().Be("DevsRule.Tests.SharedDataAndFixtures.Models.Customer");
     }
     [Fact]
-    public void The_condition_string_should_be_populated_with_a_string_representaion_of_the_condition()
+    public void The_condition_string_should_be_populated_with_a_string_representation_of_the_condition()
     {
         Dictionary<string, string> regexData = new Dictionary<string, string> { ["Pattern"]="^CustomerOne$" };
 
@@ -57,7 +57,7 @@ public class RegexConditionTTests
         var regexCondition = RegexCondition<Customer>.Create("RegexCondition", c => c.MemberYears, "^[1-9]{1,2}$", "Member years should be 1 to 99", RegexOptions.None);
 
         regexCondition.Should().Match<RegexCondition<Customer>>(r => r.ConditionName == "RegexCondition" && r.IsLambdaPredicate == false && r.FailureMessage == "Member years should be 1 to 99"
-                                                               && r.CompiledPrediate == null && r.ContextType == typeof(Customer) && r.AdditionalInfo.Count == 1
+                                                               && r.CompiledPredicate == null && r.ContextType == typeof(Customer) && r.AdditionalInfo.Count == 1
                                                                && r.AdditionalInfo[GlobalStrings.Regex_Pattern_Key] == "^[1-9]{1,2}$");
     }
 
@@ -68,7 +68,7 @@ public class RegexConditionTTests
 
 
         regexCondition.Should().Match<RegexCondition<Customer>>(r => r.ConditionName == "RegexCondition" && r.IsLambdaPredicate == false && r.FailureMessage == "Member years should be 1 to 99"
-                                                               && r.CompiledPrediate == null && r.ContextType == typeof(Customer) && r.AdditionalInfo.Count == 3
+                                                               && r.CompiledPredicate == null && r.ContextType == typeof(Customer) && r.AdditionalInfo.Count == 3
                                                                && r.AdditionalInfo[GlobalStrings.Regex_Pattern_Key] == "^[1-9]{1,2}$"
                                                                && r.AdditionalInfo["One"] == "1" && r.AdditionalInfo["Two"] == "2");
     }
@@ -83,7 +83,7 @@ public class RegexConditionTTests
         using (new AssertionScope())
         {
             theCondition.Should().Match<RegexCondition<Customer>>(c => c.EventDetails != null && c.EvaluatorTypeName == GlobalStrings.Regex_Condition_Evaluator && c.AdditionalInfo != null 
-                                                                  && c.IsLambdaPredicate == false && c.CompiledPrediate == null && c.ConditionName == "Customer One"  
+                                                                  && c.IsLambdaPredicate == false && c.CompiledPredicate == null && c.ConditionName == "Customer One"  
                                                                   && c.ContextType == typeof(Customer)  && c.FailureMessage == "Should be upper case");
         }
 

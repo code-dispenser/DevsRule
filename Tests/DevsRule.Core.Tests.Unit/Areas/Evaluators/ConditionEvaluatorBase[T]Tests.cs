@@ -18,7 +18,7 @@ namespace DevsRule.Core.Tests.Unit.Areas.Evaluators
 
             var theResult = await evaluator.Evaluate(condition, StaticData.CustomerOne(), CancellationToken.None, "101");
 
-            theResult.FailureMeassage.Should().Be("Replaced with Missing");
+            theResult.FailureMessage.Should().Be("Replaced with Missing");
         }
     }
 }

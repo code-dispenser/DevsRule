@@ -39,7 +39,7 @@ namespace DevsRule.Core.Areas.Evaluators
                 {
                     case GlobalStrings.Regex_CultureInvariant_Key:          regexOptions = AddOption(regexOptions, RegexOptions.CultureInvariant, value);           break;
                     case GlobalStrings.Regex_IgnoreCase_Key:                regexOptions = AddOption(regexOptions, RegexOptions.IgnoreCase, value);                 break;
-                    case GlobalStrings.Regex_Mulitline_Key:                 regexOptions = AddOption(regexOptions, RegexOptions.Multiline, value);                  break;
+                    case GlobalStrings.Regex_Multiline_Key:                 regexOptions = AddOption(regexOptions, RegexOptions.Multiline, value);                  break;
                     case GlobalStrings.Regex_Singleline_Key:                regexOptions = AddOption(regexOptions, RegexOptions.Singleline, value);                 break;
                     case GlobalStrings.Regex_IgnorePatternWhitespace_Key:   regexOptions = AddOption(regexOptions, RegexOptions.IgnorePatternWhitespace, value);    break;
                     case GlobalStrings.Regex_NonBacktracking_Key:           regexOptions = AddOption(regexOptions, RegexOptions.NonBacktracking, value);            break;

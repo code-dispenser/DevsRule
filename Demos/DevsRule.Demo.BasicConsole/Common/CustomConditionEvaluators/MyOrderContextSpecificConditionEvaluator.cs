@@ -16,7 +16,7 @@ namespace DevsRule.Demo.BasicConsole.Common.CustomConditionEvaluators
             */
             if (true == condition.IsLambdaPredicate)//if this is true the condition will have a compiled predicate
             {
-                passed = condition.CompiledPrediate!(data);
+                passed = condition.CompiledPredicate!(data);
             }
             else
             {

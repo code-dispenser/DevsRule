@@ -22,12 +22,12 @@ namespace DevsRule.Demo.BasicConsole.Scenarios
                 * as well as the engine so it does not try to create and cache it, The engine will only create evaluators with parameterless constructors.
                 * 
                 * The engine will close the generic with the context type (TContext) and ask the DI container for the closed type 
-                * i.e in this instance it will ask the DI container for an instance of MyCustomGenericDIAwareEvaulator<Address>.
-                * As the engine needs to close the generic type with a context type at runtime you need to use typeof(MyCustomGenericDIAwareEvaulator<>)
-                * (MyCustomGenericDIAwareEvaulator<TContext> : ConditionEvaluatorBase<TContext>)
+                * i.e in this instance it will ask the DI container for an instance of MyCustomGenericDIAwareEvaluator<Address>.
+                * As the engine needs to close the generic type with a context type at runtime you need to use typeof(MyCustomGenericDIAwareEvaluator<>)
+                * (MyCustomGenericDIAwareEvaluator<TContext> : ConditionEvaluatorBase<TContext>)
             */
 
-            _conditionEngine.RegisterCustomEvaluatorForDependencyInjection("MyCustomGenericDIAwareEvaulator", typeof(MyCustomGenericDIAwareEvaulator<>));
+            _conditionEngine.RegisterCustomEvaluatorForDependencyInjection("MyCustomGenericDIAwareEvaluator", typeof(MyCustomGenericDIAwareEvaluator<>));
 
             var rule = CreateRuleUsingTheRuleBuilder();
 
@@ -55,12 +55,12 @@ namespace DevsRule.Demo.BasicConsole.Scenarios
 
         private Rule CreateRuleUsingTheRuleBuilder()
         { 
-            Dictionary<string,string> additionInfo = new Dictionary<string, string>() { ["StockUrl"]="https://dummyjson.com/products/", ["StockMessage"]="Sorry we do not have enougth stock of @{Title} to fullfil the request" };
+            Dictionary<string,string> additionInfo = new Dictionary<string, string>() { ["StockUrl"]="https://dummyjson.com/products/", ["StockMessage"]="Sorry we do not have enough stock of @{Title} to full fil the request" };
 
             return RuleBuilder.WithName("WithAPIRule")
                     .ForConditionSetNamed("CheckStockAndCreditCardSet")
                         .WithPredicateCondition<CustomerAccount>("CreditCardCondition", a => a.CardNoOnFile != null, "CustomerID: @{CustomerID} does not have a credit card")
-                        .AndCustomPredicateCondition<Address>("CanDeliverTo", a => a.Country == "United States", "We cannot deliver to customers in @{Country}", "MyCustomGenericDIAwareEvaulator",additionInfo)
+                        .AndCustomPredicateCondition<Address>("CanDeliverTo", a => a.Country == "United States", "We cannot deliver to customers in @{Country}", "MyCustomGenericDIAwareEvaluator",additionInfo)
                     .WithoutFailureValue()
                     .CreateRule();
         }          

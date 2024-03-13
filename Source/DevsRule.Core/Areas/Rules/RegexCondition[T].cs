@@ -11,7 +11,7 @@ namespace DevsRule.Core.Common.Models;
 
 /// <summary>
 /// A condition that uses a regular expression for its evaluation. The ToEvaluate property holds the property path for the property to be evaluated.
-/// Various regex options can be set which are passed via the underlying conditions additionalinfo Dictionary&lt;string,string&gt; property.
+/// Various regex options can be set which are passed via the underlying conditions additional info Dictionary&lt;string,string&gt; property.
 /// </summary>
 /// <typeparam name="TContext">The data type used for the evaluation of the condition.</typeparam>
 public sealed class RegexCondition<TContext> : Condition<TContext>
@@ -21,7 +21,7 @@ public sealed class RegexCondition<TContext> : Condition<TContext>
     /// </summary>
     /// <param name="conditionName">The name of the condition.</param>
     /// <param name="propertyExpression">An expression that allows strong typing of the property name, path.</param>
-    /// <param name="pattern">The pattern for the reqular expression.</param>
+    /// <param name="pattern">The pattern for the regular expression.</param>
     /// <param name="failureMessage">The message used if the pattern does not match the properties data.</param>
     /// <param name="regexOptions">Options used for the .Net Regex class. These get added to the underlying Dictionary&lt;string,string&gt;</param>
     /// <param name="eventDetails">An optional EventDetails object used to hold the eventing details.</param>
@@ -38,12 +38,12 @@ public sealed class RegexCondition<TContext> : Condition<TContext>
     /// </summary>
     /// <param name="conditionName">The name of the condition.</param>
     /// <param name="propertyExpression">An expression that allows strong typing of the property name, path.</param>
-    /// <param name="pattern">The pattern for the reqular expression.</param>
+    /// <param name="pattern">The pattern for the regular expression.</param>
     /// <param name="failureMessage">The message used if the pattern does not match the properties data.</param>
     /// <param name="regexOptions">Options used for the .Net Regex class. These get added to the underlying Dictionary&lt;string,string&gt;</param>
     /// <param name="evaluatorTypeName">The name of the customer evaluator for the RegexCondition</param>
     /// <param name="eventDetails">An optional EventDetails object used to hold the eventing details, use null if not needed.</param>
-    /// <param name="additionalInfo">An array of key value pairs that will get added to the underlying conditions Dictionary&lt;string,string&gt; used to pass addtional information to a custom evaluator.</param>
+    /// <param name="additionalInfo">An array of key value pairs that will get added to the underlying conditions Dictionary&lt;string,string&gt; used to pass additional information to a custom evaluator.</param>
     /// <returns>the RegexCondition in order for chaining.</returns>
     public static RegexCondition<TContext> Create(string conditionName, Expression<Func<TContext, object>> propertyExpression, string pattern, string failureMessage, RegexOptions regexOptions, string evaluatorTypeName, EventDetails? eventDetails, params (string key, string value)[] additionalInfo)
     {

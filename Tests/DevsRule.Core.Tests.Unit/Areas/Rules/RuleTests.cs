@@ -26,46 +26,46 @@ public class RuleTests : IClassFixture<ConditionEngineFixture>
 
 
     [Fact]
-    public void A_rule_should_set_its_tenantid_and_cultureid_properties_to_the_defaults_if_empty_or_missing()
+    public void A_rule_should_set_its_tenant_id_and_culture_id_properties_to_the_defaults_if_empty_or_missing()
 
         => new Rule("RuleOne","",null,"","")
                 .Should().Match<Rule>(r => r.TenantID == GlobalStrings.Default_TenantID && r.CultureID == GlobalStrings.Default_CultureID);
     [Fact]
-    public void A_rule_should_set_its_tenantid_and_cultureid_properties_to_the_defaults_if_empty_or_missing_when_a_condition_set_is_also_part_of_the_constructor()
+    public void A_rule_should_set_its_tenant_id_and_culture_id_properties_to_the_defaults_if_empty_or_missing_when_a_condition_set_is_also_part_of_the_constructor()
 
         => new Rule("RuleOne", new ConditionSet("SetOne"), "",  null, "", "")
             .Should().Match<Rule>(r => r.TenantID == GlobalStrings.Default_TenantID && r.CultureID == GlobalStrings.Default_CultureID);
 
     [Fact]
-    public async Task Evaluating_a_rule_without_condition_sets_should_return_a_failed_result_with_a_missing_contdition_sets_exception_in_its_exception_list()
+    public async Task Evaluating_a_rule_without_condition_sets_should_return_a_failed_result_with_a_missing_condition_sets_exception_in_its_exception_list()
 
         =>  (await new Rule("RuleOne").Evaluate(_conditionEngine.GetEvaluatorByName, RuleDataBuilder.AddForAny(StaticData.CustomerOne()).Create(), _conditionEngine.EventPublisher))
-                            .Should().Match<RuleResult>(r => r.IsSuccess == false && r.Exceptions[0].GetType() == typeof(MissingContditionSetsException));
+                            .Should().Match<RuleResult>(r => r.IsSuccess == false && r.Exceptions[0].GetType() == typeof(MissingConditionSetsException));
 
     [Fact]
-    public async Task Evaluating_a_rule_without_contexts_should_return_a_failed_result_with_a_missing_rule_contexts_exceptionin_its_exception_list()
+    public async Task Evaluating_a_rule_without_contexts_should_return_a_failed_result_with_a_missing_rule_contexts_exception_its_exception_list()
 
     => (await new Rule("RuleOne").Evaluate(_conditionEngine.GetEvaluatorByName, null!, _conditionEngine.EventPublisher))
                         .Should().Match<RuleResult>(r => r.IsSuccess == false && r.Exceptions[0].GetType() == typeof(MissingRuleContextsException));
 
     [Fact]
-    public async Task Evaluating_a_rule_with_null_contexts_should_return_a_failed_result_with_a_missing_rule_contexts_exceptionin_its_exception_list()
+    public async Task Evaluating_a_rule_with_null_contexts_should_return_a_failed_result_with_a_missing_rule_contexts_exception_its_exception_list()
 
         => (await new Rule("RuleOne").Evaluate(_conditionEngine.GetEvaluatorByName, null!, _conditionEngine.EventPublisher))
                             .Should().Match<RuleResult>(r => r.IsSuccess == false && r.Exceptions[0].GetType() == typeof(MissingRuleContextsException));
 
     [Fact]
-    public async Task Evaluating_a_rule_with_an_empty_context_array_should_return_a_failed_result_with_a_missing_rule_contexts_exceptionin_its_exception_list()
+    public async Task Evaluating_a_rule_with_an_empty_context_array_should_return_a_failed_result_with_a_missing_rule_contexts_exception_its_exception_list()
 
     => (await new Rule("RuleOne").Evaluate(_conditionEngine.GetEvaluatorByName, new RuleData(null!), _conditionEngine.EventPublisher))
                         .Should().Match<RuleResult>(r => r.IsSuccess == false && r.Exceptions[0].GetType() == typeof(MissingRuleContextsException));
 
     [Fact]
-    public async Task Evaluating_a_rule_with_a_condition_set_with_no_conditions_should_return_a_failed_result_with_a_missing_contditions_exceptionm_in_its_exception_list()
+    public async Task Evaluating_a_rule_with_a_condition_set_with_no_conditions_should_return_a_failed_result_with_a_missing_conditions_exception_in_its_exception_list()
 
         => (await new Rule("RuleOne", new ConditionSet("ConditionSetOne"))                                
                 .Evaluate(_conditionEngine.GetEvaluatorByName, RuleDataBuilder.AddForAny(StaticData.CustomerOne()).Create(), _conditionEngine.EventPublisher))
-                                .Should().Match<RuleResult>(r => r.IsSuccess == false && r.Exceptions[0].GetType() == typeof(MissingContditionsException));
+                                .Should().Match<RuleResult>(r => r.IsSuccess == false && r.Exceptions[0].GetType() == typeof(MissingConditionsException));
 
 
     [Fact]
@@ -115,7 +115,7 @@ public class RuleTests : IClassFixture<ConditionEngineFixture>
     }
 
     [Fact]
-    public void The_rule_to_jsonstring_should_return_a_valid_json_string_with_the_correct_values()
+    public void The_rule_to_json_string_should_return_a_valid_json_string_with_the_correct_values()
     {
         var additionalItems = new Dictionary<string, string> { ["One"] = "1", ["Two"] = "2" };
         var conditionOne    = new CustomCondition<Customer>("ConditionOne", "c => c.CustomerName == \"CustomerName\"", 
@@ -129,7 +129,7 @@ public class RuleTests : IClassFixture<ConditionEngineFixture>
         var jsonString = theRule.ToJsonString();
 
         var theRuleFromString       = _conditionEngine.RuleFromJson(jsonString);
-        var thefromStringCondition  = theRuleFromString.ConditionSets[0].Conditions[0];
+        var theFromStringCondition  = theRuleFromString.ConditionSets[0].Conditions[0];
 
         using (new AssertionScope())
         {
@@ -137,7 +137,7 @@ public class RuleTests : IClassFixture<ConditionEngineFixture>
 
             theRuleFromString.ConditionSets[0].Should().BeEquivalentTo(conditionSetOne, options => options.Excluding(c => c.Conditions));
 
-            ((Condition<Customer>)thefromStringCondition).Should().BeEquivalentTo(conditionOne, options => options.Excluding(c => c.CompiledPrediate));
+            ((Condition<Customer>)theFromStringCondition).Should().BeEquivalentTo(conditionOne, options => options.Excluding(c => c.CompiledPredicate));
         }
     }
 
@@ -190,17 +190,17 @@ public class RuleTests : IClassFixture<ConditionEngineFixture>
 
             clonedRule.ConditionSets[0].Should().BeEquivalentTo(conditionSetOne, options => options.Excluding(c => c.Conditions));
 
-            ((Condition<Customer>)clonedRule.ConditionSets[0].Conditions[0]).Should().BeEquivalentTo(conditionOne, options => options.Excluding(c => c.CompiledPrediate));
+            ((Condition<Customer>)clonedRule.ConditionSets[0].Conditions[0]).Should().BeEquivalentTo(conditionOne, options => options.Excluding(c => c.CompiledPredicate));
         }
     }
 
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
-    public void The_rule_to_json_string_method_should_not_escape_charaters_when_set_to_false(bool useEscaped)
+    public void The_rule_to_json_string_method_should_not_escape_characters_when_set_to_false(bool useEscaped)
     {
-        var condtionSet = new ConditionSet("SetOne", new PredicateCondition<Customer>("CustomerCondition", c => c.CustomerName == "CustomerOne", "Should be CustomerOne"));
-        var theRule     = new Rule("RuleOne", condtionSet, "FailureValue");
+        var conditionSet = new ConditionSet("SetOne", new PredicateCondition<Customer>("CustomerCondition", c => c.CustomerName == "CustomerOne", "Should be CustomerOne"));
+        var theRule     = new Rule("RuleOne", conditionSet, "FailureValue");
 
         var theJsonString = theRule.ToJsonString(false, useEscaped);
 

@@ -34,7 +34,7 @@ public class GeneralUtilsTests
                                 KeyValuePair.Create(GlobalStrings.Regex_ExplicitCapture_Key, "true"),
                                 KeyValuePair.Create(GlobalStrings.Regex_IgnoreCase_Key, "true"),
                                 KeyValuePair.Create(GlobalStrings.Regex_IgnorePatternWhitespace_Key, "true"),
-                                KeyValuePair.Create(GlobalStrings.Regex_Mulitline_Key, "true"),
+                                KeyValuePair.Create(GlobalStrings.Regex_Multiline_Key, "true"),
                                 KeyValuePair.Create(GlobalStrings.Regex_NonBacktracking_Key, "true"),
                                 KeyValuePair.Create(GlobalStrings.Regex_RightToLeft_Key, "true"),
                                 KeyValuePair.Create(GlobalStrings.Regex_Singleline_Key, "true")

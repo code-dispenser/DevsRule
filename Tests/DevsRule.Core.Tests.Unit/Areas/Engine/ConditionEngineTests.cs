@@ -33,7 +33,7 @@ public class ConditionEngineTests
     {
         var jsonString = RuleBuilder.WithName("EvenRule")
                                       .ForConditionSetNamed("EventSet")
-                                      .WithPredicateCondition<Customer>("CustomerCondition", c => c.CustomerName == "CustomerOne", "Should be called Customerone",
+                                      .WithPredicateCondition<Customer>("CustomerCondition", c => c.CustomerName == "CustomerOne", "Should be called CustomerOne",
                                             EventDetails.Create<ConditionResultEvent>(EventWhenType.OnSuccessOrFailure, PublishMethod.FireAndForget))
                                       .WithoutFailureValue()
                                       .CreateRule()
@@ -48,7 +48,7 @@ public class ConditionEngineTests
     {
         var jsonString = RuleBuilder.WithName("EvenRule", EventDetails.Create<RuleResultEvent>(EventWhenType.OnSuccessOrFailure, PublishMethod.FireAndForget))
                                       .ForConditionSetNamed("EventSet")
-                                      .WithPredicateCondition<Customer>("CustomerCondition", c => c.CustomerName == "CustomerOne", "Should be called Customerone")
+                                      .WithPredicateCondition<Customer>("CustomerCondition", c => c.CustomerName == "CustomerOne", "Should be called CustomerOne")
                                            
                                       .WithoutFailureValue()
                                       .CreateRule()
@@ -73,7 +73,7 @@ public class ConditionEngineTests
     }
 
     [Fact]
-    public void Should_throw_a_context_type_assembly_not_found_exception_if_the_context_type_is_not_listed_in_the_types_in_the_app_doamin_assemblies()
+    public void Should_throw_a_context_type_assembly_not_found_exception_if_the_context_type_is_not_listed_in_the_types_in_the_app_domain_assemblies()
     {
         JsonRule jsonRule = JsonSerializer.Deserialize<JsonRule>(StaticData.JsonRuleText)!;
 
@@ -174,7 +174,7 @@ public class ConditionEngineTests
     }
 
     [Fact]
-    public void Should_replace_null_tenantid_and_cultureid_with_defaults_when_using_add_or_update_rule()
+    public void Should_replace_null_tenant_id_and_culture_id_with_defaults_when_using_add_or_update_rule()
     {
         var conditionEngine = new ConditionEngine();
         var rule            = new Rule("RuleOne");

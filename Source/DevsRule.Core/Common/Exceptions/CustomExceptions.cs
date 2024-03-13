@@ -1,16 +1,16 @@
 ﻿namespace DevsRule.Core.Common.Exceptions;
 
-public class MissingContditionSetsException : Exception
+public class MissingConditionSetsException : Exception
 {
-    public MissingContditionSetsException(string message) : base(message) { }
+    public MissingConditionSetsException(string message) : base(message) { }
 }
 public class MissingRuleContextsException : Exception
 {
     public MissingRuleContextsException(string message) : base(message) { }
 }
-public class MissingContditionsException : Exception
+public class MissingConditionsException : Exception
 {
-    public MissingContditionsException(string message) : base(message) { }
+    public MissingConditionsException(string message) : base(message) { }
 }
 public class RuleNotFoundException : Exception
 {

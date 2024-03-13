@@ -19,7 +19,7 @@ public class ConditionResultTests
                                                              && c.EvalMicroseconds == 100
                                                              && c.EvaluatedBy == "TheEvaluator"
                                                              && c.EvaluationData!.Equals(StaticData.CustomerOne())
-                                                             && c.EvaluationtChain == null
+                                                             && c.EvaluationChain == null
                                                              && c.Exception!.GetType() == typeof(Exception)
                                                              && c.FailureMessage == "Works on my machine"
                                                              && c.IsSuccess == true
@@ -34,7 +34,7 @@ public class ConditionResultTests
     }
 
     [Fact]
-    public void Should_assign_empty_strings_to_nulls_from_the_constructor_arguements_for_various_properties_of_the_condition_result_class()
+    public void Should_assign_empty_strings_to_nulls_from_the_constructor_arguments_for_various_properties_of_the_condition_result_class()
     {
         var theConditionResult = new ConditionResult(null!, null!, null!, 0, null!, null!, null, null!, false, null!, 0, 0, null!);
 

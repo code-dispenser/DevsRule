@@ -26,7 +26,7 @@ public static class ConsoleGeneralUtils
             while (conditionChain != null)
             {
                 chainList.Add($"{conditionChain.SetName} - {conditionChain.ConditionName} ({conditionChain.IsSuccess})");
-                conditionChain = conditionChain.EvaluationtChain;
+                conditionChain = conditionChain.EvaluationChain;
             }
             chainList.Add(result.RuleName);
             result = result.RuleResultChain;

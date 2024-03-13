@@ -25,7 +25,7 @@ public class CustomConditionTests
                         .ContextType.FullName.Should().Be("DevsRule.Tests.SharedDataAndFixtures.Models.Customer");
 
     [Fact]
-    public void The_to_evaluate_string_should_be_populated_with_a_string_representaion_of_the_condition()
+    public void The_to_evaluate_string_should_be_populated_with_a_string_representation_of_the_condition()
     {
         Expression<Func<Customer, bool>> condition = (c) => c.CustomerName == "CustomerOne";
 
@@ -39,7 +39,7 @@ public class CustomConditionTests
     {
         var condition = new CustomCondition<Customer>("Customer One", c => c.CustomerName == "CustomerOne", StaticData.Customer_One_Name_Message, "SomeEvaluator");
 
-        var compiledFunc = condition.CompiledPrediate!;
+        var compiledFunc = condition.CompiledPredicate!;
 
         var thePredicateResult = compiledFunc(StaticData.CustomerOne());
 
@@ -56,7 +56,7 @@ public class CustomConditionTests
                                                         EventDetails.Create<ConditionResultEvent>(EventWhenType.OnSuccess, PublishMethod.WaitForAll));  
         
         theCondition.Should().Match<Condition<Customer>>(c => c.AdditionalInfo.Count == 0 && c.ContextType == typeof(Customer) && c.EventDetails != null
-                                                          && c.CompiledPrediate != null && c.ConditionName == "Custom" && c.EvaluatorTypeName == "CustomEvaluator"
+                                                          && c.CompiledPredicate != null && c.ConditionName == "Custom" && c.EvaluatorTypeName == "CustomEvaluator"
                                                           && c.ToEvaluate == expression.ToString()
                                                           && c.IsLambdaPredicate == true);
     }
@@ -68,7 +68,7 @@ public class CustomConditionTests
                                                         EventDetails.Create<ConditionResultEvent>(EventWhenType.OnSuccess, PublishMethod.WaitForAll));
 
         theCondition.Should().Match<Condition<Customer>>(c => c.AdditionalInfo.Count == 0 && c.ContextType == typeof(Customer) && c.EventDetails != null
-                                                          && c.CompiledPrediate == null && c.ConditionName == "Custom" && c.EvaluatorTypeName == "CustomEvaluator"
+                                                          && c.CompiledPredicate == null && c.ConditionName == "Custom" && c.EvaluatorTypeName == "CustomEvaluator"
                                                           && c.ToEvaluate == "Some text to evaluate"
                                                           && c.IsLambdaPredicate == false);
     }

@@ -80,9 +80,9 @@ public class SimpleTypeTests
 
         var theEvaluationResult = new EvaluationResult(false, "Failure Message", new Exception());
 
-        var withTheEvaluationResult = theEvaluationResult with { IsSuccess = false, FailureMeassage = "Failure Message" };
+        var withTheEvaluationResult = theEvaluationResult with { IsSuccess = false, FailureMessage = "Failure Message" };
 
-        theEvaluationResult.Should().Match<EvaluationResult>(r => r.IsSuccess == false && r.FailureMeassage == "Failure Message" && r.Exception != null);
+        theEvaluationResult.Should().Match<EvaluationResult>(r => r.IsSuccess == false && r.FailureMessage == "Failure Message" && r.Exception != null);
     }
 
 

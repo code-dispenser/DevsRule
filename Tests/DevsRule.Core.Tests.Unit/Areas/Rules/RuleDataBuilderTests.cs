@@ -11,7 +11,7 @@ namespace DevsRule.Core.Tests.Unit.Areas.Rules;
 public class RuleDataBuilderTests
 {
     [Fact]
-    public void Should_be_able_to_start_creation_with_add_for_all_or_add_for_condition_both_of_which_should_return_interface_iadddata_for_the_chaining()
+    public void Should_be_able_to_start_creation_with_add_for_all_or_add_for_condition_both_of_which_should_return_interface_i_add_data_for_the_chaining()
     {
         var thisForAll       = RuleDataBuilder.AddForAny(StaticData.CustomerOne());
         var thisForCondition = RuleDataBuilder.AddForCondition("ConditionName",StaticData.CustomerOne());
@@ -23,7 +23,7 @@ public class RuleDataBuilderTests
         }
     }
     [Fact]
-    public void After_the_add_you_Should_be_able_to_use_and_for_all_or_and_for_condition_both_of_which_should_return_interface_iadddata_for_the_chaining()
+    public void After_the_add_you_Should_be_able_to_use_and_for_all_or_and_for_condition_both_of_which_should_return_interface_i_add_data_for_the_chaining()
     {
         var thisForAll       = RuleDataBuilder.AddForAny(StaticData.CustomerOne()).AndForCondition("ConditionOne", StaticData.CustomerTwo()).AndForAny(StaticData.SupplierOne());
         var thisForCondition = RuleDataBuilder.AddForCondition("ConditionTwo", StaticData.CustomerOne()).AndForAny(StaticData.SupplierTwo()).AndForCondition("ConditionThree", StaticData.SupplierThree());

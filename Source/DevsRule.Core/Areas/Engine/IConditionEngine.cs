@@ -71,8 +71,8 @@ namespace DevsRule.Core.Areas.Engine
         /// <param name="contexts">Contains the array of DataContexts for all conditions within a rule.</param>
         /// <exception cref="RuleNotFoundException">Thrown when the <paramref name="ruleName"/> is not found in the cache.</exception>
         /// <exception cref="MissingRuleContextsException">Thrown when the <paramref name="contexts"/> is null or an empty array.</exception>
-        /// <exception cref="MissingContditionSetsException">Thrown when a rule has no condition sets.</exception>
-        /// <exception cref="MissingContditionsException">Thrown when a condition set contains no conditions</exception>
+        /// <exception cref="MissingConditionSetsException">Thrown when a rule has no condition sets.</exception>
+        /// <exception cref="MissingConditionsException">Thrown when a condition set contains no conditions</exception>
         /// <returns>A RuleResult containing all of the information about the evaluation path, failure messages, exceptions, timings and the overall 
         /// outcome and return value if specified by the rule.
         /// </returns>
@@ -89,8 +89,8 @@ namespace DevsRule.Core.Areas.Engine
         /// </param>
         /// <exception cref="RuleNotFoundException">Thrown when the <paramref name="ruleName"/> is not found in the cache.</exception>
         /// <exception cref="MissingRuleContextsException">Thrown when the <paramref name="contexts"/> is null or an empty array.</exception>
-        /// <exception cref="MissingContditionSetsException">Thrown when a rule has no condition sets.</exception>
-        /// <exception cref="MissingContditionsException">Thrown when a condition set contains no conditions</exception>
+        /// <exception cref="MissingConditionSetsException">Thrown when a rule has no condition sets.</exception>
+        /// <exception cref="MissingConditionsException">Thrown when a condition set contains no conditions</exception>
         /// <returns>A RuleResult containing all of the information about the evaluation path, failure messages, exceptions, timings and the overall 
         /// outcome and return value if specified by the rule.
         /// </returns>
@@ -111,8 +111,8 @@ namespace DevsRule.Core.Areas.Engine
         /// </param>
         /// <exception cref="RuleNotFoundException">Thrown when the <paramref name="ruleName"/> is not found in the cache.</exception>
         /// <exception cref="MissingRuleContextsException">Thrown when the <paramref name="contexts"/> is null or an empty array.</exception>
-        /// <exception cref="MissingContditionSetsException">Thrown when a rule has no condition sets.</exception>
-        /// <exception cref="MissingContditionsException">Thrown when a condition set contains no conditions</exception>
+        /// <exception cref="MissingConditionSetsException">Thrown when a rule has no condition sets.</exception>
+        /// <exception cref="MissingConditionsException">Thrown when a condition set contains no conditions</exception>
         /// <returns>A RuleResult containing all of the information about the evaluation path, failure messages, exceptions, timings and the overall 
         /// outcome and return value if specified by the rule.
         /// </returns>
@@ -184,7 +184,7 @@ namespace DevsRule.Core.Areas.Engine
         /// The WaitForAll values causes the code to use await Task.WhenAll which will wait for all handlers to return before proceeding onto the next condition evaluation or rule event.
         /// All unhandled exceptions are squashed in order to continue with the rule processing. Ensure you have the appropriate exception handling in your event handlers. 
         /// </remarks>
-        /// <returns>an awaitable Task.</returns>
+        /// <returns>an await able Task.</returns>
         Task EventPublisher<TEvent>(TEvent eventToPublish, CancellationToken cancellationToken, PublishMethod publishMethod = PublishMethod.FireAndForget) where TEvent : IEvent;
 
 

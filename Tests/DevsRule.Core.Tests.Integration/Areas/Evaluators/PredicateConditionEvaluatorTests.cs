@@ -78,7 +78,7 @@ public class PredicateConditionEvaluatorTests : IClassFixture<ConditionEngineFix
     }
 
     [Fact]
-    public async Task A_predicate_condition_compilation_exceptionn_should_be_caught_if_the_is_lambda_predicat_flag_is_set_to_false_when_it_should_be_true_for_predicate_conditions()
+    public async Task A_predicate_condition_compilation_exception_should_be_caught_if_the_is_lambda_predicate_flag_is_set_to_false_when_it_should_be_true_for_predicate_conditions()
     {
         var jsonRule = StaticData.JsonRulePredicateMissingLambdaFlagText;
 
@@ -103,9 +103,9 @@ public class PredicateConditionEvaluatorTests : IClassFixture<ConditionEngineFix
     {
         //Would only happen if purposed done in a custom evaluator
 
-        _conditionEngine.RegisterCustomEvaluator("CustomPredicteEvaluator", typeof(CustomPredicteEvaluator<>));
+        _conditionEngine.RegisterCustomEvaluator("CustomPredicateEvaluator", typeof(CustomPredicateEvaluator<>));
 
-        ConditionSet conditionSet = new ConditionSet("SetOne", new CustomCondition<Customer>("ConditionOne","ToEvaluate","Delete In Custom Evaluator", "CustomPredicteEvaluator",new Dictionary<string, string> { ["DeleteMessage"]="true"}));
+        ConditionSet conditionSet = new ConditionSet("SetOne", new CustomCondition<Customer>("ConditionOne","ToEvaluate","Delete In Custom Evaluator", "CustomPredicateEvaluator",new Dictionary<string, string> { ["DeleteMessage"]="true"}));
 
         var theResult = await conditionSet.EvaluateConditions(_conditionEngine.GetEvaluatorByName, RuleDataBuilder.AddForAny(StaticData.CustomerOne()).Create(), _conditionEngine.EventPublisher, CancellationToken.None);
 

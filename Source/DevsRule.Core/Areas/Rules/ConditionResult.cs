@@ -5,7 +5,7 @@ using DevsRule.Core.Common.Validation;
 namespace DevsRule.Core.Common.Models;
 /// <summary>
 /// A completed condition evaluation result, containing all information regarding the evaluation, such as failure messages, exceptions, evaluation timings
-/// and the owning conditions sets, SetValue, to be passed up the chain for the rule result if successful. Each ConditionResult contains the previous condtion
+/// and the owning conditions sets, SetValue, to be passed up the chain for the rule result if successful. Each ConditionResult contains the previous condition
 /// result (or null if it was the first) forming a chain from the first evaluation (end of chain) to the last evaluation (front of chain).
 /// </summary>
 public class ConditionResult
@@ -15,7 +15,7 @@ public class ConditionResult
     public string           TenantID            { get; }
     public string           ConditionName       { get; }
     public string           SetValue            { get; } 
-    public ConditionResult? EvaluationtChain    { get; set; }
+    public ConditionResult? EvaluationChain     { get; set; }
     public Exception?       Exception           { get; }
     public string           FailureMessage      { get; } 
     public bool             IsSuccess           { get; }

@@ -21,7 +21,7 @@ public class Condition<TContext> : ICondition
     public string   ConditionName       { get; }
     public bool     IsLambdaPredicate   { get; }
 
-    public Func<TContext, bool>? CompiledPrediate { get; }
+    public Func<TContext, bool>? CompiledPredicate { get; }
 
 
     internal Condition(string conditionName, string toEvaluate, string failureMessage, string evaluatorTypeName, bool isLambdaPredicate)
@@ -43,7 +43,7 @@ public class Condition<TContext> : ICondition
         EventDetails        = eventDetails;
         AdditionalInfo      = (additionalInfo == null) ? new Dictionary<string, string>() : new Dictionary<string, string>(additionalInfo);
 
-        if (true == isLambdaPredicate) CompiledPrediate = BuildPredicateFromString(toEvaluate!);
+        if (true == isLambdaPredicate) CompiledPredicate = BuildPredicateFromString(toEvaluate!);
     }
 
 

@@ -76,7 +76,7 @@ public sealed class ConditionSet : IConditionSet
     {
         if (true == HasNullContextData(contexts)) throw new MissingRuleContextsException(GlobalStrings.Missing_Rule_Contexts_Null_Context_Exception_Message);
         
-        if (this.Conditions.Count == 0) throw new MissingContditionsException(String.Format(GlobalStrings.No_Rule_Conditions_Exception_Message, this.ConditionSetName));
+        if (this.Conditions.Count == 0) throw new MissingConditionsException(String.Format(GlobalStrings.No_Rule_Conditions_Exception_Message, this.ConditionSetName));
 
         var missingContexts = GetMissingContexts(contexts);
 
@@ -114,7 +114,7 @@ public sealed class ConditionSet : IConditionSet
                 EvaluationResult evaluationResult = await condition.EvaluateWith(evalInstance, contextData, cancellationToken,tenantID);
 
                 var failureMessage = evaluationResult.IsSuccess ? condition.FailureMessage
-                                                                : String.IsNullOrWhiteSpace(evaluationResult.FailureMeassage) ? condition.FailureMessage : evaluationResult.FailureMeassage;
+                                                                : String.IsNullOrWhiteSpace(evaluationResult.FailureMessage) ? condition.FailureMessage : evaluationResult.FailureMessage;
 
                 endingTicks= Stopwatch.GetTimestamp();
 
@@ -146,7 +146,7 @@ public sealed class ConditionSet : IConditionSet
                 continue;//no chain building required here
             }
 
-            currentResult.EvaluationtChain = previousResult;
+            currentResult.EvaluationChain = previousResult;
             /*
                 * fail fast if result is false, equivalent to using a conditional logical AND with each condition result.
             */

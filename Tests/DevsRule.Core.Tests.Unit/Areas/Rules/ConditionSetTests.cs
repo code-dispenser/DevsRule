@@ -24,17 +24,17 @@ public class ConditionSetTests : IClassFixture<ConditionEngineFixture>
 
 
     [Fact]
-    public async Task One_condition_in_a_condition_set_should_have_a_null_evalutaion_chain()
+    public async Task One_condition_in_a_condition_set_should_have_a_null_evaluation_chain()
     {
 
         var theResult = await new ConditionSet("Set One", new PredicateCondition<Customer>("Customer Name", c => c.CustomerName == "CustomerOne", StaticData.Customer_One_Name_Message))
                  .EvaluateConditions(_conditionEngine.GetEvaluatorByName, RuleDataBuilder.AddForAny(StaticData.CustomerOne()).Create(), _conditionEngine.EventPublisher, CancellationToken.None);
         
-        theResult.EvaluationtChain.Should().BeNull();
+        theResult.EvaluationChain.Should().BeNull();
     }
 
     [Fact]
-    public async Task Two_conditions_with_the_first_passing_and_the_other_failiing_should_return_a_fail_with_the_passing_condition_in_the_evaluation_chain()
+    public async Task Two_conditions_with_the_first_passing_and_the_other_failing_should_return_a_fail_with_the_passing_condition_in_the_evaluation_chain()
     {
    
         var setResult = await new ConditionSet("Set One", new PredicateCondition<Customer>("Customer Name", c => c.CustomerName == "CustomerOne", StaticData.Customer_One_Name_Message))
@@ -43,27 +43,27 @@ public class ConditionSetTests : IClassFixture<ConditionEngineFixture>
 
         using (new AssertionScope())
         {
-            setResult.EvaluationtChain.Should().NotBeNull();
-            setResult.EvaluationtChain?.IsSuccess.Should().BeTrue();
+            setResult.EvaluationChain.Should().NotBeNull();
+            setResult.EvaluationChain?.IsSuccess.Should().BeTrue();
         }
 
     }
     [Fact]
     public async Task Two_conditions_with_the_first_failing_should_return_a_fail_with_no_evaluation_chain()
     {
-        var thetResult = await new ConditionSet("Set One", new PredicateCondition<Customer>("Customer Name",c => c.CustomerName == "CustomerTwo", StaticData.Customer_One_Name_Message))
+        var theResult = await new ConditionSet("Set One", new PredicateCondition<Customer>("Customer Name",c => c.CustomerName == "CustomerTwo", StaticData.Customer_One_Name_Message))
                                     .AndCondition(new PredicateCondition<Customer>("Member Years",c => c.MemberYears == 5, StaticData.Customer_One_Member_Years))
                                         .EvaluateConditions(_conditionEngine.GetEvaluatorByName,RuleDataBuilder.AddForAny(StaticData.CustomerOne()).Create(), _conditionEngine.EventPublisher, CancellationToken.None);
 
-        thetResult.Should().NotBeNull()
-                        .And.Match<ConditionResult>(r => r.IsSuccess == false && r.EvaluationtChain == null);
+        theResult.Should().NotBeNull()
+                        .And.Match<ConditionResult>(r => r.IsSuccess == false && r.EvaluationChain == null);
 
     }
 
     [Fact]
     public async Task Three_conditions_with_the_first_two_passing_with_the_last_failing_should_return_a_fail_with_the_two_passes_in_the_evaluation_chain()
     {
-        var thetResult = await new ConditionSet("Set One", new PredicateCondition<Customer>("Customer Name", c => c.CustomerName == "CustomerOne", StaticData.Customer_One_Name_Message))
+        var theResult = await new ConditionSet("Set One", new PredicateCondition<Customer>("Customer Name", c => c.CustomerName == "CustomerOne", StaticData.Customer_One_Name_Message))
                             .AndCondition(new PredicateCondition<Customer>("Member years", c => c.MemberYears == 1, StaticData.Customer_One_Member_Years))
                                 .AndCondition(new PredicateCondition<Customer>("Total Spend", c => c.TotalSpend == 5M, StaticData.Customer_One_Spend_Message))
                                     .EvaluateConditions(_conditionEngine.GetEvaluatorByName, RuleDataBuilder.AddForAny(StaticData.CustomerOne()).Create(), _conditionEngine.EventPublisher, CancellationToken.None);
@@ -71,20 +71,20 @@ public class ConditionSetTests : IClassFixture<ConditionEngineFixture>
 
         List<ConditionResult> conditionResults = new();
 
-        var theResultChain = thetResult;
+        var theResultChain = theResult;
 
         while (theResultChain != null)
         {
             conditionResults.Add(theResultChain);
 
-            theResultChain = theResultChain.EvaluationtChain;
+            theResultChain = theResultChain.EvaluationChain;
         }
         using (new AssertionScope())
         {
 
-            conditionResults[0].Should().Match<ConditionResult>(r => r.IsSuccess == false && r.ConditionSetIndex == 2 && r.EvaluationtChain != null);
-            conditionResults[1].Should().Match<ConditionResult>(r => r.IsSuccess == true && r.ConditionSetIndex == 1 && r.EvaluationtChain != null);
-            conditionResults[2].Should().Match<ConditionResult>(r => r.IsSuccess == true && r.ConditionSetIndex == 0 && r.EvaluationtChain == null);
+            conditionResults[0].Should().Match<ConditionResult>(r => r.IsSuccess == false && r.ConditionSetIndex == 2 && r.EvaluationChain != null);
+            conditionResults[1].Should().Match<ConditionResult>(r => r.IsSuccess == true && r.ConditionSetIndex == 1 && r.EvaluationChain != null);
+            conditionResults[2].Should().Match<ConditionResult>(r => r.IsSuccess == true && r.ConditionSetIndex == 0 && r.EvaluationChain == null);
         }
 
     }
@@ -156,17 +156,17 @@ public class ConditionSetTests : IClassFixture<ConditionEngineFixture>
         Customer customer = new Customer("Major Corp.", 999, 999_999, 5, new Address("Major Corp Street", "Camden", "London", "NW1 LLL"));
 
         var setOne = new ConditionSet("Set One", new PredicateCondition<Customer>("Customer Name", c => c.CustomerName == "CustomerOne" && c.TotalSpend >= 1_000_000,
-                                                         "@{CustomerName}, @{Address.Town}, @{Address.PostCode}, has only spent @{TotalSpend} which does not meet the requirment of a total spend of 1,000,000 or more"));
+                                                         "@{CustomerName}, @{Address.Town}, @{Address.PostCode}, has only spent @{TotalSpend} which does not meet the requirement of a total spend of 1,000,000 or more"));
 
         var theConditionResult = await setOne.EvaluateConditions(_conditionEngine.GetEvaluatorByName, RuleDataBuilder.AddForAny(customer).Create(), _conditionEngine.EventPublisher, CancellationToken.None);
 
 
-        theConditionResult.FailureMessage.Should().Be("Major Corp., Camden, NW1 LLL, has only spent 999999 which does not meet the requirment of a total spend of 1,000,000 or more");
+        theConditionResult.FailureMessage.Should().Be("Major Corp., Camden, NW1 LLL, has only spent 999999 which does not meet the requirement of a total spend of 1,000,000 or more");
 
     }
 
     [Fact]
-    public async Task A_condition_set_recieving_contexts_that_have_a_null_data_field_should_throw_a_missing_rule_contexts_exception()
+    public async Task A_condition_set_receiving_contexts_that_have_a_null_data_field_should_throw_a_missing_rule_contexts_exception()
     {
         var setOne = new ConditionSet("Set One", new PredicateCondition<Customer>("Customer Name", c => c.CustomerName == "CustomerOne" && c.TotalSpend >= 1_000_000, "Total spend should be greater than or equal to 1,000,000"));
 
@@ -186,17 +186,17 @@ public class ConditionSetTests : IClassFixture<ConditionEngineFixture>
     [Fact]
     public void Should_throw_a_missing_rule_contexts_exception_if_rule_data_null_or_contexts_are_null()
     {
-        var theCoditionSet = new ConditionSet("SetOne", new PredicateCondition<Customer>("CustomerName", c => c.CustomerName == "CustomerOne", "Should be CustomerOne"));
+        var theConditionSet = new ConditionSet("SetOne", new PredicateCondition<Customer>("CustomerName", c => c.CustomerName == "CustomerOne", "Should be CustomerOne"));
         
         using(new AssertionScope())
         {
-            FluentActions.Invoking(() => theCoditionSet.EvaluateConditions(_conditionEngine.GetEvaluatorByName, null!, _conditionEngine.EventPublisher, CancellationToken.None))
+            FluentActions.Invoking(() => theConditionSet.EvaluateConditions(_conditionEngine.GetEvaluatorByName, null!, _conditionEngine.EventPublisher, CancellationToken.None))
                 .Should().ThrowExactlyAsync<MissingRuleContextsException>();
 
-            FluentActions.Invoking(() => theCoditionSet.EvaluateConditions(_conditionEngine.GetEvaluatorByName, RuleDataBuilder.AddForCondition("test", null!).Create(), _conditionEngine.EventPublisher, CancellationToken.None))
+            FluentActions.Invoking(() => theConditionSet.EvaluateConditions(_conditionEngine.GetEvaluatorByName, RuleDataBuilder.AddForCondition("test", null!).Create(), _conditionEngine.EventPublisher, CancellationToken.None))
                 .Should().ThrowExactlyAsync<MissingRuleContextsException>();
 
-            FluentActions.Invoking(() => theCoditionSet.EvaluateConditions(_conditionEngine.GetEvaluatorByName, new RuleData(null!), _conditionEngine.EventPublisher, CancellationToken.None))
+            FluentActions.Invoking(() => theConditionSet.EvaluateConditions(_conditionEngine.GetEvaluatorByName, new RuleData(null!), _conditionEngine.EventPublisher, CancellationToken.None))
                 .Should().ThrowExactlyAsync<MissingRuleContextsException>();
 
         }

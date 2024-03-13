@@ -4,7 +4,7 @@ using DevsRule.Core.Common.Models;
 
 namespace DevsRule.Tests.SharedDataAndFixtures.Evaluators;
 
-public class ExcepitionInDisposEvaluator<TContext> : IConditionEvaluator<TContext>, IDisposable
+public class ExceptionInDisposeEvaluator<TContext> : IConditionEvaluator<TContext>, IDisposable
 {
     private bool _disposedValue;
 

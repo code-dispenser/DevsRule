@@ -9,15 +9,15 @@ using Xunit;
 
 namespace DevsRule.Core.Tests.Integration.Areas.Evaluators;
 
-public class CustomConditionEvaluatorWithContructorDITests : IClassFixture<ConditionEngineDIFixture>
+public class CustomConditionEvaluatorWithConstructorDITests : IClassFixture<ConditionEngineDIFixture>
 {
 
     private readonly ConditionEngine _conditionEngine;
-    public CustomConditionEvaluatorWithContructorDITests(ConditionEngineDIFixture conditionEngineDIFixture)
+    public CustomConditionEvaluatorWithConstructorDITests(ConditionEngineDIFixture conditionEngineDIFixture)
 
         => _conditionEngine = conditionEngineDIFixture.ConditionEngine;
     [Fact]
-    public async Task Shoud_be_able_to_use_constructor_injection_with_custom_evaluators_regisitered_in_a_di_container()
+    public async Task Should_be_able_to_use_constructor_injection_with_custom_evaluators_registered_in_a_di_container()
     {
         var theRule = RuleBuilder.WithName("RuleUsingDIEvaluator")
                                     .ForConditionSetNamed("DISet")

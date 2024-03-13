@@ -57,7 +57,7 @@ public class ConditionEngineTests : IClassFixture<ConditionEngineDIFixture>
                          .ForConditionSetNamed("SetOne", "10")
                              .WithPredicateCondition<Customer>("Customer Name and number", c => c.CustomerName == "CustomerOne" && c.CustomerNo == 2, "Customer name or number is not correct")
                          .OrConditionSetNamed("SetTwo", "20")
-                             .WithRegexCondition<Supplier>("Supllier Name", s => s.SupplierName, "^(?!.*[\\-&'' _]{2})[\\w][-\\w&'' ]{1,100}(?<![\\-_& ])$", "Contains two consequtive spaces, dahes, apostrophes or underscores")
+                             .WithRegexCondition<Supplier>("Supplier Name", s => s.SupplierName, "^(?!.*[\\-&'' _]{2})[\\w][-\\w&'' ]{1,100}(?<![\\-_& ])$", "Contains two consecutive spaces, dashes, apostrophes or underscores")
                          .OrConditionSetNamed("SetThree", "30")
                              .WithCustomPredicateCondition<Customer>("Member years", c => c.MemberYears == 3, "Member years should be four but had @{MemberYears}", "CustomDIRequiredEvaluator")
                          .WithFailureValue("0")
@@ -67,7 +67,7 @@ public class ConditionEngineTests : IClassFixture<ConditionEngineDIFixture>
                              .AndForAny(new Supplier("Supplier   Name", 1, 100.00M))
                              .AndForCondition("Member years", StaticData.CustomerThree()).Create();
 
-        //it will just overrite the existing if there, we are in the same fixture so dependent on order may or may not registered.
+        //it will just overwrite the existing if there, we are in the same fixture so dependent on order may or may not registered.
 
         _conditionEngine.RegisterCustomEvaluatorForDependencyInjection("CustomDIRequiredEvaluator", typeof(CustomDIRequiredEvaluator<>));
 
@@ -76,12 +76,12 @@ public class ConditionEngineTests : IClassFixture<ConditionEngineDIFixture>
         var theResult = await _conditionEngine.EvaluateRule(theRule.RuleName, contexts);
 
         theResult.Should().Match<RuleResult>(r => r.IsSuccess == true && r.FailureMessages[0] == "Customer name or number is not correct" 
-                                         && r.FailureMessages[1] == "Contains two consequtive spaces, dahes, apostrophes or underscores");
+                                         && r.FailureMessages[1] == "Contains two consecutive spaces, dashes, apostrophes or underscores");
     }
 
 
     [Fact]
-    public async Task Should_be_able_to_ingest_and_evaulate_a_json_rule_created_with_the_minimal_number_of_fields()
+    public async Task Should_be_able_to_ingest_and_evaluate_a_json_rule_created_with_the_minimal_number_of_fields()
     {
         var jsonRulePath = DataHelper.GetJsonRuleFilePath("JsonRuleMinimal.json");
 
@@ -97,7 +97,7 @@ public class ConditionEngineTests : IClassFixture<ConditionEngineDIFixture>
 
 
     [Fact]
-    public async Task Should_be_able_to_subscribe_to_and_recieve_events_via_the_engine()
+    public async Task Should_be_able_to_subscribe_to_and_receive_events_via_the_engine()
     {
         var theHandlerCalled = 0;
 

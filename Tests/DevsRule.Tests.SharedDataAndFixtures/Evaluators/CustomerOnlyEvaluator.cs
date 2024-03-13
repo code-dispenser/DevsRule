@@ -13,7 +13,7 @@ public class CustomerOnlyEvaluator : ConditionEvaluatorBase<Customer>
     public override async Task<EvaluationResult> Evaluate(Condition<Customer> condition, Customer data, CancellationToken cancellationToken, string tenantID)
     {
 
-        var isSuccess = condition.IsLambdaPredicate ? condition.CompiledPrediate!(data) : false;
+        var isSuccess = condition.IsLambdaPredicate ? condition.CompiledPredicate!(data) : false;
 
         var failureMessage = isSuccess ? String.Empty : base.BuildFailureMessage(condition.FailureMessage, data, ConditionEvaluatorBase<Customer>.MessageRegex);
 

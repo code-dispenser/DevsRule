@@ -27,7 +27,7 @@ public class PredicateConditionTests
                         .ContextType.FullName.Should().Be("DevsRule.Tests.SharedDataAndFixtures.Models.Customer");
 
     [Fact]
-    public void The_condition_string_should_be_populated_with_a_string_representaion_of_the_condition()
+    public void The_condition_string_should_be_populated_with_a_string_representation_of_the_condition()
     {
         Expression<Func<Customer, bool>> condition = (c) => c.CustomerName == "CustomerOne";
 
@@ -41,7 +41,7 @@ public class PredicateConditionTests
     {
         var condition = new PredicateCondition<Customer>("Customer One", c => c.CustomerName == "CustomerOne", StaticData.Customer_One_Name_Message);
 
-        var compiledFunc = condition.CompiledPrediate!;
+        var compiledFunc = condition.CompiledPredicate!;
 
         var thePredicateResult = compiledFunc(StaticData.CustomerOne());
 
@@ -58,7 +58,7 @@ public class PredicateConditionTests
         using(new AssertionScope())
         {
             theCondition.Should().Match<PredicateCondition<Customer>>(c => c.EventDetails != null && c.EvaluatorTypeName == GlobalStrings.Predicate_Condition_Evaluator && c.AdditionalInfo != null
-                                                                  && c.IsLambdaPredicate == true && c.CompiledPrediate != null && c.ConditionName == "Customer One"
+                                                                  && c.IsLambdaPredicate == true && c.CompiledPredicate != null && c.ConditionName == "Customer One"
                                                                   && c.ContextType == typeof(Customer)  && c.FailureMessage == StaticData.Customer_One_Name_Message);
         }
        

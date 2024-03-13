@@ -26,13 +26,13 @@ internal static class GeneralUtils
                                            .ToList()!;
     }
 
-    public static Dictionary<string, string> CreateDictionaryForRegex(string pattern, RegexOptions options, params (string key, string value)[] extraKkeyValuePairs)
+    public static Dictionary<string, string> CreateDictionaryForRegex(string pattern, RegexOptions options, params (string key, string value)[] extrakeyValuePairs)
     {
         Dictionary<string, string> additionalInfo = new();
 
         additionalInfo[GlobalStrings.Regex_Pattern_Key] = pattern;
 
-        if ((options & RegexOptions.Multiline)                  == RegexOptions.Multiline) additionalInfo[GlobalStrings.Regex_Mulitline_Key]                            =  "true";
+        if ((options & RegexOptions.Multiline)                  == RegexOptions.Multiline) additionalInfo[GlobalStrings.Regex_Multiline_Key]                            =  "true";
         if ((options & RegexOptions.Singleline)                 == RegexOptions.Singleline) additionalInfo[GlobalStrings.Regex_Singleline_Key]                          =  "true";
         if ((options & RegexOptions.IgnoreCase)                 == RegexOptions.IgnoreCase) additionalInfo[GlobalStrings.Regex_IgnoreCase_Key]                          =  "true";
         if ((options & RegexOptions.CultureInvariant)           == RegexOptions.CultureInvariant) additionalInfo[GlobalStrings.Regex_CultureInvariant_Key]              =  "true";
@@ -43,7 +43,7 @@ internal static class GeneralUtils
         if ((options & RegexOptions.ExplicitCapture)            == RegexOptions.ExplicitCapture) additionalInfo[GlobalStrings.Regex_ExplicitCapture_Key]                =  "true";
         if ((options & RegexOptions.ECMAScript)                 == RegexOptions.ECMAScript) additionalInfo[GlobalStrings.Regex_ECMAScript_Key]                          =  "true";
 
-        foreach(var keyPair in extraKkeyValuePairs)
+        foreach(var keyPair in extrakeyValuePairs)
         {
             additionalInfo[keyPair.key] = keyPair.value;
         }

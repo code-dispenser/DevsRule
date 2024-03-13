@@ -6,10 +6,10 @@ using System.Net.Http.Json;
 
 namespace DevsRule.Demo.BasicConsole.Common.CustomConditionEvaluators
 {
-    public class MyCustomGenericDIAwareEvaulator<TContext> : ConditionEvaluatorBase<TContext>
+    public class MyCustomGenericDIAwareEvaluator<TContext> : ConditionEvaluatorBase<TContext>
     {
         private readonly HttpClient _httpClient;
-        public MyCustomGenericDIAwareEvaulator(IHttpClientFactory clientFactory)
+        public MyCustomGenericDIAwareEvaluator(IHttpClientFactory clientFactory)
 
             => _httpClient = clientFactory.CreateClient();
 
@@ -26,7 +26,7 @@ namespace DevsRule.Demo.BasicConsole.Common.CustomConditionEvaluators
 
             if (true == condition.IsLambdaPredicate)
             {
-                conditionResult = condition.CompiledPrediate!(data);
+                conditionResult = condition.CompiledPredicate!(data);
                 failureMessage = conditionResult == false ? base.BuildFailureMessage(condition.FailureMessage, data!, MessageRegex) : string.Empty;
             }
 
@@ -38,7 +38,7 @@ namespace DevsRule.Demo.BasicConsole.Common.CustomConditionEvaluators
                 {
                     try
                     {
-                        Console.WriteLine("Contacting an online webapi to get dummy data, 5 second timeout value incase you are offline");
+                        Console.WriteLine("Contacting an online web api to get dummy data, 5 second timeout value incase you are offline");
                         _httpClient.Timeout = TimeSpan.FromSeconds(5);
                         stockCheck = await _httpClient.GetFromJsonAsync<CheckStock>(url + productID, cancellationToken);
                     }

@@ -9,8 +9,8 @@ namespace DevsRule.Tests.SharedDataAndFixtures.Evaluators
 {
     public class CustomDIRequiredEvaluator<TContext> : ConditionEvaluatorBase<TContext>
     {
-        private readonly IStrategy<TContext> _stategy;
-        public CustomDIRequiredEvaluator(IStrategy<TContext> stategy) => _stategy = stategy;
+        private readonly IStrategy<TContext> _strategy;
+        public CustomDIRequiredEvaluator(IStrategy<TContext> strategy) => _strategy = strategy;
         /*
              * Cant be used by the engine as the engine only deals with default parameterless constructors
         */
@@ -22,10 +22,10 @@ namespace DevsRule.Tests.SharedDataAndFixtures.Evaluators
 
             if (true == condition.IsLambdaPredicate)
             {
-                passed = condition.CompiledPrediate!(data);
+                passed = condition.CompiledPredicate!(data);
             }
 
-            _stategy.DoSomeThing(data);
+            _strategy.DoSomeThing(data);
 
             var failureMessage = passed ? String.Empty : base.BuildFailureMessage(condition.FailureMessage, data!, ConditionEvaluatorBase<Customer>.MessageRegex);
 
