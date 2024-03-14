@@ -92,9 +92,9 @@ internal class Program
             Console.WriteLine("\r\nRegistered event handlers in your DI container can receive events that conditions may raise");
             Console.WriteLine(lineSeparator);
 
-            await new DynamicEventHandlers(conditionEngine).RuleWithEventDynaicallyHandledUsingWaitForAll();
+            await new DynamicEventHandlers(conditionEngine).RuleWithEventDynamicallyHandledUsingWaitForAll();
             Console.WriteLine();
-            await new DynamicEventHandlers(conditionEngine).RuleWithEventDynaicallyHandledUsingFireAndFoget();
+            await new DynamicEventHandlers(conditionEngine).RuleWithEventDynamicallyHandledUsingFireAndForget();
 
             Console.WriteLine("\r\nUse which ever combination is applicable to your scenario");
             Console.WriteLine(lineSeparator);

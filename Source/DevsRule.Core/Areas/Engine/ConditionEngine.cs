@@ -236,14 +236,14 @@ public class ConditionEngine : IConditionEngine
         var failureMessageParam     = Expression.Parameter(stringType, "failureMessage");
         var evaluatorTypeNameParam  = Expression.Parameter(stringType, "evaluatorTypeName");
         var additionalInfoParam     = Expression.Parameter(dictionaryType, "additionalInfo");
-        var isPredicaterParam       = Expression.Parameter(boolType, "isLambdaPredicate");
+        var isPredicateParam        = Expression.Parameter(boolType, "isLambdaPredicate");
         var eventDetailsParam       = Expression.Parameter(eventDetailsType, "eventDetails");
 
         var constructor     = conditionType.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, paramTypes)!;
-        var newCondition    = Expression.New(constructor, conditionNameParam, toEvaluateParam, failureMessageParam, evaluatorTypeNameParam, isPredicaterParam, additionalInfoParam, eventDetailsParam);
+        var newCondition    = Expression.New(constructor, conditionNameParam, toEvaluateParam, failureMessageParam, evaluatorTypeNameParam, isPredicateParam, additionalInfoParam, eventDetailsParam);
 
         var lambdaFunc = Expression.Lambda<Func<string, string, string, string, bool, Dictionary<string, string>, EventDetails, Condition<TContext>>>
-            (newCondition, conditionNameParam, toEvaluateParam, failureMessageParam, evaluatorTypeNameParam, isPredicaterParam, additionalInfoParam, eventDetailsParam);
+            (newCondition, conditionNameParam, toEvaluateParam, failureMessageParam, evaluatorTypeNameParam, isPredicateParam, additionalInfoParam, eventDetailsParam);
 
         return lambdaFunc.Compile();
 
@@ -271,10 +271,10 @@ public class ConditionEngine : IConditionEngine
     {
         if (true == _allowDependencyInjectionEvaluators)//skip if engine not initialised for DI
         {
-            var evalutatorType = CheckGetEvaluatorInDI(evaluatorName);
-            if (evalutatorType != null)
+            var evaluatorType = CheckGetEvaluatorInDI(evaluatorName);
+            if (evaluatorType != null)
             {
-                var customType = evalutatorType.IsGenericType ? evalutatorType.MakeGenericType(contextType) : evalutatorType;
+                var customType = evaluatorType.IsGenericType ? evaluatorType.MakeGenericType(contextType) : evaluatorType;
 
                 return _customTypeResolver!(customType);
             }

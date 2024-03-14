@@ -49,7 +49,7 @@ namespace DevsRule.Demo.BasicConsole.Scenarios
                 })
                 .OnFailure(r =>
                 {
-                    Console.WriteLine($"Failured requirements due to:");
+                    Console.WriteLine($"Failed requirements due to:");
                     r.FailureMessages.ForEach(f => Console.WriteLine($"\t{f}"));
                     Console.WriteLine($"\tNo. evaluations: {r.TotalEvaluations}, processing time for rule: {r.RuleTimeMilliseconds}ms - {r.RuleTimeMicroseconds} microseconds\r\n");
                 });
@@ -59,10 +59,10 @@ namespace DevsRule.Demo.BasicConsole.Scenarios
 
         private Rule CreateCustomConditionUsingTheRuleBuilder()
         /*
-            * Each condition gets an evaluator from the conditionengine, one per condition 
+            * Each condition gets an evaluator from the condition engine, one per condition 
          */
             => RuleBuilder.WithName("CanReserveProductsRule")
-                                .ForConditionSetNamed("OrderHistorRequirments")
+                                .ForConditionSetNamed("OrderHistoryRequirements")
                                     .WithCustomPredicateCondition<OrderHistoryView>("SpendCondition", o => o.TotalSpend > 3000, "The total spend of @{TotalSpend} does not satisfy the requirements", "MyOrderContextSpecificConditionEvaluator")
                                     .AndCustomCondition<OrderHistoryView>("OtherCondition", "Some text to evaluate", "Customer ID @{CustomerID} failed the condition", "MyOrderContextSpecificConditionEvaluator", new Dictionary<string, string> { ["PassOrFail"]="Pass" })
                                  .OrConditionSetNamed("ResidenceRequirements")
@@ -77,7 +77,7 @@ namespace DevsRule.Demo.BasicConsole.Scenarios
             var otherCondition   = new CustomCondition<OrderHistoryView>("OtherCondition", "Some text to evaluate", "Customer ID @{CustomerID} failed the condition", "MyOrderContextSpecificConditionEvaluator", new Dictionary<string, string> { ["PassOrFail"]="Pass" });
             var countryCondition = new PredicateCondition<Address>("CountryCondition", a => a.Country == "United States", "Only residents of the USA can make reservations");
 
-            var orderSet     = new ConditionSet("OrderHistorRequirments",spendCondition).AndCondition(otherCondition);
+            var orderSet     = new ConditionSet("OrderHistoryRequirements",spendCondition).AndCondition(otherCondition);
             var residenceSet = new ConditionSet("ResidenceRequirements", countryCondition);
 
             return new Rule("CanReserveProductsRule", orderSet).OrConditionSet(residenceSet);

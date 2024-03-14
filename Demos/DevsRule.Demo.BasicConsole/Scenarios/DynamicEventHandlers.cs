@@ -15,7 +15,7 @@ public class DynamicEventHandlers
 
         => _conditionEngine = conditionEngine;
 
-    public async Task RuleWithEventDynaicallyHandledUsingWaitForAll()
+    public async Task RuleWithEventDynamicallyHandledUsingWaitForAll()
     {
         var theRule = RuleBuilder.WithName("RuleWithEventForDynamicHandlerWaitForAll")
                           .ForConditionSetNamed("DiscountIf")
@@ -35,7 +35,7 @@ public class DynamicEventHandlers
 
         Console.WriteLine($"The rule: {theResult.RuleName} evaluated to: {theResult.IsSuccess}, taking {theResult.RuleTimeMilliseconds}ms to complete with event along with raising the event");
     }
-    public async Task RuleWithEventDynaicallyHandledUsingFireAndFoget()
+    public async Task RuleWithEventDynamicallyHandledUsingFireAndForget()
     {
         var theRule = RuleBuilder.WithName("RuleWithEventForDynamicHandlerFireAndForget")
                   .ForConditionSetNamed("DiscountIf")
@@ -54,8 +54,8 @@ public class DynamicEventHandlers
         var theResult = await _conditionEngine.EvaluateRule(theRule.RuleName, contexts);
         /*
             * For demo as this method will most likely have exited before the event gets to the handler
-            * to negate its message being writen next to another scenarios output I have added a delay.
-            * In normal use this would not be nescessary
+            * to negate its message being written next to another scenarios output I have added a delay.
+            * In normal use this would not be necessary
         */
         await Task.Delay(20);
 

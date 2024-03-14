@@ -13,9 +13,9 @@ namespace DevsRule.Demo.BasicConsole.Scenarios;
 public class SubscribeToEvents
 {
     /*
-        * In your classes, forms, viewmodels etc you can subscribe to recieve events from event enabled conditions
+        * In your classes, forms, view models etc you can subscribe to receive events from event enabled conditions
         * there is no unsubscribe method, you just use the dispose on the event subscription. One subscription per event registration.
-        * weakreferences are used so if dispose is not called, once the subscription goes out of scope the handler will get removed from the invocation list. 
+        * weak references are used so if dispose is not called, once the subscription goes out of scope the handler will get removed from the invocation list. 
         * 
         * All condition events must implement ConditionEventBase and rule events implementing RuleEventBase. Each derived event class is really just a marker in order to have a specific event type for a specific conditions as
         * you will see just by looking at the example DiscountRuleConditionEvent class (in the Common\Events folder).
@@ -25,7 +25,7 @@ public class SubscribeToEvents
         * At the rule level, the rule result is gained, the event is raised, the code will wait for all rule event handlers to finish before returning the rule result.
         * 
         * If WaitForAll is used the RuleResult timings show how long everything took to completed i.e all the handlers for events that did not use FireAndForget.
-        * The CancellationToken (if used) for the Evaluate method gets propgated to all condition evaluators and event handlers.
+        * The CancellationToken (if used) for the Evaluate method gets propagated to all condition evaluators and event handlers.
     */
 
     private readonly ConditionEngine _conditionEngine;
@@ -58,8 +58,8 @@ public class SubscribeToEvents
         var theResult = await _conditionEngine.EvaluateRule("RuleWithEventFireAndForget", contexts);
 
          /*
-            * For the demo I need to add a delay as this method will exit before the event gets to the handler due to the fire and forget
-            * and the message written, will be writted to some obscure place. In normal use this is not necessary.
+            * For the demo I need to add a delay as this method will exit before the event gets to the handler due to the fire and forget.
+            * Avoids the messages being written out of order. In normal use this is not necessary.
         */
         await Task.Delay(100);
 
@@ -93,7 +93,7 @@ public class SubscribeToEvents
 
         var theResult = await _conditionEngine.EvaluateRule(theRule.RuleName, contexts);
 
-        Console.WriteLine($"The rule: {theResult.RuleName} evaluated to: {theResult.IsSuccess}, taking {theResult.RuleTimeMilliseconds}ms to complete inluding waiting (Task.WhenAll) for any event handlers to finish for the condition");
+        Console.WriteLine($"The rule: {theResult.RuleName} evaluated to: {theResult.IsSuccess}, taking {theResult.RuleTimeMilliseconds}ms to complete including waiting (Task.WhenAll) for any event handlers to finish for the condition");
 
         eventSubscription?.Dispose();
 
@@ -104,7 +104,7 @@ public class SubscribeToEvents
     private async Task HandleDiscountRuleConditionEventWaitAll(DiscountRuleConditionEvent theEvent, CancellationToken cancellationToken)
     {
         await Task.Delay(500);
-        await Console.Out.WriteLineAsync($"Handled the registered event, sent by the condition: {theEvent.SenderName} uisng WaitForAll (added a 0.5 sec delay in the handler)");
+        await Console.Out.WriteLineAsync($"Handled the registered event, sent by the condition: {theEvent.SenderName} using WaitForAll (added a 0.5 sec delay in the handler)");
 
         theEvent.TryGetData(out var contextData);
         Console.WriteLine(contextData is null ? $"The context data is null due to {theEvent.SerializationException}" : $"Casting data: {(contextData as Customer)}");

@@ -36,14 +36,14 @@ public class CustomConditionsAndEvaluators
             * 
             * You cannot create your own conditions (unless you fork the repo), you can only create custom evaluators which works with condition(s).
             * The scenario CustomEvaluatorsAllEventsAndDI uses a custom condition with a custom evaluator, ProbeValueConditionEvaluator, replicated below
-            * in this somewhat nonsenical scenario.
+            * in this somewhat nonsensical scenario.
         */
 
 
         var conditionsRule = RuleBuilder.WithName("ConditionsRule")
                                         .ForConditionSetNamed("MixedConditions")
                                            .WithRegexCondition<Customer>("RegexCondition", c => c.CustomerName, @"^(?!.*[\-&'' _]{2})[\w][-\w&'' ]{1,100}(?<![\-_& ])$",
-                                                                        "Customer must name cannot contain double spaces, double hyphens or double dashes and can be no longer that 100 charaters")
+                                                                        "Customer must name cannot contain double spaces, double hyphens or double dashes and can be no longer that 100 characters")
 
                                            .AndPredicateCondition<Address>("AddressCondition", a => a.Country == "United Kingdom", "Must be a resident of the UK")
 

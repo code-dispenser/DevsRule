@@ -27,9 +27,9 @@ public class StoreCardApplications
         _conditionEngine.AddOrUpdateRule(storeCardRule);
 
         /*
-            * You can add a data context for any condition within a set by using ForAny on the builder which is equivlalent to new DataContext(data,conditionName = String.Empty)
+            * You can add a data context for any condition within a set by using ForAny on the builder which is equivalent to new DataContext(data,conditionName = String.Empty)
             * Or you can set a specific instance of a type for a named Condition using ForCondition i.e. may be Customer 1 for condition 1 and customer 2 for condition 2 etc.
-            * If the set had 4 conditions and you set ForAny and ForConditon on one of them, 3 would get the same instance/type and the the named one would gets its own instance/type
+            * If the set had 4 conditions and you set ForAny and ForCondition on one of them, 3 would get the same instance/type and the the named one would gets its own instance/type
         */
 
         var theResult = await _conditionEngine.EvaluateRule(storeCardRule.RuleName, RuleDataBuilder.AddForAny(applicant).Create());
@@ -44,7 +44,7 @@ public class StoreCardApplications
     public async Task UsingJsonSingleContextAndCondition()
     {
         /*
-            * This file was created by using the Rule.ToJsonString() which uses System.Text.Json. The default will escape charaters such as < and > as can be seen in the file
+            * This file was created by using the Rule.ToJsonString() which uses System.Text.Json. The default will escape characters such as < and > as can be seen in the file
             * if necessary you can set useEscaped = false in the ToJsonString method to have unescaped characters)
             * 
             * await ConsoleGeneralUtils.WriteToJsonFile(CreateSingleContextUsingTheRuleBuilder(), Path.Combine(ConsoleGlobalStrings.Json_Rules_Folder_Path, "StoreCardApplicationSingleContextRule.json"));
@@ -133,7 +133,7 @@ public class StoreCardApplications
     {
         var condition = new PredicateCondition<StoreCardApplication>("Application", s => s.Age >= 18 && s.CountryOfResidence == "United Kingdom" && s.TotalOrders > 5,
                                                                      "You must be over 18, living in the United Kingdom and have made at least 5 orders to be eligible");
-        var conditionSet = new ConditionSet("AllRequirments", condition);
+        var conditionSet = new ConditionSet("AllRequirements", condition);
 
         return new Rule("StoreCardApplicationSingleContextRule", conditionSet);
     }
@@ -154,7 +154,7 @@ public class StoreCardApplications
         var countryCondition = new PredicateCondition<Address>("CountryRequirement", a => a.Country == "United Kingdom", "You must be a resident of the United Kingdom");
         var orderCondition   = new PredicateCondition<OrderHistoryView>("OrderRequirement", o => o.TotalOrders > 5, "You must have made at least five purchases");
 
-        var conditionSet = new ConditionSet("AllRequirments", ageCondition).AndCondition(countryCondition).AndCondition(orderCondition);
+        var conditionSet = new ConditionSet("AllRequirements", ageCondition).AndCondition(countryCondition).AndCondition(orderCondition);
 
         return new Rule("StoreCardApplicationMultipleContextRule", conditionSet);
 

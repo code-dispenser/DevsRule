@@ -23,7 +23,7 @@ public  class Miscellaneous
             * The condition engines EvaluateRule method calls the Rule Evaluate method which calls the ConditionSet EvaluateConditions method which then gets the correct evaluator
             * and passes the evaluator into the condition EvaluateWith method.
             * 
-            * Dependent on your needs you can evaluate a rule without it being added to the conditione engine. It is also possible to create a set of conditions (ConditionSet)
+            * Dependent on your needs you can evaluate a rule without it being added to the condition engine. It is also possible to create a set of conditions (ConditionSet)
             * and evaluate those without the engine or rule.
         */
 
@@ -53,7 +53,7 @@ public  class Miscellaneous
     {
         /*
             * The condition engine IngestRuleFromJson method uses the method RuleFromJson and then adds the result to its cache.
-            * The RuleFromJson is public so you could use it in a sepeate project to test that your json rules can be ingested. Just add a reference to the dll that contains the data context models
+            * The RuleFromJson is public so you could use it in a separate project to test that your json rules can be ingested. Just add a reference to the dll that contains the data context models
             * in order for any ContextTypeNames used in the json files to match those on the target system
             * Assuming the json is good with no typos or trailing commas etc then the main point of failure will be either the ContextTypes not being available or problems with the lambda expressions.
         */
@@ -80,7 +80,7 @@ public  class Miscellaneous
 
             await File.WriteAllTextAsync(filePath ,discountRuleJsonString);
             /*
-                * Go to the filepath and alter the json 
+                * Go to the file path and alter the json 
             */
 
             var ruleJsonFromDisk = await File.ReadAllTextAsync(filePath);

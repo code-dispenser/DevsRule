@@ -50,7 +50,7 @@ public class CustomEvaluatorsAllEventsAndDI
         var conditionSubscription   = _conditionEngine.SubscribeToEvent<DeviceConditionEvent>(DeviceConditionEventHandler);
         var ruleSubscription        = _conditionEngine.SubscribeToEvent<DeviceRuleEvent>(DeviceRuleEventHandler);
         /*
-            * When chaining the deviceResult will be the last evaluatred result. It will however contain the previous results and their evaluation chains. 
+            * When chaining, the deviceResult will be the last evaluated result. It will however contain the previous results and their evaluation chains. 
         */ 
         var deviceResult = await _conditionEngine.EvaluateRule("DeviceHealthRule", primaryProbeData)
                                                  .OnSuccess(_ => Console.WriteLine("Primary probe is OK"))
