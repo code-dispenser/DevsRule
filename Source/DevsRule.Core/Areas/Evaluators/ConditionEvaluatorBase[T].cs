@@ -25,14 +25,14 @@ public abstract class ConditionEvaluatorBase<TContext> : IConditionEvaluator<TCo
 
 
     /// <summary>
-    /// Gets the property value as a streing from the data context.
+    /// Gets the property value as a string from the data context.
     /// </summary>
     /// <param name="context">The data context used in the condition.</param>
     /// <param name="propertyPath">The property path to the data on the data context.</param>
     /// <param name="replaceNullWith">Optional string value used when properties are not found. If left blank any unmatched 
     /// property paths will use "N/A".</param>
     /// <returns></returns>
-    protected virtual string GetPropertValueAsString(object context, string propertyPath, string replaceNullWith = "N/A")
+    protected virtual string GetPropertyValueAsString(object context, string propertyPath, string replaceNullWith = "N/A")
     {
         propertyPath = Check.ThrowIfNull(propertyPath);
         context = Check.ThrowIfNull(context);
@@ -57,7 +57,7 @@ public abstract class ConditionEvaluatorBase<TContext> : IConditionEvaluator<TCo
     }
 
     /// <summary>
-    /// Method used to build up a failure message replacing any peropery tokens with the property value.
+    /// Method used to build up a failure message replacing any property tokens with the property value.
     /// </summary>
     /// <param name="failureMessage">The failure message, predominately this will be from the condition.</param>
     /// <param name="contextData">The data used in the condition.</param>
@@ -74,7 +74,7 @@ public abstract class ConditionEvaluatorBase<TContext> : IConditionEvaluator<TCo
         foreach (Match match in matches)//TODO maybe optimize by using span and slicing?
         {
             var propertyPath = match.Value.Substring(2, match.Value.Length - 3);
-            var replacementValue = GetPropertValueAsString(contextData, propertyPath, missingPropertyText);
+            var replacementValue = GetPropertyValueAsString(contextData, propertyPath, missingPropertyText);
 
             failureMessage = Regex.Replace(failureMessage, match.Value, replacementValue);
         }

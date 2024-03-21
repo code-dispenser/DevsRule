@@ -16,7 +16,7 @@ namespace DevsRule.Core.Areas.Evaluators
 
         private EvaluationResult FromMatch(Condition<TContext> regexCondition, TContext context)
         {
-            var propertyValue   = base.GetPropertValueAsString(context!, regexCondition.ToEvaluate);
+            var propertyValue   = base.GetPropertyValueAsString(context!, regexCondition.ToEvaluate);
             var regexOptions    = RegexOptionsFromDictionary(regexCondition.AdditionalInfo);
  
             var pattern         = regexCondition.AdditionalInfo[GlobalStrings.Regex_Pattern_Key];
