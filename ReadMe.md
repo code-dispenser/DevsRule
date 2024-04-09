@@ -11,7 +11,7 @@
 <!-- H1 for git hub, but for nuget the markdown is fine as it centers the image, uncomment as appropriate and do the same at the bottom of this file for the icon author -->
 
 ## Overview
-Devs' Rule at its core is a lamdba predicate condition engine that allows you to create rules comprised of condition sets, with each condition set containing one or more conditions.
+Devs' Rule at its core is a lambda predicate condition engine that allows you to create rules comprised of condition sets, with each condition set containing one or more conditions.
 
 Rules are created in code but can be exported (or manually created) as JSON files which can both be ingested by the condition engine. This provides flexibility by allowing rule changes without 
 the need to redeploy the application. Simply supply the condition engine periodically with any rules changes, that can be fetched at runtime from a file store or a database, for example.
@@ -21,7 +21,7 @@ your declared conditions or condition sets within a rule, internally, this is do
 
 Each condition is evaluated using an evaluator. The condition engine contains a lambda predicate condition evaluator and a regular expression condition evaluator. You can add your own custom 
 evaluators to enhance both lambda predicate conditions, custom predicate conditions and non-lambda conditions. Custom evaluators can use dependency injection via your chosen IOC container.
-In essense a custom condition could be anything which is then evaluated with the appropriate evaluator, providing a true or false evaluation result to be passed back up the evaluation chain.
+In essence a custom condition could be anything which is then evaluated with the appropriate evaluator, providing a true or false evaluation result to be passed back up the evaluation chain.
 
 await ConditionEngine.EvaluateRule -> await Rule.Evaluate -> (for each) await ConditionSet.EvaulateConditions -> (for each) await Condition.EvaluateWith(evaluator, data, cancellationToken) 
 
