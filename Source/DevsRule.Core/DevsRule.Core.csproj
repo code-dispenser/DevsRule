@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFrameworks>net7.0;net8.0</TargetFrameworks>
+	<TargetFrameworks>net7.0;net8.0;net9.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <SignAssembly>True</SignAssembly>
@@ -18,12 +18,12 @@ enabling seamless integration and dynamic rule management.</Description>
 	<PackageIcon>icon-128.png</PackageIcon>
 	<RepositoryType></RepositoryType>
 	<PackageProjectUrl>https://github.com/code-dispenser/DevsRule</PackageProjectUrl>
-	<FileVersion>1.0.1</FileVersion>
+	<FileVersion>1.0.2</FileVersion>
 	<Copyright>Copyright (c) 2023 Paul Kent.</Copyright>
-	<PackageVersion>1.0.1</PackageVersion>
-	<AssemblyVersion>1.0.1</AssemblyVersion>
-	<InformationalVersion>1.0.1</InformationalVersion>
-	<Version>1.0.1</Version>
+	<PackageVersion>1.0.2</PackageVersion>
+	<AssemblyVersion>1.0.2</AssemblyVersion>
+	<InformationalVersion>1.0.2</InformationalVersion>
+	<Version>1.0.2</Version>
 	<RepositoryUrl>https://github.com/code-dispenser/DevsRule</RepositoryUrl>
 	<PublishRepositoryUrl>true</PublishRepositoryUrl>
 	<Deterministic>true</Deterministic>
