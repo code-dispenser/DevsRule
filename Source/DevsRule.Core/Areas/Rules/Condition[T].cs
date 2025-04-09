@@ -11,6 +11,7 @@ namespace DevsRule.Core.Areas.Rules;
 /// <typeparam name="TContext">The data type used for the evaluation of the condition.</typeparam>
 public class Condition<TContext> : ICondition
 {
+    private readonly ParsingConfig _parsingConfig = new() { AllowEqualsAndToStringMethodsOnObject = true };
     public Dictionary<string, string> AdditionalInfo { get; }//TODO immutable fix?
     public EventDetails? EventDetails { get; }
 
@@ -67,7 +68,7 @@ public class Condition<TContext> : ICondition
 
         ParameterExpression parameter = Expression.Parameter(typeof(TContext), identifier);
 
-        LambdaExpression lambdaExpression = DynamicExpressionParser.ParseLambda(new[] { parameter }, typeof(bool), conditionExpression);
+        LambdaExpression lambdaExpression = DynamicExpressionParser.ParseLambda(_parsingConfig, new[] { parameter }, typeof(bool), conditionExpression);
 
         return (Func<TContext, bool>)lambdaExpression.Compile();
     }
